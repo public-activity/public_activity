@@ -1,5 +1,6 @@
 require 'rails'
 require 'active_support/dependencies'
+require 'active_record'
 
 module KeepTrack
   extend ActiveSupport::Concern
@@ -7,6 +8,7 @@ module KeepTrack
   autoload :Activity
   autoload :Tracked
   autoload :Creation
+  autoload :VERSION
   
   included do
     include Tracked
