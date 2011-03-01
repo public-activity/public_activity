@@ -5,5 +5,9 @@ module KeepTrack
     belongs_to :trackable, :polymorphic => true
     belongs_to :user
     serialize :parameters, Hash
+    
+    def text
+      translate(key, parameters || {})
+    end
   end  
 end

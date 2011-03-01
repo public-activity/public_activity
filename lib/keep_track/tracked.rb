@@ -3,6 +3,11 @@ module KeepTrack
   module Tracked
     extend ActiveSupport::Concern
 
+    #Set attributes that will be passed to activity when saving
+    attr_accessor_with_default :activity_params, {}
+    attr_accessor :activity_user
+    attr_accessor :activity_scope
+    
     # Overrides the +tracked+ method to first define the +tracked?+ class method before
     # deferring to the original +tracked+.
     module ClassMethods
