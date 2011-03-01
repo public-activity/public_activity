@@ -1,23 +1,13 @@
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'yard'
+require 'yard/rake/yardoc_task'
+require 'rspec/core/rake_task'
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the keep_track plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = "./spec/*_spec.rb"
 end
 
 desc 'Generate documentation for the keep_track plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'KeepTrack'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+YARD::Rake::YardocTask.new do |doc|
+  doc.files = ['lib/**/*.rb']
 end
