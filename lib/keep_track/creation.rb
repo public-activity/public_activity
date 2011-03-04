@@ -4,18 +4,8 @@ module KeepTrack
     
     included do
       after_create do
-        if self.activity_user
-          user = self.activity_user
-        else
-          case self.activity_user_global
-            when Symbol, String 
-              user = self[self.class.activity_user_global]
-            when Proc
-              user = self.class.activity_user_global.call           
-          end
-        end
-
-        self.activities.create(:key => self.class.name.downcase+".create", :user_id => user, :parameters => self.activity_params)
+        settings = prepare_settings()
+        self.activities.create(:key => "activity."+self.class.name.downcase+".create", :user_id => settings[:user], :parameters => settings[:parameters])
       end
     end   
   end

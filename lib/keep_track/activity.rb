@@ -6,9 +6,10 @@ module KeepTrack
     belongs_to :user
     serialize :parameters, Hash
     
+    # Virtual attribute returning already
+    # translated key with params
     def text
       params = parameters || {}
-      params.merge!({:user => "unknown"})
       I18n.t(key, params)
     end
   end  

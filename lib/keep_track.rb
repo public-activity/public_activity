@@ -9,21 +9,30 @@ module KeepTrack
   autoload :Tracked
   autoload :Creation
   autoload :VERSION
-   
+  autoload :Common
+  
   included do
-    class_attribute :activity_user_global
+    class_attribute :activity_user_global, :activity_params_global
+    self.activity_user_global = nil
+    self.activity_params_global = {}
     include Tracked
   end  
   
   module ClassMethods
     def tracked(options = {})
       return if tracked?
+      include Creation
+      include Common
+      
       if options[:user]
         self.activity_user_global = options[:user]
       end
+      if options[:params]
+        self.activity_params_global = options[:params]
+      end
       has_many :activities, :class_name => "KeepTrack::Activity", :as => :trackable
       
-      include Creation
+      
       
     end
   end
