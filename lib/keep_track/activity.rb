@@ -8,7 +8,7 @@ module KeepTrack
     
     def text
       params = parameters || {}
-      params.merge!({:user => user.email})
+      params.merge!({:user => "unknown"})
       I18n.t(key, params)
     end
   end  
