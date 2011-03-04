@@ -20,7 +20,7 @@ module KeepTrack
         end
         #customizable parameters
         parameters = self.class.activity_params_global
-        parameters.merge! self.activity_params        
+        parameters.merge! self.activity_params if self.activity_params      
         return {:user => user, :parameters => parameters}
       end
       

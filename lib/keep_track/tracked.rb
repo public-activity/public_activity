@@ -8,8 +8,8 @@ module KeepTrack
     @activity_params = {}
     attr_accessor :activity_user
     @activity_user = nil
-    attr_accessor :activity_scope
-    @activity_scope = nil
+    attr_accessor :activity_key
+    @activity_key = nil
     # Overrides the +tracked+ method to first define the +tracked?+ class method before
     # deferring to the original +tracked+.
     module ClassMethods
