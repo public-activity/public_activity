@@ -17,7 +17,21 @@ require 'active_record'
 # Now when saved, public_activity will create 
 # an Activity record containing information about that changed/created
 # model.
-# Check +tracked+ for more details about customizing and specifing
+# == Displaying Activities:
+#
+# Minimal example would be:
+#
+#   <% for activity in PublicActivity::Activity.all %>
+#   <%= activity.text %><br/>
+#   <% end %>
+# Now you will need to add translations in your locale .yml, for the example
+# provided above that would be:
+#   en:
+#     activity:
+#       create: 'New article has been created'
+#       update: 'Someone modified the article'
+#
+# Check {PublicActivity::ClassMethods#tracked} for more details about customizing and specifing
 # ownership to users.
 module PublicActivity
   extend ActiveSupport::Concern
@@ -59,7 +73,10 @@ module PublicActivity
     #   For example, if you want to pass a parameter that
     #   should be in every {Activity}, you can do this:
     #    tracked :params => {:user_name => "Piotrek"}
-    #   For more dynamic settings refer to [Activity] model 
+    #   These params are passed to i18n.translate
+    #   when using {PublicActivity::Activity#text}, which returns
+    #   already translated {Activity} message.
+    #   For more dynamic settings refer to {Activity} model 
     #   documentation.
     def tracked(options = {})
       return if tracked?
