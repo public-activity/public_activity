@@ -12,10 +12,31 @@ module PublicActivity
     serialize :parameters, Hash
     
     # Virtual attribute returning already
-    # translated key with params
+    # translated key with params passed
+    # to i18n.translate function
+    # == Example:
+    #
+    # Let's say you want to show article's title inside Activity message.
+    #
+    #   #config/locales/en.yml
+    #   en:
+    #     activity:
+    #         article:
+    #           create: "Someone has created an article '%{title}'"
+    #           update: "Article '%{title}' has been modified"
+    # And in controller:
+    #
+    #   def create
+    #     @article = Article.new
+    #     @article.title = "Rails 3.0.5 released!"
+    #     @article.activity_params = {:title => @article.title}
+    #     @article.save
+    #   end
+    #
+    # Now when you list articles, you should see:
+    #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     def text
-      params = parameters || {}
-      I18n.t(key, params)
+      I18n.t(key, parameters || {})
     end
   end  
 end
