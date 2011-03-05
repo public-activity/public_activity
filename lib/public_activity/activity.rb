@@ -1,6 +1,6 @@
 require 'active_record'
 require 'i18n'
-module KeepTrack
+module PublicActivity
   class Activity < ActiveRecord::Base
     belongs_to :trackable, :polymorphic => true
     belongs_to :user

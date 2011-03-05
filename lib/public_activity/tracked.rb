@@ -1,4 +1,4 @@
-module KeepTrack
+module PublicActivity
   # Add a flag to determine whether a model class is being tracked
   module Tracked
     extend ActiveSupport::Concern

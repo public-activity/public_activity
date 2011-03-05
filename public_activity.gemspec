@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
-require 'keep_track/version'
+require 'public_activity/version'
 
 Gem::Specification.new do |s|
-  s.name = 'keep_track'
-  s.version = KeepTrack::VERSION
+  s.name = 'public_activity'
+  s.version = PublicActivity::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["Piotrek Okoński", "Kuba Okoński"]
   s.email = ["piotrek@okonski.org", "kuba@okonski.org"]
-  s.homepage = 'https://github.com/okonski/keep_track'
+  s.homepage = 'https://github.com/okonski/public_activity'
   s.summary = "Smooth acitivity tracking for ActiveRecord models"
-  s.description = "Smooth acitivity tracking for ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
+  s.description = "Smooth acitivity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
 
   s.files = `git ls-files lib`.split("\n") + ['README', 'MIT-LICENSE']
   s.test_files = `git ls-files spec`.split("\n")

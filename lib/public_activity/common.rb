@@ -1,4 +1,4 @@
-module KeepTrack
+module PublicActivity
   module Common
     extend ActiveSupport::Concern
     

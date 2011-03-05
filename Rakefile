@@ -7,7 +7,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = "./spec/*_spec.rb"
 end
 
-desc 'Generate documentation for the keep_track plugin.'
+desc 'Generate documentation for the public_activity plugin.'
 YARD::Rake::YardocTask.new do |doc|
   doc.files = ['lib/**/*.rb']
 end

@@ -2,7 +2,7 @@ require 'rails'
 require 'active_support/dependencies'
 require 'active_record'
 
-module KeepTrack
+module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
   autoload :Activity
@@ -30,7 +30,7 @@ module KeepTrack
       if options[:params]
         self.activity_params_global = options[:params]
       end
-      has_many :activities, :class_name => "KeepTrack::Activity", :as => :trackable
+      has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       
       
       
@@ -39,4 +39,4 @@ module KeepTrack
 
 end
 
-ActiveRecord::Base.send :include, KeepTrack
+ActiveRecord::Base.send :include, PublicActivity

@@ -1,7 +1,7 @@
-require 'generators/keep_track'
+require 'generators/public_activity'
 require 'rails/generators/active_record'
 
-module KeepTrack
+module PublicActivity
   module Generators
     class MigrationGenerator < ActiveRecord::Generators::Base
       extend Base
