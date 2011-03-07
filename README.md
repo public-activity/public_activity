@@ -7,8 +7,10 @@ Simply put: it records what has been changed or edited and gives you the ability
 ## Installation
 
 You can install this gem as you would any other gem:
+
   gem install public_activity
 or in your Gemfile:
+
   gem 'public_activity'
 
 
