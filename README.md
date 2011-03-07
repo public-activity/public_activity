@@ -39,6 +39,9 @@ The only thing left is to add translations to your locale files, for example:
           update: 'Someone has edited the article'
 
 This is only a basic example, refer to documentation for more options and customization!
+## Documentation
+
+You can find documentation here: http://rubydoc.info/gems/public_activity/
 
 ## License
 Copyright (c) 2011 Piotrek Okoński, released under the MIT license
