@@ -21,7 +21,7 @@ Add 'tracked' to the model you want to keep track of:
     class Article < ActiveRecord::Base
       tracked
     end
-And now, by default create/update activites are recorded in Activites table. 
+And now, by default create/update activites are recorded in activities table. 
 To display them you can do a simple query:
     # some_controller.rb
     def index
@@ -31,14 +31,14 @@ And in your views:
     <% for activity in @activities %>
       <%= activity.text %><br/>
     <% end %>
-The only thing left is to add translations to your locale files:
+The only thing left is to add translations to your locale files, for example:
     en:
       activity:
         article:
           create: 'Article has been created'
           update: 'Someone has edited the article'
 
-This is only a basic example, refer to documentation for more options!
+This is only a basic example, refer to documentation for more options and customization!
 
 ## License
 Copyright (c) 2011 Piotrek Okoński, released under the MIT license
