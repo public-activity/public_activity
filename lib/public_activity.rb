@@ -43,8 +43,8 @@ module PublicActivity
   autoload :Common
   
   included do
-    class_attribute :activity_user_global, :activity_params_global
-    self.activity_user_global = nil
+    class_attribute :activity_owner_global, :activity_params_global
+    self.activity_owner_global = nil
     self.activity_params_global = {}
     include Tracked
   end  
@@ -55,17 +55,17 @@ module PublicActivity
     # associated activities.
     # 
     # == Parameters:
-    # :user::
+    # :owner::
     #   You can pass a Symbol or a String with an attribute from
     #   which public_activity should take +user id+ responsible for 
     #   this activity.
     #
     #   For example:
-    #    tracked :user => :author_id
-    #   will take +user id+ from tracked model's +author_id+ attribute.
+    #    tracked :owner => :author
+    #   will take +owner+ from tracked model's +author+ attribute.
     #
     #   If you need more complex logic, you can pass a Proc:
-    #    tracked :user => Proc.new{ User.first.id }
+    #    tracked :owner => Proc.new{ User.first }
     # :params::
     #   Accepts a Hash containing parameters you wish
     #   to pass to every {Activity} created from this model.
@@ -83,8 +83,8 @@ module PublicActivity
       include Creation
       include Common
       
-      if options[:user]
-        self.activity_user_global = options[:user]
+      if options[:owner]
+        self.activity_owner_global = options[:owner]
       end
       if options[:params]
         self.activity_params_global = options[:params]

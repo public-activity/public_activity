@@ -8,20 +8,20 @@ module PublicActivity
       # settings specified in tracked() method
       def prepare_settings
         # user responsible for the activity
-        if self.activity_user
-          user = self.activity_user
+        if self.activity_owner
+          owner = self.activity_owner
         else
-          case self.activity_user_global
+          case self.activity_owner_global
             when Symbol, String 
-              user = self[self.class.activity_user_global]
+              owner = self[self.class.activity_owner_global]
             when Proc
-              user = self.class.activity_user_global.call           
+              owner = self.class.activity_owner_global.call           
           end
         end
         #customizable parameters
         parameters = self.class.activity_params_global
         parameters.merge! self.activity_params if self.activity_params      
-        return {:user => user, :parameters => parameters}
+        return {:owner => owner, :parameters => parameters}
       end
       
     end

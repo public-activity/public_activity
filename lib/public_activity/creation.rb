@@ -10,20 +10,20 @@ module PublicActivity
     module InstanceMethods
       private
         # Creates activity based on supplied arguments
-        def create_activity(key, user_id, params)
-          self.activities.create(:key => key, :user_id => user_id, :parameters => params)
+        def create_activity(key, owner, params)
+          self.activities.create(:key => key, :owner => owner, :parameters => params)
         end
         
         # Creates activity upon creation of the tracked model
         def activity_on_create
           settings = prepare_settings
-          create_activity("activity."+self.class.name.downcase+".create", settings[:user], settings[:parameters])
+          create_activity("activity."+self.class.name.downcase+".create", settings[:owner], settings[:parameters])
         end
         
         # Creates activity upon modification of the tracked model
         def activity_on_update
           settings = prepare_settings
-          create_activity("activity."+self.class.name.downcase+".update", settings[:user], settings[:parameters])
+          create_activity("activity."+self.class.name.downcase+".update", settings[:owner], settings[:parameters])
         end
     end
   end

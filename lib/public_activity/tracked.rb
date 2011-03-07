@@ -32,11 +32,11 @@ module PublicActivity
     # Controller:
     #
     #   @article = Article.new
-    #   @article.activity_user = current_user.id #where current_user is an object of logged in user
+    #   @article.activity_owner = current_user #where current_user is an object of logged in user
     #   @article.save
     #   @article.activities.last.user #=> Returns User object
-    attr_accessor :activity_user
-    @activity_user = nil
+    attr_accessor :activity_owner
+    @activity_owner = nil
     # Set or get custom i18n key passed to {Activity}
     #
     # == Usage:
