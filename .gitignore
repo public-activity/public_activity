@@ -1,2 +1,4 @@
 doc/
 .yardoc/
+*.gem
+init.rb
