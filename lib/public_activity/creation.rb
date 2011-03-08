@@ -8,12 +8,7 @@ module PublicActivity
     end   
     
     module InstanceMethods
-      private
-        # Creates activity based on supplied arguments
-        def create_activity(key, owner, params)
-          self.activities.create(:key => key, :owner => owner, :parameters => params)
-        end
-        
+      private       
         # Creates activity upon creation of the tracked model
         def activity_on_create
           settings = prepare_settings
