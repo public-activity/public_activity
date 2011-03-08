@@ -1,4 +1,4 @@
-require 'rails'
+require 'active_support/concern'
 require 'active_support/dependencies'
 require 'active_record'
 # +public_activity+ keeps track of changes made to models
@@ -39,6 +39,7 @@ module PublicActivity
   autoload :Activity
   autoload :Tracked
   autoload :Creation
+  autoload :Destruction
   autoload :VERSION
   autoload :Common
   
@@ -80,19 +81,17 @@ module PublicActivity
     #   documentation.
     def tracked(options = {})
       return if tracked?
-      include Creation
       include Common
-      
+      include Creation
+      include Destruction
+            
       if options[:owner]
         self.activity_owner_global = options[:owner]
       end
       if options[:params]
         self.activity_params_global = options[:params]
       end
-      has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
-      
-      
-      
+      has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable      
     end
   end
 
