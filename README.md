@@ -3,6 +3,11 @@
 public_activity provides smooth acitivity tracking for your ActiveRecord models in Rails 3.
 Simply put: it records what has been changed or edited and gives you the ability to present those recorded activities to users - in a similar way Github does it.
 
+## Example
+
+A picture is worth a thousand words, so here is a visual representation of what this gem is about:
+
+![Example usage](http://i.imgur.com/uGPSm.png)
 
 ## Installation
 
