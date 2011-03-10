@@ -24,6 +24,8 @@ module PublicActivity
     #         article:
     #           create: "Someone has created an article '%{title}'"
     #           update: "Article '%{title}' has been modified"
+    #           destroy: "Someone deleted article '%{title}'!"
+    #
     # And in controller:
     #
     #   def create

@@ -30,6 +30,7 @@ require 'active_record'
 #     activity:
 #       create: 'New article has been created'
 #       update: 'Someone modified the article'
+#       destroy: 'Someone deleted the article!'
 #
 # Check {PublicActivity::ClassMethods#tracked} for more details about customizing and specifing
 # ownership to users.
