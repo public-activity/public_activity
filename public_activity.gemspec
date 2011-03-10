@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary = "Smooth activity tracking for ActiveRecord models"
   s.description = "Smooth activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
 
-  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Gemfile.lock','Rakefile','README.md', 'MIT-LICENSE']
+  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE']
   s.test_files = `git ls-files spec`.split("\n")
   s.require_paths = ['lib']
 
