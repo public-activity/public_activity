@@ -21,7 +21,7 @@ Add 'tracked' to the model you want to keep track of:
     class Article < ActiveRecord::Base
       tracked
     end
-And now, by default create/update/destroy activites are recorded in activities table. 
+And now, by default create/update/destroy activities are recorded in activities table. 
 To display them you can do a simple query:
     # some_controller.rb
     def index
