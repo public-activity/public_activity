@@ -1,5 +1,5 @@
 module PublicActivity
-  # Add a flag to determine whether a model class is being tracked
+  # Main module extending classes we want to keep track of.
   module Tracked
     extend ActiveSupport::Concern
 
@@ -16,7 +16,7 @@ module PublicActivity
     #   @article = Article.new
     #   @article.activity_params = {:article_title => @article.title}
     #   @article.save
-    # This way you can pass strings that should remain constant, even when {Article}
+    # This way you can pass strings that should remain constant, even when Article
     # changes after creating this {Activity}.
     attr_accessor :activity_params
     @activity_params = {}
@@ -51,7 +51,7 @@ module PublicActivity
     #   @article = Article.new
     #   @article.save
     #   @article.activities.last.key #=> "activity.article.create"
-    # By default, key looks like "activity.{class_name}.{create|update}"
+    # By default, key looks like "activity.[class_name].[create|update|destroy]"
     #
     # You can customize it, by setting your own key:
     #   @article = Article.new
@@ -60,9 +60,10 @@ module PublicActivity
     #   @article.activities.last.key #=> "my.custom.article.key"
     attr_accessor :activity_key
     @activity_key = nil
+    # Placeholder methods for classes not tracked by public_activity gem.
+    module ClassMethods
     # Overrides the +tracked+ method to first define the +tracked?+ class method before
     # deferring to the original +tracked+.
-    module ClassMethods
       def tracked(*args)
         super(*args)
 
@@ -79,6 +80,34 @@ module PublicActivity
         false
       end
     end
-
+    
+    # A module with shortcut method for setting own parameters to the {Activity} model
+    module InstanceMethods
+    # A shortcut method for setting custom key, owner and parameters of {Activity}
+    # in one line. Accepts a hash with 3 keys:
+    # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.
+    #
+    # == Usage:
+    # In model:
+    #
+    #   class Article < ActiveRecord::Base
+    #     tracked
+    #   end 
+    #
+    # In controller:
+    #
+    #   @article = Article.new
+    #   @article.title = "New article"    
+    #   @article.activity :key => "my.custom.article.key", :owner => @article.author, :params => {:title => @article.title}
+    #   @article.save
+    #   @article.activities.last.key #=> "my.custom.article.key"
+    #   @article.activities.last.parameters #=> {:title => "New article"}
+      def activity(options = {}) 
+        self.activity_key = options[:key] if options[:key]      
+        self.activity_owner = options[:owner] if options[:owner]
+        self.activity_params = options[:params] if options[:params]
+      end
+    end
+    
   end
 end
