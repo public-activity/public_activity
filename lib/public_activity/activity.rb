@@ -13,7 +13,9 @@ module PublicActivity
     
     # Virtual attribute returning already
     # translated key with params passed
-    # to i18n.translate function
+    # to i18n.translate function. You can pass additional Hash
+    # you want to be passed to translation method. It will be merged with the default ones.
+    #
     # == Example:
     #
     # Let's say you want to show article's title inside Activity message.
