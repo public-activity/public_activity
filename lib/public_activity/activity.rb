@@ -37,7 +37,8 @@ module PublicActivity
     #
     # Now when you list articles, you should see:
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
-    def text
+    def text(params = {})
+      parameters.merge! params
       I18n.t(key, parameters || {})
     end
   end  
