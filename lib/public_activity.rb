@@ -37,6 +37,7 @@ require 'active_record'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
+  autoload :Activist
   autoload :Activity
   autoload :Tracked
   autoload :Creation
@@ -45,58 +46,9 @@ module PublicActivity
   autoload :Common
   
   included do
-    class_attribute :activity_owner_global, :activity_params_global
-    self.activity_owner_global = nil
-    self.activity_params_global = {}
     include Tracked
+    include Activist
   end  
-  
-  # Module with basic +tracked+ method that enables tracking models.
-  module ClassMethods
-    # Adds required callbacks for creating and updating
-    # tracked models and adds +activities+ relation for listing
-    # associated activities.
-    # 
-    # == Parameters:
-    # :owner::
-    #   You can pass a Symbol or a String with an attribute from
-    #   which public_activity should take +user id+ responsible for 
-    #   this activity.
-    #
-    #   For example:
-    #    tracked :owner => :author
-    #   will take +owner+ from tracked model's +author+ attribute.
-    #
-    #   If you need more complex logic, you can pass a Proc:
-    #    tracked :owner => Proc.new{ User.first }
-    # :params::
-    #   Accepts a Hash containing parameters you wish
-    #   to pass to every {Activity} created from this model.
-    #
-    #   For example, if you want to pass a parameter that
-    #   should be in every {Activity}, you can do this:
-    #    tracked :params => {:user_name => "Piotrek"}
-    #   These params are passed to i18n.translate
-    #   when using {PublicActivity::Activity#text}, which returns
-    #   already translated {Activity} message.
-    #   For more dynamic settings refer to {Activity} model 
-    #   documentation.
-    def tracked(options = {})
-      return if tracked?
-      include Common
-      include Creation
-      include Destruction
-            
-      if options[:owner]
-        self.activity_owner_global = options[:owner]
-      end
-      if options[:params]
-        self.activity_params_global = options[:params]
-      end
-      has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable      
-    end
-  end
-
 end
 
 ActiveRecord::Base.send :include, PublicActivity
