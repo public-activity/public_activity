@@ -51,6 +51,7 @@ module PublicActivity
     include Tracked
   end  
   
+  # Module with basic +tracked+ method that enables tracking models.
   module ClassMethods
     # Adds required callbacks for creating and updating
     # tracked models and adds +activities+ relation for listing
