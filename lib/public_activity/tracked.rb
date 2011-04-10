@@ -57,7 +57,7 @@ module PublicActivity
     #   @article = Article.new
     #   @article.save
     #   @article.activities.last.key #=> "activity.article.create"
-    # By default, key looks like "activity.[class_name].[create|update|destroy]"
+    # By default, key looks like "activity.class_name.create|update|destroy"
     #
     # You can customize it, by setting your own key:
     #   @article = Article.new
