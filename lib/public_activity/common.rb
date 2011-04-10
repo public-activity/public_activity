@@ -17,14 +17,15 @@ module PublicActivity
           if self.activity_owner
             owner = self.activity_owner
           else
-            case self.activity_owner_global
-              when Symbol, String 
-                owner = self[self.class.activity_owner_global]
-              when Proc
-                owner = self.class.activity_owner_global.call           
-            end
+            owner = self.class.activity_owner_global
           end
-
+          
+          case owner
+            when Symbol
+              owner = self.try(owner)
+            when Proc
+              owner = owner.call(self)    
+          end
           #customizable parameters
           parameters = self.class.activity_params_global
           parameters.merge! self.activity_params if self.activity_params      
