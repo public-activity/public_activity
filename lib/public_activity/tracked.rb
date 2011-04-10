@@ -25,8 +25,7 @@ module PublicActivity
     # changes after creating this {Activity}.
     attr_accessor :activity_params
     @activity_params = {}
-    # Set or get user id responsible for the {Activity}.
-    # Same rules apply like with the other attributes described.
+    # Set or get owner object responsible for the {Activity}.
     #
     # == Usage:
     # In model:
@@ -37,12 +36,14 @@ module PublicActivity
     # Controller:
     #
     #   @article = Article.new
-    #   @article.activity_owner = current_user #where current_user is an object of logged in user
+    #   @article.activity_owner = current_user # where current_user is an object of logged in user
+    #   @article.activity_owner = :author # OR: take @article.author attribute
+    #   @article.activity_owner = proc {|o| o.author } # OR: provide a Proc with custom code
     #   @article.save
-    #   @article.activities.last.user #=> Returns User object
+    #   @article.activities.last.owner #=> Returns owner object
     attr_accessor :activity_owner
     @activity_owner = nil
-    # Set or get custom i18n key passed to {Activity}
+    # Set or get custom i18n key passed to {Activity}, later used in {Activity#text}
     #
     # == Usage:
     # In model:
@@ -73,27 +74,21 @@ module PublicActivity
       # associated activities.
       # 
       # == Parameters:
-      # :owner::
-      #   You can pass a Symbol or a String with an attribute from
-      #   which public_activity should take +user id+ responsible for 
-      #   this activity.
-      #
-      #   For example:
-      #    tracked :owner => :author
-      #   will take +owner+ from tracked model's +author+ attribute.
-      #
-      #   If you need more complex logic, you can pass a Proc:
-      #    tracked :owner => Proc.new{ User.first }
-      # :params::
-      #   Accepts a Hash containing parameters you wish
-      #   to pass to every {Activity} created from this model.
-      #
-      #   For example, if you want to pass a parameter that
-      #   should be in every {Activity}, you can do this:
-      #    tracked :params => {:user_name => "Piotrek"}
-      #   These params are passed to i18n.translate
-      #   when using {PublicActivity::Activity#text}, which returns
-      #   already translated {Activity} message.
+      # [:owner]
+      #   Specify the owner of the {Activity} (person responsible for the action).
+      #   It can be a Proc, Symbol or an ActiveRecord object:
+      #   == Examples:
+      #    @article.activity :owner => :author    
+      #    @article.activity :owner => {|o| o.author}
+      #    @article.activity :owner => User.where(:login => 'piotrek').first
+      #   Keep in mind that owner relation is polymorphic, so you can't just provide id number of the owner object.
+      # [:params]
+      #   Accepts a Hash with custom parameters you want to pass to i18n.translate
+      #   method. It is later used in {Activity#text} method.
+      #   == Example:
+      #    @article.activity :parameters => {:title => @article.title, :short => truncate(@article.text, :length => 50)}
+      #   Everything specified here has a lower priority than parameters specified directly in {Tracked#activity} method.
+      #   So treat it as a place where you provide 'default' values.
       #   For more dynamic settings refer to {Activity} model 
       #   documentation.
       def tracked(options = {})
@@ -116,6 +111,24 @@ module PublicActivity
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
     # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.
+    #
+    # === Options
+    #
+    # [:key]
+    #   Accepts a string that will be used as a i18n key for {Activity#text} method.
+    # [:owner]
+    #   Specify the owner of the {Activity} (person responsible for the action).
+    #   It can be a Proc, Symbol or an ActiveRecord object:
+    #   == Examples:
+    #    @article.activity :owner => :author    
+    #    @article.activity :owner => {|o| o.author}
+    #    @article.activity :owner => User.where(:login => 'piotrek').first
+    #   Keep in mind that owner relation is polymorphic, so you can't just provide id number of the owner object.
+    # [:params]
+    #   Accepts a Hash with custom parameters you want to pass to i18n.translate
+    #   method. It is later used in {Activity#text} method.
+    #   == Example:
+    #    @article.activity :parameters => {:title => @article.title, :short => truncate(@article.text, :length => 50)}
     #
     # == Usage:
     # In model:
