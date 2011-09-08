@@ -87,14 +87,19 @@ module PublicActivity
       #   method. It is later used in {Activity#text} method.
       #   == Example:
       #    @article.activity :parameters => {:title => @article.title, :short => truncate(@article.text, :length => 50)}
-      #   Everything specified here has a lower priority than parameters specified directly in {Tracked#activity} method.
+      #   Everything specified here has a lower priority than parameters specified directly in {Tracked::InstanceMethods#activity} method.
       #   So treat it as a place where you provide 'default' values.
       #   For more dynamic settings refer to {Activity} model 
       #   documentation.
+      # [:skip_defaults]
+      #   Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common::InstanceMethods#create_activity}
+      #   for a guide on how to manually record activities.
       def tracked(options = {})
         include Common
-        include Creation
-        include Destruction
+        if !options[:skip_defaults]
+          include Creation
+          include Destruction
+        end
             
         if options[:owner]
           self.activity_owner_global = options[:owner]
