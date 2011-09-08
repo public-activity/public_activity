@@ -4,11 +4,26 @@ module PublicActivity
     extend ActiveSupport::Concern
     # Instance methods used by other methods in PublicActivity module.
     module InstanceMethods
+      # Directly creates activity record in the database, based on supplied arguments.
+      # Only first argument - key - is required.
+      #
+      # == Usage:
+      #
+      #   current_user.create_activity("activity.user.avatar_changed") if @user.avatar_file_name_changed?
+      #
+      # == Parameters:
+      # [key]
+      #   Custom key that will be used as a i18n translation key - *required*
+      # [owner]
+      #   Polymorphic relation specifying the owner of this activity (for example, a User who performed this task) - *optional*
+      # [params]
+      #  Hash with parameters passed directly into i18n.translate method - *optional*
+      #
+      def create_activity(key, owner = nil, params = {})
+        self.activities.create(:key => key, :owner => owner, :parameters => params)
+      end
+
       private
-        # Creates activity based on supplied arguments
-        def create_activity(key, owner, params)
-          self.activities.create(:key => key, :owner => owner, :parameters => params)
-        end
         # Prepares settings used during creation of Activity record.
         # params passed directly to tracked model have priority over
         # settings specified in tracked() method
