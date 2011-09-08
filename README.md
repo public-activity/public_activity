@@ -19,24 +19,32 @@ or in your Gemfile:
 ## Usage
 
 Create migration for activities (in your Rails project):
+
     rails g public_activity:migration
     rake db:migrate
 
 Add 'tracked' to the model you want to keep track of:
+
     class Article < ActiveRecord::Base
       tracked
     end
+    
 And now, by default create/update/destroy activities are recorded in activities table. 
 To display them you can do a simple query:
+
     # some_controller.rb
     def index
       @activities = PublicActivity::Activity.all
     end
+    
 And in your views:
+
     <% for activity in @activities %>
       <%= activity.text %><br/>
     <% end %>
+    
 The only thing left is to add translations to your locale files, for example:
+
     en:
       activity:
         article:
