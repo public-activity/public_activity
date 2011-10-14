@@ -28,6 +28,20 @@ Add 'tracked' to the model you want to keep track of:
     class Article < ActiveRecord::Base
       tracked
     end
+
+To default the owner to the current user (optional)
+    
+    #Aplication Controller
+    before_filter :define_current_user
+    
+    def define_current_user
+      User.current_user = current_user
+    end
+    
+    #User.rb (model)
+    class User < ActiveRecord::Base
+      cattr_accessor :current_user
+    end
     
 And now, by default create/update/destroy activities are recorded in activities table. 
 To display them you can do a simple query:
