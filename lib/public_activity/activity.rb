@@ -43,13 +43,13 @@ module PublicActivity
       
       #make all the fields of the owner and trackable object automatically avaialable
       
-      if !self.trackable.attributes.nil?
+      if !self.trackable.nil?
         self.trackable.attributes.each do |key, value|
           params[key.to_sym] = value
         end
       end
       
-      if !self.owner.attributes.nil?
+      if !self.owner.nil?
         self.owner.attributes.each do |key, value|
           params[key.to_sym] = value
         end
