@@ -42,12 +42,19 @@ module PublicActivity
     def text(params = {})
       
       #make all the fields of the owner and trackable object automatically avaialable
-      self.trackable.attributes.each do |key, value|
-        params[key.to_sym] = value
+      
+      if !self.trackable.attributes.nil?
+        self.trackable.attributes.each do |key, value|
+          params[key.to_sym] = value
+        end
       end
-      self.owner.attributes.each do |key, value|
-        params[key.to_sym] = value
+      
+      if !self.owner.attributes.nil?
+        self.owner.attributes.each do |key, value|
+          params[key.to_sym] = value
+        end
       end
+      
       parameters.merge! params
       
       I18n.t(key, parameters || {})
