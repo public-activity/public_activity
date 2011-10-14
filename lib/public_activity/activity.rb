@@ -40,7 +40,16 @@ module PublicActivity
     # Now when you list articles, you should see:
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     def text(params = {})
+      
+      #make all the fields of the owner and trackable object automatically avaialable
+      self.trackable.attributes.each do |key, value|
+        params[key.to_sym] = value
+      end
+      self.owner.attributes.each do |key, value|
+        params[key.to_sym] = value
+      end
       parameters.merge! params
+      
       I18n.t(key, parameters || {})
     end
   end  
