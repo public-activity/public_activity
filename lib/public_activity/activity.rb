@@ -40,7 +40,7 @@ module PublicActivity
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     def text(params = {})
       erb_template = resolveTemplate(key)
-      if !self.template.nil? && !erb_template.nil?
+      if !erb_template.nil? 
         parameters.merge! params
         renderer = ERB.new(erb_template)
         renderer.result(binding)
@@ -52,15 +52,16 @@ module PublicActivity
     private
     def resolveTemplate(key)
        res = nil
-       key.split(".").each do |k|
-         if res.nil?
-           res = self.template[k]
-         else
-           res = res[k]
+       if !self.template.nil?
+         key.split(".").each do |k|
+           if res.nil?
+             res = self.template[k]
+           else
+             res = res[k]
+           end
          end
-       end
+        end
        res
     end
-    
   end  
 end
