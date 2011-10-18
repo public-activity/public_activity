@@ -57,14 +57,17 @@ And in your views:
       <%= activity.text %><br/>
     <% end %>
     
-The only thing left is to add translations to your locale files, for example:
+The only thing left is to add templates (config/pba.yml), for example:
 
-    en:
       activity:
         article:
           create: 'Article has been created'
           update: 'Someone has edited the article'
           destroy: 'Some user removed an article!'
+
+Place this in a file and reference it in a rail initializer.
+
+    PublicActivity::Activity.template = YAML.load_file("#{RAILS_ROOT}/config/pba.yml")
 
 This is only a basic example, refer to documentation for more options and customization!
 ## Documentation

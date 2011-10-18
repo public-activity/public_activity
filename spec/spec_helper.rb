@@ -13,6 +13,7 @@ require 'active_record'
 require 'action_controller'
 
 require 'public_activity'
+PublicActivity::Activity.template = YAML.load_file(plugin_test_dir + "/support/pba.yml")
 
 ActiveRecord::Base.logger = Logger.new(plugin_test_dir + "/debug.log")
 

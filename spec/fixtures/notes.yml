@@ -1,0 +1,8 @@
+note1:
+  id: 1
+  body: Note 1
+  category_id: 1
+note2:
+  id: 2
+  body: Note 2
+  category_id: 2
