@@ -48,7 +48,7 @@ module PublicActivity
   
   included do
     include Tracked
-    include Activist
+    include Activist 
   end  
 end
 

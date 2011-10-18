@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "public_activity" do
   before(:all) do
-    self.class.fixtures :categories, :departments
+    self.class.fixtures :categories, :departments, :notes
   end
   
   describe "tracked" do
@@ -43,7 +43,7 @@ describe "public_activity" do
       
       it "should translate" do
         @category.activities.last.text.should_not be_nil
-        @category.activities.last.text.should == "New category has been created"
+        @category.activities.last.text.should == "New test cat category has been created"
       end
       
       it "should track deletes" do
@@ -53,13 +53,21 @@ describe "public_activity" do
         end.should change(PublicActivity::Activity, :count).by(1)  
       end
       
-      it "should track update" do
+      it "should track updates" do
         lambda do
           @category.name = "new cat"
           @category.save
           @category.activities.last.text.should == "Someone modified the category"
-        end.should change(PublicActivity::Activity, :count).by(1)
+        end.should change(PublicActivity::Activity, :count).by(1)  
       end
+      
+      it "should evaluate associations" do
+        note = Note.find(1)
+        note.body = "New Test"
+        note.save
+        note.activities.last.text.should == "Someone modified note New Test with category Category 1"
+      end
+      
     end
   end
   
@@ -74,6 +82,14 @@ describe "public_activity" do
     
     it "should have activites" do
       @department.activities.should_not be_nil
+    end
+  end
+  
+  describe "empty template" do
+    it "should not die on nil" do
+      PublicActivity::Activity.template = nil
+      @category = Category.create(name: "test cat")
+      @category.activities.last.text.should == "Template not defined"
     end
   end
 end
