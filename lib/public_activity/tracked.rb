@@ -96,9 +96,22 @@ module PublicActivity
       #   for a guide on how to manually record activities.
       def tracked(options = {})
         include Common
-        if !options[:skip_defaults]
+        
+        if !options[:skip_defaults] && !options[:only]
           include Creation
           include Destruction
+        end
+        
+        if options[:only].is_a? Array
+            options[:only].each do |opt|
+              if opt.eql?(:create)
+                include Creation
+              elsif opt.eql?(:destory)
+                include Destruction
+              elsif opt.eql?(:update)
+                include Update
+              end
+            end
         end
             
         if options[:owner]

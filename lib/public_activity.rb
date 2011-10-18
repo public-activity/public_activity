@@ -42,6 +42,7 @@ module PublicActivity
   autoload :Activity
   autoload :Tracked
   autoload :Creation
+  autoload :Update  
   autoload :Destruction
   autoload :VERSION
   autoload :Common
