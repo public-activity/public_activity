@@ -39,12 +39,16 @@ module PublicActivity
     # Now when you list articles, you should see:
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     def text(params = {})
-      erb_template = resolveTemplate(key)
-      if !erb_template.nil? 
-        parameters.merge! params
-        renderer = ERB.new(erb_template)
-        renderer.result(binding)
-      else
+      begin
+        erb_template = resolveTemplate(key)
+        if !erb_template.nil? 
+          parameters.merge! params
+          renderer = ERB.new(erb_template)
+          renderer.result(binding)
+        else
+          "Template not defined"
+        end
+      rescue
         "Template not defined"
       end
     end

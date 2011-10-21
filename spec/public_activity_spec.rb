@@ -67,7 +67,35 @@ describe "public_activity" do
         note.save
         note.activities.last.text.should == "Someone modified note New Test with category Category 1"
       end
+    end
+    
+    describe "tracked options" do
+      it "should not track destroy for note (only)" do
+        lambda do
+         note = Note.find(1)
+         note.destroy
+        end.should change(PublicActivity::Activity, :count).by(0)
+      end
       
+      it "should not track create for department (except)" do
+        lambda do
+         dept = Department.find(1)
+         dept.name = "new name"
+         dept.save
+        end.should change(PublicActivity::Activity, :count).by(1)
+        
+        lambda do
+         dept = Department.find(1)
+         dept.destroy
+        end.should change(PublicActivity::Activity, :count).by(1)     
+           
+        lambda do
+         dept = Department.new
+         dept.name = "some name"
+         dept.save
+        end.should change(PublicActivity::Activity, :count).by(0)   
+             
+      end
     end
   end
   
@@ -85,11 +113,19 @@ describe "public_activity" do
     end
   end
   
-  describe "empty template" do
+  describe "template failures" do
     it "should not die on nil" do
       PublicActivity::Activity.template = nil
       @category = Category.create(name: "test cat")
       @category.activities.last.text.should == "Template not defined"
     end
+    
+    it "should evaluate associations" do
+      note = Note.find(2)
+      note.body = "New Test"
+      note.save
+      note.activities.last.text.should == "Template not defined"
+    end
+    
   end
 end
