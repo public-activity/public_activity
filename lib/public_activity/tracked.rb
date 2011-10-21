@@ -102,6 +102,7 @@ module PublicActivity
         if !options[:skip_defaults] && !options[:only] && !options[:except] 
           include Creation
           include Destruction
+          include Update
         end
         
         if options[:except].is_a? Array
