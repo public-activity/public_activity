@@ -19,8 +19,16 @@ module PublicActivity
       # [params]
       #  Hash with parameters passed directly into i18n.translate method - *optional*
       #
-      def create_activity(key, owner = nil, params = {})
-        self.activities.create(:key => key, :owner => owner, :parameters => params)
+      def create_activity(key, owner = nil, params = {})   
+        
+        if owner.nil? && ((defined? User) != nil) && User.respond_to?(:current_user)  
+          owner = User.current_user
+        end
+            
+        activity = self.activities.create(:key => key, :owner => owner, :parameters => params)
+        if !Pusher.app_id.nil? && !Pusher.key.nil? && !Pusher.secret.nil?
+          Pusher['acitivty-channel'].trigger('acitivty-create', {:key => key, :owner => owner, :parameters => params, :text => activity.text, :object => self})
+        end
       end
 
       private

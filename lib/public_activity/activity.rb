@@ -1,5 +1,5 @@
 require 'active_record'
-require 'i18n'
+
 module PublicActivity
   # The ActiveRecord model containing 
   # details about recorded activity.
@@ -11,22 +11,21 @@ module PublicActivity
     # Serialize parameters Hash
     serialize :parameters, Hash
     
-    # Virtual attribute returning already
-    # translated key with params passed
-    # to i18n.translate function. You can pass additional Hash
-    # you want to be passed to translation method. It will be merged with the default ones.
+    class_attribute :template
+    
+    # Virtual attribute returning text description of the activity
+    # using basic ERB templating
     #
     # == Example:
     #
     # Let's say you want to show article's title inside Activity message.
     #
-    #   #config/locales/en.yml
-    #   en:
-    #     activity:
-    #         article:
-    #           create: "Someone has created an article '%{title}'"
-    #           update: "Article '%{title}' has been modified"
-    #           destroy: "Someone deleted article '%{title}'!"
+    #   #config/pba.yml
+    # activity:
+    #   article:
+    #     create: "New <%= trackable.name %> article has been created"
+    #     update: 'Someone modified the article'
+    #     destroy: 'Someone deleted the article!'
     #
     # And in controller:
     #
@@ -40,8 +39,33 @@ module PublicActivity
     # Now when you list articles, you should see:
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     def text(params = {})
-      parameters.merge! params
-      I18n.t(key, parameters || {})
+      begin
+        erb_template = resolveTemplate(key)
+        if !erb_template.nil? 
+          parameters.merge! params
+          renderer = ERB.new(erb_template)
+          renderer.result(binding)
+        else
+          "Template not defined"
+        end
+      rescue
+        "Template not defined"
+      end
+    end
+    
+    private
+    def resolveTemplate(key)
+       res = nil
+       if !self.template.nil?
+         key.split(".").each do |k|
+           if res.nil?
+             res = self.template[k]
+           else
+             res = res[k]
+           end
+         end
+        end
+       res
     end
   end  
 end

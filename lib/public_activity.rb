@@ -1,6 +1,7 @@
 require 'active_support/concern'
 require 'active_support/dependencies'
 require 'active_record'
+require 'pusher'
 # +public_activity+ keeps track of changes made to models
 # and allows for easy displaying of them.
 #
@@ -41,13 +42,14 @@ module PublicActivity
   autoload :Activity
   autoload :Tracked
   autoload :Creation
+  autoload :Update  
   autoload :Destruction
   autoload :VERSION
   autoload :Common
   
   included do
     include Tracked
-    include Activist
+    include Activist 
   end  
 end
 

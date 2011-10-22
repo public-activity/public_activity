@@ -2,3 +2,4 @@ doc/
 .yardoc/
 *.gem
 init.rb
+spec/debug.log

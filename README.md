@@ -1,4 +1,4 @@
-# PublicActivity
+# PublicActivity ![Build Status](http://travis-ci.org/sbower/public_activity.png)
 
 public_activity provides smooth acitivity tracking for your ActiveRecord models in Rails 3.
 Simply put: it records what has been changed or edited and gives you the ability to present those recorded activities to users - in a similar way Github does it.
@@ -28,6 +28,20 @@ Add 'tracked' to the model you want to keep track of:
     class Article < ActiveRecord::Base
       tracked
     end
+
+To default the owner to the current user (optional)
+    
+    #Aplication Controller
+    before_filter :define_current_user
+    
+    def define_current_user
+      User.current_user = current_user
+    end
+    
+    #User.rb (model)
+    class User < ActiveRecord::Base
+      cattr_accessor :current_user
+    end
     
 And now, by default create/update/destroy activities are recorded in activities table. 
 To display them you can do a simple query:
@@ -43,14 +57,17 @@ And in your views:
       <%= activity.text %><br/>
     <% end %>
     
-The only thing left is to add translations to your locale files, for example:
+The only thing left is to add templates (config/pba.yml), for example:
 
-    en:
       activity:
         article:
           create: 'Article has been created'
           update: 'Someone has edited the article'
           destroy: 'Some user removed an article!'
+
+Place this in a file and reference it in a rail initializer.
+
+    PublicActivity::Activity.template = YAML.load_file("#{RAILS_ROOT}/config/pba.yml")
 
 This is only a basic example, refer to documentation for more options and customization!
 ## Documentation
