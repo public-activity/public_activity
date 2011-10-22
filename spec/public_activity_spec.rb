@@ -12,7 +12,7 @@ describe "public_activity" do
       PublicActivity::Activity.count.should == 0
     
       lambda do
-        category = Category.create(name: "test cat")
+        category = Category.create(:name => "test cat")
         activity = PublicActivity::Activity.last
         activity.trackable_id.should == category.id
       end.should change(PublicActivity::Activity, :count).by(1)
@@ -20,7 +20,7 @@ describe "public_activity" do
     
     describe "activity model" do
       before(:each) do
-        @category = Category.create(name: "test cat")
+        @category = Category.create(:name => "test cat")
       end
   
       it "should have a nil owner" do
@@ -29,7 +29,7 @@ describe "public_activity" do
       end
   
       it "should have an owner" do
-        department = Department.create(name: "test dept")
+        department = Department.create(:name => "test dept")
         @category.activity_owner = department
         @category.save
     
@@ -102,8 +102,8 @@ describe "public_activity" do
   describe "activist" do
     
     before(:each) do
-      @category = Category.create(name: "test cat")
-      @department = Department.create(name: "test dept")
+      @category = Category.create(:name => "test cat")
+      @department = Department.create(:name => "test dept")
       @category.activity_owner = @department
       @category.save
     end
@@ -116,7 +116,7 @@ describe "public_activity" do
   describe "template failures" do
     it "should not die on nil" do
       PublicActivity::Activity.template = nil
-      @category = Category.create(name: "test cat")
+      @category = Category.create(:name => "test cat")
       @category.activities.last.text.should == "Template not defined"
     end
     
