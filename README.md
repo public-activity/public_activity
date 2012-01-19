@@ -65,7 +65,7 @@ The only thing left is to add templates (config/pba.yml), for example:
           update: 'Someone has edited the article'
           destroy: 'Some user removed an article!'
 
-Place this in a file and reference it in a rail initializer.
+Place this in a file and reference it in a Rails initializer.
 
     PublicActivity::Activity.template = YAML.load_file("#{RAILS_ROOT}/config/pba.yml")
 
