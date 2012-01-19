@@ -75,4 +75,4 @@ This is only a basic example, refer to documentation for more options and custom
 You can find documentation [here](http://rubydoc.info/gems/public_activity/)
 
 ## License
-Copyright (c) 2011 Piotrek Okoński, released under the MIT license
+Copyright (c) 2012 Piotrek Okoński, released under the MIT license
