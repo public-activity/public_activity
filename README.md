@@ -1,4 +1,4 @@
-# PublicActivity ![Build Status](http://travis-ci.org/sbower/public_activity.png)
+# PublicActivity ![Build Status](http://travis-ci.org/pokonski/public_activity.png)
 
 public_activity provides smooth acitivity tracking for your ActiveRecord models in Rails 3.
 Simply put: it records what has been changed or edited and gives you the ability to present those recorded activities to users - in a similar way Github does it.
