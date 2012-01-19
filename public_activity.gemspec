@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.authors = ["Piotrek Okoński", "Kuba Okoński"]
   s.email = "piotrek@okonski.org"
-  s.homepage = 'https://github.com/okonski/public_activity'
+  s.homepage = 'https://github.com/pokonski/public_activity'
   s.summary = "Smooth activity tracking for ActiveRecord models"
   s.description = "Smooth activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
 
