@@ -6,14 +6,11 @@ module PublicActivity
     included do
       after_create :activity_on_create
     end   
-    # Handlers responsible for creating Activities.
-    module InstanceMethods
-      private       
-        # Creates activity upon creation of the tracked model
-        def activity_on_create
-          settings = prepare_settings
-          create_activity(settings[:key] || "activity."+self.class.name.parameterize('_')+".create", settings[:owner], settings[:parameters])
-        end
-    end
+    private
+      # Creates activity upon creation of the tracked model
+      def activity_on_create
+        settings = prepare_settings
+        create_activity(settings[:key] || "activity."+self.class.name.parameterize('_')+".create", settings[:owner], settings[:parameters])
+      end
   end
 end
