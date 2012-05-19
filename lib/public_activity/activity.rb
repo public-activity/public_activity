@@ -12,7 +12,8 @@ module PublicActivity
     serialize :parameters, Hash
     
     class_attribute :template
-    
+
+    attr_accessible :key, :owner, :parameters
     # Virtual attribute returning text description of the activity
     # using basic ERB templating
     #
