@@ -68,16 +68,16 @@ And in your views:
 The only thing left is to add templates (config/pba.yml), for example:
 
 ```yaml
-      activity:
-        article:
-          create: 'Article has been created'
-          update: 'Someone has edited the article'
-          destroy: 'Some user removed an article!'
+activity:
+  article:
+    create: 'Article has been created'
+    update: 'Someone has edited the article'
+    destroy: 'Some user removed an article!'
 ```
 Place this in a file and reference it in a Rails initializer.
 
 ```ruby
-    PublicActivity::Activity.template = YAML.load_file("#{RAILS_ROOT}/config/pba.yml")
+PublicActivity::Activity.template = YAML.load_file("#{Rails.root}/config/pba.yml")
 ```
 
 This is only a basic example, refer to documentation for more options and customization!
