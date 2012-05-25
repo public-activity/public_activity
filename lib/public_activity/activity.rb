@@ -42,10 +42,10 @@ module PublicActivity
     def text(params = {})
       begin
         erb_template = resolveTemplate(key)
-        if !erb_template.nil? 
+        if erb_template
           parameters.merge! params
           renderer = ERB.new(erb_template)
-          renderer.result(binding)
+          renderer.result
         else
           "Template not defined"
         end
@@ -56,17 +56,13 @@ module PublicActivity
     
     private
     def resolveTemplate(key)
-       res = nil
-       if !self.template.nil?
-         key.split(".").each do |k|
-           if res.nil?
-             res = self.template[k]
-           else
-             res = res[k]
-           end
-         end
+      res = nil
+      if self.template
+        key.split(".").each do |k|
+          res = (res ? res[k] : self.template[k])
         end
-       res
+      end
+      res
     end
   end  
 end
