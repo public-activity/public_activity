@@ -45,7 +45,7 @@ module PublicActivity
         if erb_template
           parameters.merge! params
           renderer = ERB.new(erb_template)
-          renderer.result
+          renderer.result(binding)
         else
           "Template not defined"
         end
