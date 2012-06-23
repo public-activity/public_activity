@@ -47,10 +47,11 @@ module PublicActivity
   autoload :VERSION
   autoload :Common
   
-  included do
-    include Tracked
-    include Activist 
-  end  
+  module Model
+    extend ActiveSupport::Concern
+    included do
+      include Tracked
+      include Activist 
+    end  
+  end
 end
-
-ActiveRecord::Base.send :include, PublicActivity

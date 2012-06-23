@@ -23,10 +23,11 @@ Create migration for activities (in your Rails project):
     rails g public_activity:migration
     rake db:migrate
 
-Add 'tracked' to the model you want to keep track of:
+Include `PublicActibity::Model` and add 'tracked' to the model you want to keep track of:
 
 ```ruby
 class Article < ActiveRecord::Base
+  include PublicActivity::Model
   tracked
 end
 ```
