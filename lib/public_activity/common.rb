@@ -24,9 +24,6 @@ module PublicActivity
       end
 
       activity = self.activities.create(:key => key, :owner => owner, :parameters => params)
-      if !Pusher.app_id.nil? && !Pusher.key.nil? && !Pusher.secret.nil?
-        Pusher['activity-channel'].trigger('activity-create', {:key => key, :owner => owner, :parameters => params, :text => activity.text, :object => self})
-      end
     end
 
     private

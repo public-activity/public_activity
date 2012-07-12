@@ -1,7 +1,3 @@
-require 'active_support/concern'
-require 'active_support/dependencies'
-require 'active_record'
-require 'pusher'
 # +public_activity+ keeps track of changes made to models
 # and allows for easy displaying of them.
 #

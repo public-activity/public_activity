@@ -1,5 +1,3 @@
-require 'active_record'
-
 module PublicActivity
   # The ActiveRecord model containing 
   # details about recorded activity.

@@ -5,14 +5,10 @@ PATH
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
       i18n (>= 0.5.0)
-      pusher
 
 GEM
   remote: http://rubygems.org/
   specs:
-    actionmailer (3.2.3)
-      actionpack (= 3.2.3)
-      mail (~> 2.4.4)
     actionpack (3.2.3)
       activemodel (= 3.2.3)
       activesupport (= 3.2.3)
@@ -31,9 +27,6 @@ GEM
       activesupport (= 3.2.3)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activeresource (3.2.3)
-      activemodel (= 3.2.3)
-      activesupport (= 3.2.3)
     activesupport (3.2.3)
       i18n (~> 0.6)
       multi_json (~> 1.0)
@@ -45,16 +38,7 @@ GEM
     i18n (0.6.0)
     journey (1.0.3)
     json (1.7.3)
-    mail (2.4.4)
-      i18n (>= 0.4.0)
-      mime-types (~> 1.16)
-      treetop (~> 1.4.8)
-    mime-types (1.18)
     multi_json (1.3.5)
-    polyglot (0.3.3)
-    pusher (0.9.3)
-      multi_json (~> 1.0)
-      signature (~> 0.1.2)
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -62,14 +46,6 @@ GEM
       rack
     rack-test (0.6.1)
       rack (>= 1.0)
-    rails (3.2.3)
-      actionmailer (= 3.2.3)
-      actionpack (= 3.2.3)
-      activerecord (= 3.2.3)
-      activeresource (= 3.2.3)
-      activesupport (= 3.2.3)
-      bundler (~> 1.0)
-      railties (= 3.2.3)
     railties (3.2.3)
       actionpack (= 3.2.3)
       activesupport (= 3.2.3)
@@ -93,7 +69,6 @@ GEM
       activesupport (>= 3.0)
       railties (>= 3.0)
       rspec (~> 2.10.0)
-    signature (0.1.3)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -101,9 +76,6 @@ GEM
     sqlite3 (1.3.6)
     thor (0.14.6)
     tilt (1.3.3)
-    treetop (1.4.10)
-      polyglot
-      polyglot (>= 0.3.1)
     tzinfo (0.3.33)
     yard (0.8.1)
 
@@ -112,8 +84,6 @@ PLATFORMS
 
 DEPENDENCIES
   public_activity!
-  pusher
-  rails
   rspec
   rspec-rails
   sqlite3
