@@ -109,7 +109,7 @@ describe "public_activity" do
     end
     
     it "should have activites" do
-      @department.activities.should_not be_nil
+      @department.activities.should_not be_empty
     end
   end
   
