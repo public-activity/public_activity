@@ -4,9 +4,10 @@ module PublicActivity
     extend ActiveSupport::Concern
     
     included do
-      class_attribute :activity_owner_global, :activity_params_global
+      class_attribute :activity_owner_global, :activity_params_global, :activity_hooks
       self.activity_owner_global = nil
       self.activity_params_global = {}
+      self.activity_hooks = {}
     end  
     # Set or get parameters that will be passed to {Activity} when saving
     #
@@ -66,7 +67,16 @@ module PublicActivity
     #   @article.activities.last.key #=> "my.custom.article.key"
     attr_accessor :activity_key
     @activity_key = nil
-    
+
+    # Hooks/functions that will be used to decide *if* the activity should get
+    # created.
+    #
+    # The supported keys are:
+    # * :create
+    # * :update
+    # * :destroy
+    @@activity_hooks = {}
+        
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
     # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.
@@ -170,9 +180,20 @@ module PublicActivity
         if options[:params]
           self.activity_params_global = options[:params]
         end
+        if options.has_key?(:on) and options[:on].is_a? Hash
+          self.activity_hooks = options[:on]
+        end
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       end
     end
 
+    protected
+    def get_hook(key)
+      key = key.to_sym
+      if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
+        return self.activity_hooks[key]
+      end
+      return nil
+    end
   end
 end
