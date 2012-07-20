@@ -1,1 +1,0 @@
-require 'public_activity'
