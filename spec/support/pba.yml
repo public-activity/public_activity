@@ -1,9 +1,0 @@
-activity:
-  category:
-    create: "New <%= trackable.name %> category has been created"
-    update: 'Someone modified the category'
-    destroy: 'Someone deleted the category!'
-  note:
-    create: "New note <%= trackable.body %> has been created"
-    update: 'Someone modified note <%= trackable.body %> with category <%= trackable.category.name %>'
-    destroy: 'Someone deleted the note!'

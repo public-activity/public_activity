@@ -1,6 +1,0 @@
-en:
-  activity:
-    category:
-      create: 'New category has been created'
-      update: 'Someone modified the category'
-      destroy: 'Someone deleted the category!'
