@@ -51,3 +51,5 @@ module PublicActivity
     end  
   end
 end
+
+require 'public_activity/view_helpers.rb'
