@@ -5,7 +5,7 @@ require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 
-$db = {adapter: 'sqlite3', database: ':memory:'}
+$db = {:adapter => 'sqlite3', :database => ':memory:'}
 
 class Article < ActiveRecord::Base
   include PublicActivity::Model
