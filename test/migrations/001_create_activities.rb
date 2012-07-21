@@ -1,0 +1,1 @@
+../../lib/generators/public_activity/migration/templates/migration.rb
