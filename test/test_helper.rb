@@ -1,11 +1,9 @@
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'public_activity'
-require 'test/unit'
+require 'minitest/autorun'
 require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
-
-$db = {:adapter => 'sqlite3', :database => ':memory:'}
 
 class Article < ActiveRecord::Base
   include PublicActivity::Model
@@ -16,5 +14,5 @@ class Article < ActiveRecord::Base
 end
 
 
-ActiveRecord::Base.establish_connection $db
+ActiveRecord::Base.establish_connection {:adapter => 'sqlite3', :database => ':memory:'}
 ActiveRecord::Migrator.migrate(File.expand_path('../migrations', __FILE__))

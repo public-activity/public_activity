@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TestTracking < Test::Unit::TestCase
+class TestTracking < MiniTest::Unit::TestCase
   def test_creating_activity
     Article.tracked
     @article = Article.new

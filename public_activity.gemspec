@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files spec`.split("\n")
   s.require_paths = ['lib']
 
+  s.required_ruby_version = '>= 1.8.7'
+
   s.add_dependency 'activerecord', '>= 3.0.0'
   s.add_dependency 'activesupport', '>= 3.0.0'
   s.add_dependency 'actionpack', '>= 3.0.0'
@@ -25,4 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '>= 0.9'
   s.add_development_dependency 'mocha', '>= 0.12.1'
   s.add_development_dependency 'sqlite3'
+
+  if RUBY_VERSION == "1.8.7"
+    s.add_development_dependency 'minitest', '>= 3.2.0'
+  end
 end
