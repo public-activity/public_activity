@@ -10,7 +10,8 @@ module PublicActivity
       # Creates activity upon creation of the tracked model
       def activity_on_create
         settings = prepare_settings
-        if get_hook('create').call(self)
+        hook = get_hook('create')
+        if (hook && hook.call(self)) || hook == nil
           create_activity(settings[:key] || "activity."+self.class.name.parameterize('_')+".create", settings[:owner], settings[:parameters])
         end
       end

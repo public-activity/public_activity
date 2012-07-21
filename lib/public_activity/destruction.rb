@@ -10,7 +10,8 @@ module PublicActivity
       # Records an activity upon destruction of the tracked model
       def activity_on_destroy
         settings = prepare_settings
-        if get_hook('destroy').call(self)
+        hook = get_hook('destroy')
+        if (hook && hook.call(self)) || hook == nil
           create_activity("activity."+self.class.name.parameterize('_')+".destroy", settings[:owner], settings[:parameters])
         end
       end
