@@ -39,6 +39,7 @@ module PublicActivity
   extend ActiveSupport::Autoload
   autoload :Activist
   autoload :Activity
+  autoload :StoreController
   autoload :Tracked
   autoload :Creation
   autoload :Update  
