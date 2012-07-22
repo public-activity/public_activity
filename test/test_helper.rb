@@ -1,3 +1,9 @@
+if RUBY_VERSION != "1.8.7"
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/test/"
+  end
+end
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'public_activity'
 require 'minitest/autorun'

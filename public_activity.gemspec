@@ -29,5 +29,7 @@ Gem::Specification.new do |s|
 
   if RUBY_VERSION == "1.8.7"
     s.add_development_dependency 'minitest', '>= 3.2.0'
+  else
+    s.add_development_dependency 'simplecov', '>= 0.6.4'
   end
 end
