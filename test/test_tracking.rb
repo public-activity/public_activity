@@ -3,19 +3,24 @@ require 'test_helper'
 class TestTracking < MiniTest::Unit::TestCase
   def test_defining_instance_options
     @article = article.new
-    options = {:key => 'key', :owner => 'owner', :params => {:a => 1}}
+    # TODO: test :owner on real object
+    options = {:key => 'key', :params => {:a => 1}}
     @article.activity(options)
+    @article.save
     assert_equal(@article.activity_key, options[:key])
-    assert_equal(@article.activity_owner, options[:owner])
+    #assert_equal(@article.activity_owner, options[:owner])
     assert_equal(@article.activity_params, options[:params])
+    assert_equal(@article.activities.last.key, options[:key])
+    #assert_equal(@article.activities.last.owner, options[:owner])
+    assert_equal(@article.activities.last.parameters, options[:params])
   end
 
   def test_creating_activity
     klass = article
     @article = klass.new
-    #@article.stubs(:get_hook).with('create').returns(nil)
-    #@article.expects(:activity_on_create)
+    @article.activity :key => 'test'
     @article.save
+    assert_equal @article.activities.last.key, 'test'
   end
 
   def test_tracked_options_skip_defaults
