@@ -67,8 +67,41 @@ class TestTracking < MiniTest::Unit::TestCase
   end
 
   def test_tracked_options_on
-    options = {:on => {:a => 1}}
+    options = {:on => {:a => lambda {}}}
     klass = article(options)
     assert_equal(klass.activity_hooks, options[:on], '#tracked :on option not set')
+  end
+
+  def test_tracked_options_on_symbolize_keys
+    options = {:on => {'a' => lambda {}}}
+    klass = article(options)
+    assert_equal klass.activity_hooks, options[:on].symbolize_keys
+  end
+
+  def test_tracked_options_on_proc_values
+    options = {:on => {:unpassable => 1, :proper => lambda{}}}
+    klass = article(options)
+    assert_includes klass.activity_hooks, :proper
+    refute_includes klass.activity_hooks, :unpassable
+  end
+
+  def test_get_hook
+    p = lambda {}
+    klass = article
+    klass.activity_hooks = {:test => p}
+    assert_equal klass.get_hook(:test), p
+  end
+
+  def test_get_hook_symbolize_key
+    p = lambda {}
+    klass = article
+    klass.activity_hooks = {:test => p}
+    assert_same klass.get_hook('test'), p
+  end
+
+  def test_get_hook_on_no_hook_available
+    klass = article
+    klass.activity_hooks = {}
+    assert_same nil, klass.get_hook(:nonexistent)
   end
 end

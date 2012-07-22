@@ -181,19 +181,22 @@ module PublicActivity
           self.activity_params_global = options[:params]
         end
         if options.has_key?(:on) and options[:on].is_a? Hash
-          self.activity_hooks = options[:on]
+          self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
         end
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       end
-    end
 
-    protected
-    def get_hook(key)
-      key = key.to_sym
-      if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
-        return self.activity_hooks[key]
+      def get_hook(key)
+        key = key.to_sym
+        if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
+          return self.activity_hooks[key]
+        end
+        return nil
       end
-      return nil
+    end
+    
+    def get_hook(key)
+      self.class.get_hook(key)
     end
   end
 end
