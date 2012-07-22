@@ -93,12 +93,12 @@ module PublicActivity
     def render(context)
       begin
         params_indifferent = self.parameters.with_indifferent_access
-        context.render partial: self.template_path(self.key), locals:
-          {a: self, activity: self,
-           p: params_indifferent, params: params_indifferent}
+        context.render :partial => self.template_path(self.key), :locals =>
+          {:a => self, :activity => self,
+           :p => params_indifferent, :params => params_indifferent}
           # current_user would be useful
       rescue ActionView::MissingTemplate
-        context.render text: self.text
+        context.render :text => self.text
       end
     end
     
