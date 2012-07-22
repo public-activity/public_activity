@@ -181,7 +181,11 @@ module PublicActivity
           self.activity_params_global = options[:params]
         end
         if options.has_key?(:on) and options[:on].is_a? Hash
-          self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
+          if RUBY_VERSION = "1.8.7"
+            self.activity_hooks = options[:on].delete_if {|_, v| !v.is_a? Proc}.symbolize_keys
+          else
+            self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
+          end
         end
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       end
