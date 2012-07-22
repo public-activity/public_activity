@@ -1,5 +1,6 @@
 require 'active_support'
 require 'action_view'
+require 'active_record'
 
 # +public_activity+ keeps track of changes made to models
 # and allows for easy displaying of them.
