@@ -32,11 +32,7 @@ module PublicActivity
       # settings specified in tracked() method
       def prepare_settings
         # user responsible for the activity
-        if self.activity_owner
-          owner = self.activity_owner
-        else
-          owner = self.class.activity_owner_global
-        end
+        owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
         case owner
           when Symbol
@@ -44,10 +40,23 @@ module PublicActivity
           when Proc
             owner = owner.call(self)
         end
+
         #customizable parameters
-        parameters = self.class.activity_params_global
-        parameters.merge! self.activity_params if self.activity_params
-        return {:key => self.activity_key,:owner => owner, :parameters => parameters}
+        params = self.class.activity_params_global
+        params.merge! self.activity_params if self.activity_params
+
+        params.each do |key, value|
+          params[key] =
+            case value
+              when Symbol
+                self.try(value)
+              when Proc
+                value.call(PublicActivity.get_controller, self)
+              else
+                value
+            end
+        end
+        return {:key => self.activity_key,:owner => owner, :parameters => params}
       end
   end
 end

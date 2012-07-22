@@ -25,3 +25,7 @@ def article(options = {})
     end
   end
 end
+
+class User < ActiveRecord::Base
+
+end
