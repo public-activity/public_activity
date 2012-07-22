@@ -152,7 +152,7 @@ module PublicActivity
 
         all_options = [:create, :update, :destroy]
 
-        if !options[:skip_defaults] && !options[:only] && !options[:except]
+        if !options.has_key?(:skip_defaults) && !options[:only] && !options[:except]
           include Creation
           include Destruction
           include Update
