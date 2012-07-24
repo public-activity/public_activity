@@ -17,10 +17,17 @@ class TestActivity < ActionView::TestCase
     PublicActivity.set_controller(Struct.new(:current_user).new('fake'))
     @controller.view_paths << File.expand_path('../views', __FILE__)
     @activity.render(self, :two => 2)
-    template_output = "<strong>1, 2</strong>\n<em>activity.test, 1</em>\nfake"
-    assert_equal template_output, rendered
-    @controller.view_paths.paths.clear
+    template_output_safe = "<strong>1, 2</strong>\n<em>activity.test, 1</em>\n"
+    assert_equal template_output_safe + 'fake', rendered
+
+    # test without controller provided for p_a
+    rendered.clear && Thread.current[:controller] = nil
     @activity.render(self, :two => 2)
-    assert_equal template_output + '1 2', rendered
+    assert_equal template_output_safe, rendered
+
+    # #text into buffer
+    rendered.clear && @controller.view_paths.paths.clear
+    @activity.render(self, :two => 2)
+    assert_equal '1 2', rendered
   end
 end
