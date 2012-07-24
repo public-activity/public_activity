@@ -12,9 +12,12 @@ class TestActivity < ActionView::TestCase
     assert_equal({:one => 1}, @activity.parameters,
       'Activity#text should not change instance parameters'
     )
+
+    # #render
+    PublicActivity.set_controller(Struct.new(:current_user).new('fake'))
     @controller.view_paths << File.expand_path('../views', __FILE__)
     @activity.render(self, :two => 2)
-    template_output = "<strong>1, 2</strong>\n<em>activity.test, 1</em>"
+    template_output = "<strong>1, 2</strong>\n<em>activity.test, 1</em>\nfake"
     assert_equal template_output, rendered
     @controller.view_paths.paths.clear
     @activity.render(self, :two => 2)
