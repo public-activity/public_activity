@@ -10,12 +10,12 @@ require 'active_record'
 #   class Article < ActiveRecord::Base
 #     tracked
 #   end
-# 
+#
 # And creating a table for activities, by doing this:
 #   rails generate public_activity:migration
 #   rake db:migrate
 #
-# Now when saved, public_activity will create 
+# Now when saved, public_activity will create
 # an Activity record containing information about that changed/created
 # model.
 # == Displaying Activities:
@@ -43,17 +43,17 @@ module PublicActivity
   autoload :StoreController
   autoload :Tracked
   autoload :Creation
-  autoload :Update  
+  autoload :Update
   autoload :Destruction
   autoload :VERSION
   autoload :Common
-  
+
   module Model
     extend ActiveSupport::Concern
     included do
       include Tracked
-      include Activist 
-    end  
+      include Activist
+    end
   end
 end
 

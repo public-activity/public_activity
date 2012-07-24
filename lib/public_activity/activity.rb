@@ -1,5 +1,5 @@
 module PublicActivity
-  # The ActiveRecord model containing 
+  # The ActiveRecord model containing
   # details about recorded activity.
   class Activity < ActiveRecord::Base
     # Define polymorphic association to the parent
@@ -8,7 +8,7 @@ module PublicActivity
     belongs_to :owner, :polymorphic => true
     # Serialize parameters Hash
     serialize :parameters, Hash
-    
+
     class_attribute :template
 
     attr_accessible :key, :owner, :parameters
@@ -39,18 +39,17 @@ module PublicActivity
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     # @see #render Advanced rendering
     def text(params = {})
-      parameters.merge! params
-      I18n.t(key, parameters || {})
+      I18n.t(key, parameters.merge(params) || {})
     end
 
     # Renders activity from views.
     #
     # @param [ActionView::Base] context
     # @return [nil] nil
-    # 
+    #
     # Renders activity to the given ActionView context with included
     # AV::Helpers::RenderingHelper (most commonly just ActionView::Base)
-    # 
+    #
     # The *preferred* *way* of rendering activities is
     # to provide a template specifying how the rendering should be happening.
     # However, one may choose using _I18n_ based approach when developing
@@ -90,18 +89,19 @@ module PublicActivity
     #     was written by <em><%= p["author"] %></em>
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
-    def render(context)
+    def render(context, params = {})
       begin
         params_indifferent = self.parameters.with_indifferent_access
+        params_indifferent.merge!(params)
         context.render :partial => self.template_path(self.key), :locals =>
           {:a => self, :activity => self,
            :p => params_indifferent, :params => params_indifferent}
           # current_user would be useful
       rescue ActionView::MissingTemplate
-        context.render :text => self.text
+        context.render :text => self.text(params)
       end
     end
-    
+
     protected
     # Builds the path to template based on activity key
     # TODO: verify that attribute `key` is splitted by commas
@@ -112,5 +112,5 @@ module PublicActivity
       path[0] = "public_activity"
       return path.join("/")
     end
-  end  
+  end
 end
