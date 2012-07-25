@@ -31,49 +31,49 @@ module PublicActivity
       )
     end
 
-    private
-      # Prepares settings used during creation of Activity record.
-      # params passed directly to tracked model have priority over
-      # settings specified in tracked() method
-      def prepare_settings(action)
-        # key
-        key = self.activity_key || ("activity." +
-              self.class.name.parameterize('_') + "." + action)
+    # Prepares settings used during creation of Activity record.
+    # params passed directly to tracked model have priority over
+    # settings specified in tracked() method
+    def prepare_settings(action)
+      # key
+      key = self.activity_key || ("activity." +
+            self.class.name.parameterize('_') + "." + action)
 
-        # user responsible for the activity
-        owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
+      # user responsible for the activity
+      owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
-        case owner
-          when Symbol
-            owner = self.try(owner)
-          when Proc
-            owner = owner.call(self)
-        end
-
-        # recipient
-        recipient = self.activity_recipient
-
-        #customizable parameters
-        params = self.class.activity_params_global
-        params.merge! self.activity_params if self.activity_params
-
-        params.each do |key, value|
-          params[key] =
-            case value
-              when Symbol
-                self.try(value)
-              when Proc
-                value.call(PublicActivity.get_controller, self)
-              else
-                value
-            end
-        end
-        return {
-          :key        => key,
-          :owner      => owner,
-          :recipient  => recipient,
-          :parameters => params
-        }
+      owner = case owner
+        when Symbol
+          self.try(owner)
+        when Proc
+          owner.call(self)
+        else
+          owner
       end
+
+      # recipient
+      recipient = self.activity_recipient
+
+      #customizable parameters
+      params = self.class.activity_params_global
+      params.merge! self.activity_params if self.activity_params
+
+      params.each do |key, value|
+        params[key] = case value
+          when Symbol
+            self.try(value)
+          when Proc
+            value.call(PublicActivity.get_controller, self)
+          else
+            value
+        end
+      end
+      return {
+        :key        => key,
+        :owner      => owner,
+        :recipient  => recipient,
+        :parameters => params
+      }
+    end
   end
 end
