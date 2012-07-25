@@ -5,13 +5,12 @@ module PublicActivity
 
     included do
       after_update :activity_on_update
-    end   
+    end
     private
       # Creates activity upon modification of the tracked model
       def activity_on_update
         settings = prepare_settings
-        hook = get_hook('update')
-        if (hook && hook.call(self)) || hook == nil
+        if self.call_hook_safe('update')
           create_activity(settings[:key] || "activity."+self.class.name.parameterize('_')+".update", settings[:owner], settings[:parameters])
         end
       end

@@ -2,13 +2,13 @@ module PublicActivity
   # Main module extending classes we want to keep track of.
   module Tracked
     extend ActiveSupport::Concern
-    
+
     included do
       class_attribute :activity_owner_global, :activity_params_global, :activity_hooks
       self.activity_owner_global = nil
       self.activity_params_global = {}
       self.activity_hooks = {}
-    end  
+    end
     # Set or get parameters that will be passed to {Activity} when saving
     #
     # == Usage:
@@ -16,7 +16,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     #
     # In controller
     #   @article = Article.new
@@ -33,7 +33,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     # Controller:
     #
     #   @article = Article.new
@@ -51,7 +51,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     #
     # In controller:
     #
@@ -76,7 +76,7 @@ module PublicActivity
     # * :update
     # * :destroy
     @@activity_hooks = {}
-        
+
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
     # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.
@@ -198,9 +198,19 @@ module PublicActivity
         return nil
       end
     end
-    
+
     def get_hook(key)
       self.class.get_hook(key)
+    end
+
+    def call_hook_safe(key)
+      hook = self.get_hook(key)
+      if hook
+        # provides hook with model and controller
+        hook.call(self, PublicActivity.get_controller)
+      else
+        return true
+      end
     end
   end
 end
