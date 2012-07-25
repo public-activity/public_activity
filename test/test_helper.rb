@@ -7,6 +7,7 @@ end
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'public_activity'
 require 'minitest/autorun'
+require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 
@@ -26,6 +27,4 @@ def article(options = {})
   end
 end
 
-class User < ActiveRecord::Base
-
-end
+class User < ActiveRecord::Base; end

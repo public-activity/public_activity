@@ -1,6 +1,10 @@
 # Provides a shortcut from views to the rendering method.
-ActionView::Base.class_eval do
-  def render_activity activity
-    activity.render self
+module PublicActivity
+  module ViewHelpers
+    def render_activity activity
+      activity.render self
+    end
   end
+
+  ActionView::Base.class_eval { include ViewHelpers }
 end

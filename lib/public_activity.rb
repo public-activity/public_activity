@@ -57,4 +57,4 @@ module PublicActivity
   end
 end
 
-require 'public_activity/view_helpers.rb'
+require 'public_activity/view_helpers'
