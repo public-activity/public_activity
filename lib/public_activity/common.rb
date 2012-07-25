@@ -17,20 +17,29 @@ module PublicActivity
     # [params]
     #  Hash with parameters passed directly into i18n.translate method - *optional*
     #
-    def create_activity(key, owner = nil, params = {})
+    def create_activity(settings = {})
 
-      if owner.nil? && ((defined? User) != nil) && User.respond_to?(:current_user)
-        owner = User.current_user
+      if settings[:owner].nil? && ((defined? User) != nil) && User.respond_to?(:current_user)
+        settings[:owner] = User.current_user
       end
 
-      activity = self.activities.create(:key => key, :owner => owner, :parameters => params)
+      activity = self.activities.create(
+        :key        => settings[:key],
+        :owner      => settings[:owner],
+        :recipient  => settings[:recipient],
+        :parameters => settings[:parameters]
+      )
     end
 
     private
       # Prepares settings used during creation of Activity record.
       # params passed directly to tracked model have priority over
       # settings specified in tracked() method
-      def prepare_settings
+      def prepare_settings(action)
+        # key
+        key = self.activity_key || ("activity." +
+              self.class.name.parameterize('_') + "." + action)
+
         # user responsible for the activity
         owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
@@ -40,6 +49,9 @@ module PublicActivity
           when Proc
             owner = owner.call(self)
         end
+
+        # recipient
+        recipient = self.activity_recipient
 
         #customizable parameters
         params = self.class.activity_params_global
@@ -56,7 +68,12 @@ module PublicActivity
                 value
             end
         end
-        return {:key => self.activity_key,:owner => owner, :parameters => params}
+        return {
+          :key        => key,
+          :owner      => owner,
+          :recipient  => recipient,
+          :parameters => params
+        }
       end
   end
 end

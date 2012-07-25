@@ -44,6 +44,17 @@ module PublicActivity
     #   @article.activities.last.owner #=> Returns owner object
     attr_accessor :activity_owner
     @activity_owner = nil
+
+    # Set or get recipient for activity.
+    #
+    # Association is polymorphic, thus allowing assignment of
+    # all types of models. To define multiple recipients, additional
+    # model is required, eg. Group
+    #
+    # Note: Unlike other variables, recipient cannot be assigned globally
+    # from #tracked method
+    attr_accessor :activity_recipient
+    @activity_recipient = nil
     # Set or get custom i18n key passed to {Activity}, later used in {Activity#text}
     #
     # == Usage:
@@ -118,6 +129,7 @@ module PublicActivity
       self.activity_key = options[:key] if options[:key]
       self.activity_owner = options[:owner] if options[:owner]
       self.activity_params = options[:params] if options[:params]
+      self.activity_recipient = options[:recipient] if options[:recipient]
     end
 
     # Module with basic +tracked+ method that enables tracking models.

@@ -7,20 +7,21 @@ module PublicActivity
       # Adds has_many :activities association to model
       # so you can list activities performed by the owner.
       # It is completely optional, but simplifies your work.
-      # 
+      #
       # == Usage:
       # In model:
       #
       #   class User < ActiveRecord::Base
       #     activist
-      #   end 
+      #   end
       #
       # In controller:
       #   User.first.activities
       #
       def activist
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :owner
-      end    
+        has_many :private_activities, :class_name => "PublicActivity::Activity", :as => :recipient
+      end
     end
   end
 end
