@@ -18,11 +18,6 @@ module PublicActivity
     #  Hash with parameters passed directly into i18n.translate method - *optional*
     #
     def create_activity(settings = {})
-
-      if settings[:owner].nil? && ((defined? User) != nil) && User.respond_to?(:current_user)
-        settings[:owner] = User.current_user
-      end
-
       activity = self.activities.create(
         :key        => settings[:key],
         :owner      => settings[:owner],
