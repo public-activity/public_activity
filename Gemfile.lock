@@ -67,8 +67,8 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (>= 1.1)
-  mocha (>= 0.12.1)
   github-markup
+  mocha (>= 0.12.1)
   public_activity!
   rake (>= 0.9)
   redcarpet
