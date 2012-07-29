@@ -34,6 +34,7 @@ GEM
     arel (3.0.2)
     builder (3.0.0)
     erubis (2.7.0)
+    github-markup (0.7.4)
     hike (1.2.1)
     i18n (0.6.0)
     journey (1.0.3)
@@ -47,6 +48,7 @@ GEM
     rack-test (0.6.1)
       rack (>= 1.0)
     rake (0.9.2.2)
+    redcarpet (2.1.1)
     simplecov (0.6.4)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -66,8 +68,10 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 1.1)
   mocha (>= 0.12.1)
+  github-markup
   public_activity!
   rake (>= 0.9)
+  redcarpet
   simplecov (>= 0.6.4)
   sqlite3
   yard
