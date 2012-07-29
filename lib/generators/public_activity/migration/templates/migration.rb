@@ -7,6 +7,7 @@ class CreateActivities < ActiveRecord::Migration
       t.belongs_to :owner, :polymorphic => true
       t.string  :key
       t.text    :parameters
+      t.belongs_to :recipient, :polymorphic => true
 
       t.timestamps
     end
