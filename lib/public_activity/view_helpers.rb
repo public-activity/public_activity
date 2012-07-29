@@ -1,8 +1,8 @@
 # Provides a shortcut from views to the rendering method.
 module PublicActivity
   module ViewHelpers
-    def render_activity activity
-      activity.render self
+    def render_activity activity, options = {}
+      activity.render self, options
     end
   end
 
