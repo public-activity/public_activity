@@ -97,7 +97,8 @@ module PublicActivity
         context.render :partial => self.template_path(self.key), :locals =>
           {:a => self, :activity => self,
            :controller => controller,
-           :current_user => controller.respond_to?(:current_user) ? controller.current_user : nil ,
+           :current_user => controller.respond_to?(:current_user) ?
+                controller.current_user : nil ,
            :p => params_indifferent, :params => params_indifferent}
       rescue ActionView::MissingTemplate
         context.render :text => self.text(params)
