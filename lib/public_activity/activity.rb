@@ -93,9 +93,11 @@ module PublicActivity
       begin
         params_indifferent = self.parameters.with_indifferent_access
         params_indifferent.merge!(params)
+        controller = PublicActivity.get_controller
         context.render :partial => self.template_path(self.key), :locals =>
           {:a => self, :activity => self,
-           :current_user => PublicActivity.get_controller.try(:current_user),
+           :controller => controller,
+           :current_user => controller.respond_to?(:current_user) ? controller.current_user : nil ,
            :p => params_indifferent, :params => params_indifferent}
       rescue ActionView::MissingTemplate
         context.render :text => self.text(params)
