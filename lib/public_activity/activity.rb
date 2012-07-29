@@ -111,7 +111,8 @@ module PublicActivity
     #       "activity"
     def template_path(key)
       path = key.split(".")
-      path[0] = "public_activity"
+      path.delete_at(0) if path[0] == "activity"
+      path.unshift "public_activity"
       return path.join("/")
     end
   end
