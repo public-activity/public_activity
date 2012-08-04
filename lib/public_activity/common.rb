@@ -10,11 +10,11 @@ module PublicActivity
     #   current_user.create_activity("activity.user.avatar_changed") if @user.avatar_file_name_changed?
     #
     # == Parameters:
-    # [key]
+    # [:key]
     #   Custom key that will be used as a i18n translation key - *required*
-    # [owner]
+    # [:owner]
     #   Polymorphic relation specifying the owner of this activity (for example, a User who performed this task) - *optional*
-    # [params]
+    # [:params]
     #  Hash with parameters passed directly into i18n.translate method - *optional*
     #
     def create_activity(settings = {})

@@ -72,7 +72,7 @@ If a view file does not exist, then p_a falls back to the old behaviour and trie
 
 ### i18n
 
-Translations are used by  methods `#text` or `#render` on Activity instance (the latter iff a view file is not present) and should be put in your locale `.yml` files. Example structure:
+Translations are used by  methods `#text` or `#render` on Activity instance (the latter if a view file is not present) and should be put in your locale `.yml` files. Example structure:
 
 ```yaml
 activity:
@@ -81,9 +81,8 @@ activity:
     update: 'Someone has edited the article'
     destroy: 'Some user removed an article!'
 ```
-This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part is optional.
+This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
 
-**Important**: Basically the activity's key is also an i18n key.
 ## Documentation
 
 For more customization go [here](http://rubydoc.info/gems/public_activity/index)
