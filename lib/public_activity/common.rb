@@ -18,7 +18,7 @@ module PublicActivity
     #  Hash with parameters passed directly into i18n.translate method - *optional*
     #
     def create_activity(settings = {})
-      activity = self.activities.create(
+      self.activities.create(
         :key        => settings[:key],
         :owner      => settings[:owner],
         :recipient  => settings[:recipient],
@@ -37,13 +37,11 @@ module PublicActivity
       # user responsible for the activity
       owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
-      owner = case owner
+      case owner
         when Symbol
-          self.try(owner)
+          owner = self.try(owner)
         when Proc
-          owner.call(self)
-        else
-          owner
+          owner = owner.call(self)
       end
 
       #customizable parameters
@@ -51,16 +49,15 @@ module PublicActivity
       params.merge! self.activity_params if self.activity_params
 
       params.each do |k, v|
-        params[k] = case v
+        case v
           when Symbol
-            self.try(v)
+            params[k] = self.try(v)
           when Proc
-            v.call(PublicActivity.get_controller, self)
-          else
-            v
+            params[k] = v.call(PublicActivity.get_controller, self)
         end
       end
-      return {
+
+      {
         :key        => key,
         :owner      => owner,
         :recipient  => self.activity_recipient,
