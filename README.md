@@ -56,9 +56,21 @@ And in your views:
 
 ```erb
 <%= for activity in @activities %>
-  <= activity.render %>
+  <%= render_activity(activity) %>
 <% end %>
 ```
+
+*Note*: render_activity is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
+
+You can also pass options to both `activity#render` and `#render_activity` methods. A useful example would be to render activities in a mini-layout, a wrapper.
+
+```erb
+<%= for activity in @activities %>
+  <%= render_activity(activity, :layout => :wall_post) %>
+<% end %>
+```
+
+The activity will be wrapped with the `app/views/layouts/wall_post` layout, in the above example.
 
 ### Activity views
 
@@ -68,11 +80,13 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 *Hint*: the `"activity."` prefix in `:key` is completely optional and kept for backwards compatibility, you can skip it in new projects.
 
-If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using i18n.translate method.
+If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using `I18n#translate` method (see the section below).
 
 ### i18n
 
-Translations are used by  methods `#text` or `#render` on Activity instance (the latter if a view file is not present) and should be put in your locale `.yml` files. Example structure:
+Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided.
+
+Translations should be put in your locale `.yml` files. To render pure strings from I18n Example structure:
 
 ```yaml
 activity:
@@ -81,6 +95,7 @@ activity:
     update: 'Someone has edited the article'
     destroy: 'Some user removed an article!'
 ```
+
 This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
 
 ## Documentation
