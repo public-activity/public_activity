@@ -53,14 +53,14 @@ module PublicActivity
       params = self.class.activity_params_global
       params.merge! self.activity_params if self.activity_params
 
-      params.each do |key, value|
-        params[key] = case value
+      params.each do |k, v|
+        params[k] = case v
           when Symbol
-            self.try(value)
+            self.try(v)
           when Proc
-            value.call(PublicActivity.get_controller, self)
+            v.call(PublicActivity.get_controller, self)
           else
-            value
+            v
         end
       end
       return {
