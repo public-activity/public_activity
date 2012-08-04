@@ -6,9 +6,12 @@ if RUBY_VERSION != "1.8.7"
     add_filter "/test/"
   end
 end
-Bundler.require(:default)
+$:.unshift File.expand_path('../../lib/', __FILE__)
+require 'public_activity'
 require 'minitest/autorun'
+require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'mocha'
+require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 require 'turn/autorun'
 
