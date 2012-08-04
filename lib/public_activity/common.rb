@@ -37,11 +37,13 @@ module PublicActivity
       # user responsible for the activity
       owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
-      case owner
+      owner = case owner
         when Symbol
-          owner = self.try(owner)
+          self.try(owner)
         when Proc
-          owner = owner.call(self)
+          owner.call(self)
+        else
+          owner
       end
 
       #customizable parameters
@@ -51,7 +53,7 @@ module PublicActivity
       params.each do |k, v|
         case v
           when Symbol
-            params[k] = self.try(v)
+            params[k] = __send__(v)
           when Proc
             params[k] = v.call(PublicActivity.get_controller, self)
         end
