@@ -37,13 +37,11 @@ module PublicActivity
       # user responsible for the activity
       owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
-      owner = case owner
+      case owner
         when Symbol
-          self.try(owner)
+          owner = __send(owner)
         when Proc
-          owner.call(self)
-        else
-          owner
+          owner = owner.call(self)
       end
 
       #customizable parameters
