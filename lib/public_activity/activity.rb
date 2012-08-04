@@ -39,7 +39,12 @@ module PublicActivity
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     # @see #render Advanced rendering
     def text(params = {})
-      I18n.t(key, parameters.merge(params) || {})
+      # TODO: some helper for key transformation for two supported formats
+      k = key.split('.')
+      k.unshift('activity') if k.first != 'activity'
+      k = k.join('.')
+
+      I18n.t(k, parameters.merge(params) || {})
     end
 
     # Renders activity from views.
