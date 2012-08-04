@@ -6,7 +6,9 @@ if RUBY_VERSION != "1.8.7"
 end
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'public_activity'
+require 'public_activity/store_controller'
 require 'minitest/autorun'
+require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
@@ -19,7 +21,8 @@ def article(options = {})
     self.abstract_class = true
     self.table_name = 'articles'
     include PublicActivity::Model
-    tracked options
+    # holds calling #tracked when options are set explicitly to nil
+    tracked options unless options.nil?
 
     def self.name
       "Article"
