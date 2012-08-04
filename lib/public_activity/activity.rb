@@ -6,12 +6,15 @@ module PublicActivity
     belongs_to :trackable, :polymorphic => true
     # Define ownership to a resource responsible for this activity
     belongs_to :owner, :polymorphic => true
+    # Define ownership to a resource targeted by this activity
+    belongs_to :recipient, :polymorphic => true
     # Serialize parameters Hash
     serialize :parameters, Hash
 
     class_attribute :template
 
-    attr_accessible :key, :owner, :parameters
+    # should recipient and owner be accessible?
+    attr_accessible :key, :owner, :parameters, :recipient
     # Virtual attribute returning text description of the activity
     # using basic ERB templating
     #
@@ -39,7 +42,12 @@ module PublicActivity
     #   @article.activities.last.text #=> "Someone has created an article 'Rails 3.0.5 released!'"
     # @see #render Advanced rendering
     def text(params = {})
-      I18n.t(key, parameters.merge(params) || {})
+      # TODO: some helper for key transformation for two supported formats
+      k = key.split('.')
+      k.unshift('activity') if k.first != 'activity'
+      k = k.join('.')
+
+      I18n.t(k, parameters.merge(params) || {})
     end
 
     # Renders activity from views.

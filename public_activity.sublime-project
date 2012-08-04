@@ -3,7 +3,7 @@
   [
     {
       "path": "./",
-      "folder_exclude_patterns": ["coverage", ".yardoc"]
+      "folder_exclude_patterns": ["coverage", ".yardoc", "doc"]
     }
   ],
   "settings":
