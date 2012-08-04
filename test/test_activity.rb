@@ -23,7 +23,7 @@ class TestActivity < ActionView::TestCase
     # test without controller provided for p_a
     rendered.clear && Thread.current[:controller] = nil
     @activity.render(self, :two => 2)
-    assert_equal template_output_safe, rendered
+    assert_equal rendered, template_output_safe
 
     # #text into buffer
     rendered.clear && @controller.view_paths.paths.clear

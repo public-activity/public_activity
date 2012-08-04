@@ -7,12 +7,12 @@ class TestTracking < MiniTest::Unit::TestCase
     options = {:key => 'key', :params => {:a => 1}}
     @article.activity(options)
     @article.save
-    assert_equal(@article.activity_key, options[:key])
+    assert_equal(options[:key], @article.activity_key)
     #assert_equal(@article.activity_owner, options[:owner])
-    assert_equal(@article.activity_params, options[:params])
-    assert_equal(@article.activities.last.key, options[:key])
+    assert_equal(options[:params], @article.activity_params)
+    assert_equal(options[:key], @article.activities.last.key)
     #assert_equal(@article.activities.last.owner, options[:owner])
-    assert_equal(@article.activities.last.parameters, options[:params])
+    assert_equal(options[:params], @article.activities.last.parameters)
   end
 
   def test_creating_activity
@@ -20,7 +20,7 @@ class TestTracking < MiniTest::Unit::TestCase
     @article = klass.new
     @article.activity :key => 'test'
     @article.save
-    assert_equal @article.activities.last.key, 'test'
+    assert_equal 'test', @article.activities.last.key
   end
 
   def test_tracked_options_skip_defaults
@@ -62,25 +62,25 @@ class TestTracking < MiniTest::Unit::TestCase
   def test_tracked_options_owner
     options = {:owner => {:a => 1}}
     klass = article(options)
-    assert_equal(klass.activity_owner_global, options[:owner], '#tracked :owner option not set')
+    assert_equal(options[:owner], klass.activity_owner_global, '#tracked :owner option not set')
   end
 
   def test_tracked_options_params
     options = {:params => {:a => 1}}
     klass = article(options)
-    assert_equal(klass.activity_params_global, options[:params], '#tracked :params option not set')
+    assert_equal(options[:params], klass.activity_params_global, '#tracked :params option not set')
   end
 
   def test_tracked_options_on
     options = {:on => {:a => lambda {}}, :b => proc {}}
     klass = article(options)
-    assert_equal(klass.activity_hooks, options[:on], '#tracked :on option not set')
+    assert_equal(options[:on], klass.activity_hooks, '#tracked :on option not set')
   end
 
   def test_tracked_options_on_symbolize_keys
     options = {:on => {'a' => lambda {}}}
     klass = article(options)
-    assert_equal klass.activity_hooks, options[:on].symbolize_keys
+    assert_equal options[:on].symbolize_keys, klass.activity_hooks
   end
 
   def test_tracked_options_on_proc_values
@@ -95,7 +95,7 @@ class TestTracking < MiniTest::Unit::TestCase
     p = lambda {}
     klass = article
     klass.activity_hooks = {:test => p}
-    assert_equal klass.get_hook(:test), p
+    assert_equal p, klass.get_hook(:test)
   end
 
   def test_get_hook_symbolize_key

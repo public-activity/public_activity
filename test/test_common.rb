@@ -9,8 +9,8 @@ class TestCommon < MiniTest::Unit::TestCase
     article = klass.new
     article.save
     activity = article.activities.last
-    assert_equal activity.parameters[:author_name], options[:params][:author_name]
-    assert_equal activity.owner.id, owner.id
+    assert_equal options[:params][:author_name], activity.parameters[:author_name]
+    assert_equal owner.id, activity.owner.id
   end
 
   def test_params_inheriting
@@ -21,7 +21,7 @@ class TestCommon < MiniTest::Unit::TestCase
     article.save
     activity = article.activities.last
 
-    assert_equal activity.parameters[:author_name], "Michael"
-    assert_equal activity.parameters[:summary], options[:params][:summary]
+    assert_equal "Michael", activity.parameters[:author_name]
+    assert_equal options[:params][:summary], activity.parameters[:summary]
   end
 end
