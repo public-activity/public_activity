@@ -46,9 +46,6 @@ module PublicActivity
           owner
       end
 
-      # recipient
-      recipient = self.activity_recipient
-
       #customizable parameters
       params = self.class.activity_params_global
       params.merge! self.activity_params if self.activity_params
@@ -66,7 +63,7 @@ module PublicActivity
       return {
         :key        => key,
         :owner      => owner,
-        :recipient  => recipient,
+        :recipient  => self.activity_recipient,
         :parameters => params
       }
     end
