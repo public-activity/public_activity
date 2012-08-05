@@ -11,8 +11,11 @@ require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 
+require 'stringio'        # silence the output
+$stdout = StringIO.new    # from migrator
 ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 ActiveRecord::Migrator.migrate(File.expand_path('../migrations', __FILE__))
+$stdout = STDOUT
 
 def article(options = {})
   Class.new(ActiveRecord::Base) do
