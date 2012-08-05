@@ -146,8 +146,8 @@ class TestTracking < MiniTest::Unit::TestCase
     @article.destroy
     refute_empty @article.activities
     assert_equal 3, @article.activities.count
-    assert_equal "activity.article.create", @article.activities[0].key
-    assert_equal "activity.article.update", @article.activities[1].key
-    assert_equal "activity.article.destroy", @article.activities[2].key
+    assert_equal "article.create", @article.activities[0].key
+    assert_equal "article.update", @article.activities[1].key
+    assert_equal "article.destroy", @article.activities[2].key
   end
 end
