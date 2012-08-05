@@ -4,13 +4,15 @@ class TestCommon < MiniTest::Unit::TestCase
 
   def test_default_settings
     owner = User.create(:name => "Peter Pan")
-    options = {:params => {:author_name => "Peter"}, :owner => owner}
+    options = {:params => {:author_name => "Peter", :article_name => :name, :short_article_name => proc {|c, m| m.name[0..3] + "..."}}, :owner => owner}
     klass = article(options)
-    article = klass.new
+    article = klass.new(:name => "Some article")
     article.save
     activity = article.activities.last
     assert_equal options[:params][:author_name], activity.parameters[:author_name]
     assert_equal owner.id, activity.owner.id
+    assert_equal "Some article", activity.parameters[:article_name]
+    assert_equal "Some...", activity.parameters[:short_article_name]
   end
 
   def test_params_inheriting
