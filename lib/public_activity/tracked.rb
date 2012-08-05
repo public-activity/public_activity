@@ -78,7 +78,8 @@ module PublicActivity
     #   See {#activity_owner}
     # [:params]
     #   See {#activity_params}
-    #
+    # [:recipient]
+    #   Set the recipient for this activity. Useful for private notifications, which should only be visible to a certain user. See {#activity_recipient}.
     # @example
     #
     #   @article = Article.new
@@ -107,9 +108,8 @@ module PublicActivity
       #   It can be a Proc, Symbol or an ActiveRecord object:
       #   == Examples:
       #
-      #    @article.activity :owner => :author
-      #    @article.activity :owner => {|o| o.author}
-      #    @article.activity :owner => User.where(:login => 'piotrek').first
+      #    tracked :owner => :author
+      #    tracked :owner => {|o| o.author}
       #
       #   Keep in mind that owner relation is polymorphic, so you can't just provide id number of the owner object.
       # [:params]
