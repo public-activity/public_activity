@@ -41,7 +41,7 @@ module PublicActivity
         when Symbol
           owner = __send__(owner)
         when Proc
-          owner = owner.call(self)
+          owner = owner.call(PublicActivity.get_controller, self)
       end
 
       #customizable parameters

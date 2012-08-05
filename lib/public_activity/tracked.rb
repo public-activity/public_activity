@@ -29,7 +29,7 @@ module PublicActivity
     #   # OR: take @article.author association
     #   @article.activity_owner = :author
     #   # OR: provide a Proc with custom code
-    #   @article.activity_owner = proc {|o| o.author }
+    #   @article.activity_owner = proc {|controller, model| model.author }
     #   @article.save
     #   @article.activities.last.owner #=> Returns owner object
     attr_accessor :activity_owner
