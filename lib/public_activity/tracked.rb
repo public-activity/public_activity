@@ -10,6 +10,30 @@ module PublicActivity
       self.activity_hooks = {}
     end
 
+    # @!group Global options
+
+    # @!attribute activity_owner_global
+    #   Global version of activity owner
+    #   @see #activity_owner
+    #   @return [Model]
+
+    # @!attribute activity_params_global
+    #   Global version of activity parameters
+    #   @see #activity_params
+    #   @return [Hash<Symbol, Object>]
+
+    # @!attribute activity_hooks
+    #   @return [Hash<Symbol, Proc>]
+    #   Hooks/functions that will be used to decide *if* the activity should get
+    #   created.
+    #
+    #   The supported keys are:
+    #   * :create
+    #   * :update
+    #   * :destroy
+
+    # @!endgroup
+
     # @!group Instance options
 
     # Set or get parameters that will be passed to {Activity} when saving
@@ -21,7 +45,7 @@ module PublicActivity
     #
     # This way you can pass strings that should remain constant, even when model attributes
     # change after creating this {Activity}.
-    # @attr_accessor
+    # @return [Hash<Symbol, Object>]
     attr_accessor :activity_params
     @activity_params = {}
     # Set or get owner object responsible for the {Activity}.
@@ -36,6 +60,8 @@ module PublicActivity
     #   @article.activity_owner = proc {|controller, model| model.author }
     #   @article.save
     #   @article.activities.last.owner #=> Returns owner object
+    # @return [Model] Polymorphic model
+    # @see #activity_owner_global
     attr_accessor :activity_owner
     @activity_owner = nil
 
@@ -47,28 +73,22 @@ module PublicActivity
     #
     # Note: Unlike other variables, recipient can only be assigned on the
     # tracked model's instance.
+    # @return (see #activity_owner)
     attr_accessor :activity_recipient
     @activity_recipient = nil
     # Set or get custom i18n key passed to {Activity}, later used in {Activity#text}
     #
     # == Usage:
     #
-    # @article = Article.new
-    # @article.activity_key = "my.custom.article.key"
-    # @article.save
-    # @article.activities.last.key #=> "my.custom.article.key"
+    #   @article = Article.new
+    #   @article.activity_key = "my.custom.article.key"
+    #   @article.save
+    #   @article.activities.last.key #=> "my.custom.article.key"
     #
+    # @return [String]
     attr_accessor :activity_key
     @activity_key = nil
 
-    # Hooks/functions that will be used to decide *if* the activity should get
-    # created.
-    #
-    # The supported keys are:
-    # * :create
-    # * :update
-    # * :destroy
-    # @!attribute activity_hooks
     # @!visibility private
     @@activity_hooks = {}
 
@@ -186,6 +206,8 @@ module PublicActivity
       #   In the example above, given a model Article with boolean column _published_.
       #   The activities with key _article.update_ will only be created
       #   if the published status is set to true on that article.
+      # @param options [Hash] options
+      # @return [nil] options
       def tracked(options = {})
         include Common
 
@@ -224,6 +246,8 @@ module PublicActivity
           self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys if RUBY_VERSION != "1.8.7"
         end
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
+
+        return nil
       end
 
       # Extracts a hook from the _:on_ option provided in
