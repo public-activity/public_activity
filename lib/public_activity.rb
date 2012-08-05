@@ -20,6 +20,7 @@ module PublicActivity
   autoload :VERSION
   autoload :Common
 
+  # Module to be included in ActiveRecord models. Adds required functionality.
   module Model
     extend ActiveSupport::Concern
     included do

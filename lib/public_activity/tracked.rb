@@ -175,6 +175,7 @@ module PublicActivity
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       end
 
+      # Returns instance hook for given key
       def get_hook(key)
         key = key.to_sym
         if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
@@ -184,10 +185,12 @@ module PublicActivity
       end
     end
 
+    # Returns class hook for given key
     def get_hook(key)
       self.class.get_hook(key)
     end
 
+    # Safely calls hook for given key
     def call_hook_safe(key)
       hook = self.get_hook(key)
       if hook
