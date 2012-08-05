@@ -1,11 +1,13 @@
 module PublicActivity
+  @@controllers = Hash.new
+
   class << self
     def set_controller(controller)
-      Thread.current[:controller] = controller
+      @@controllers[Thread.current.object_id] = controller
     end
 
     def get_controller
-      Thread.current[:controller]
+      @@controllers[Thread.current.object_id]
     end
   end
 
