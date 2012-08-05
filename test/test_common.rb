@@ -24,4 +24,35 @@ class TestCommon < MiniTest::Unit::TestCase
     assert_equal "Michael", activity.parameters[:author_name]
     assert_equal options[:params][:summary], activity.parameters[:summary]
   end
+
+  def test_owner_as_exact_value
+    owner = User.create(:name => "Bruce Wayne")
+    klass = article(:owner => owner)
+    article = klass.new
+    article.save
+    activity = article.activities.last
+
+    assert_equal owner, activity.owner
+  end
+
+  def test_owner_as_a_proc
+    owner = User.create(:name => "Max Payne")
+    klass = article(:owner => proc { User.where(:name => "Max Payne").first })
+    article = klass.new
+    article.save
+    activity = article.activities.last
+
+    assert_equal owner, activity.owner
+  end
+
+  def test_owner_as_a_symbol
+    owner = User.create(:name => "Teddy Gammell")
+    klass = article(:owner => :user)
+    article = klass.new(:user => owner)
+    article.save
+    activity = article.activities.last
+
+    assert_equal owner, activity.owner
+  end
+
 end

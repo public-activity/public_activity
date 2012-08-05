@@ -21,6 +21,8 @@ def article(options = {})
     include PublicActivity::Model
     tracked options
 
+    belongs_to :user
+
     def self.name
       "Article"
     end
