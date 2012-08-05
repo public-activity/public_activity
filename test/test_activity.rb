@@ -21,7 +21,7 @@ class TestActivity < ActionView::TestCase
     assert_equal template_output_safe + 'fake', rendered
 
     # test without controller provided for p_a
-    rendered.clear && Thread.current[:controller] = nil
+    rendered.clear && PublicActivity.class_variable_set(:@@controllers, {})
     @activity.render(self, :two => 2)
     assert_equal rendered, template_output_safe
 

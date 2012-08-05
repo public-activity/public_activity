@@ -135,7 +135,7 @@ describe PublicActivity::Tracked do
 
   def test_refusing_hooks_on_actions
     @article = article.new(:name => 'Some Name')
-    Thread.current[:controller] = 10
+    PublicActivity.set_controller(10)
     p = proc { |model, controller|
       assert_equal "Some Name", model.name
       assert_equal 10, controller
@@ -153,7 +153,7 @@ describe PublicActivity::Tracked do
 
   def test_accepting_hooks_on_actions
     @article = article.new(:name => 'Some Name')
-    Thread.current[:controller] = 10
+    PublicActivity.set_controller(10)
     p = lambda { |model, controller|
       assert_equal "Some Name", model.name
       assert_equal 10, controller
