@@ -9,6 +9,9 @@ module PublicActivity
       self.activity_params_global = {}
       self.activity_hooks = {}
     end
+
+    # @!group Instance options
+
     # Set or get parameters that will be passed to {Activity} when saving
     #
     # == Usage:
@@ -18,6 +21,7 @@ module PublicActivity
     #
     # This way you can pass strings that should remain constant, even when model attributes
     # change after creating this {Activity}.
+    # @attr_accessor
     attr_accessor :activity_params
     @activity_params = {}
     # Set or get owner object responsible for the {Activity}.
@@ -64,7 +68,11 @@ module PublicActivity
     # * :create
     # * :update
     # * :destroy
+    # @!attribute activity_hooks
+    # @!visibility private
     @@activity_hooks = {}
+
+    # @!endgroup
 
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
@@ -89,11 +97,14 @@ module PublicActivity
     #   @article.activities.last.key #=> "my.custom.article.key"
     #   @article.activities.last.parameters #=> {:title => "New article"}
     #
+    # @param options [Hash] instance options to set on the tracked model
+    # @return [nil]
     def activity(options = {})
       self.activity_key = options[:key] if options[:key]
       self.activity_owner = options[:owner] if options[:owner]
       self.activity_params = options[:params] if options[:params]
       self.activity_recipient = options[:recipient] if options[:recipient]
+      return nil
     end
 
     # Module with basic +tracked+ method that enables tracking models.
@@ -129,12 +140,52 @@ module PublicActivity
       #   Values in the :params hash can either be an *exact* *value*, a *Proc/Lambda* executed before saving the activity or a *Symbol*
       #   which is a an attribute or a method name executed on the tracked model's instance.
       #
-      #   Everything specified here has a lower priority than parameters specified directly in {#activity} method.
-      #   So treat it as a place where you provide 'default' values.
+      #   Everything specified here has a lower priority than parameters
+      #   specified directly in {#activity} method.
+      #   So treat it as a place where you provide 'default' values or where you
+      #   specify what data should be gathered for every activity.
       #   For more dynamic settings refer to {Activity} model documentation.
       # [:skip_defaults]
       #   Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common#create_activity}
       #   for a guide on how to manually record activities.
+      # [:only]
+      #   Accepts array of symbols, of which correct is any combination of the three:
+      #   * _:create_
+      #   * _:update_
+      #   * _:destroy_
+      #   Selecting one or more of these will make PublicActivity create activities
+      #   automatically for the tracked model on selected actions.
+      #
+      #   Resulting activities will have have keys assigned to, respectively:
+      #   * _article.create_
+      #   * _article.update_
+      #   * _article.destroy_
+      #   Since only three options are valid in this array,
+      #   see _:except_ option for a shorter version
+      # [:except]
+      #   Accepts array of symbols with values like in _:only_, above.
+      #   Values provided will be subtracted from all default actions:
+      #   (create, update, destroy).
+      #
+      #   So, passing _create_ would track and automatically create
+      #   activities on _update_ and _destroy_ actions.
+      # [:on]
+      #   Accepts a Hash with key being the *action* on which to execute *value* (proc)
+      #   Currently supported only for CRUD actions which are enabled in _:only_
+      #   or _:except_ options on this method.
+      #
+      #   Key-value pairs in this option define callbacks that can decide
+      #   whether to create an activity or not. Procs have two attributes for
+      #   use: _model_ and _controller_. If the proc returns true, the activity
+      #   will be created, if not, then activity will not be saved.
+      #
+      #   == Example:
+      #     # app/models/article.rb
+      #     tracked :on => {:update => proc {|model, controller| model.published? }}
+      #
+      #   In the example above, given a model Article with boolean column _published_.
+      #   The activities with key _article.update_ will only be created
+      #   if the published status is set to true on that article.
       def tracked(options = {})
         include Common
 
@@ -175,7 +226,14 @@ module PublicActivity
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
       end
 
-      # Returns instance hook for given key
+      # Extracts a hook from the _:on_ option provided in
+      # {Tracked::ClassMethods#tracked}. Returns nil when no hook exists for
+      # given action
+      # {Tracked#get_hook}
+      #
+      # @see Tracked#get_hook
+      # @param key [String, Symbol] action to retrieve a hook for
+      # @return [Proc, nil] callable hook or nil
       def get_hook(key)
         key = key.to_sym
         if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
@@ -185,12 +243,18 @@ module PublicActivity
       end
     end
 
-    # Returns class hook for given key
+    # Shortcut for {Tracked::ClassMethods#get_hook}
+    # @param (see Tracked::ClassMethods#get_hook)
+    # @return (see Tracked::ClassMethods#get_hook)
     def get_hook(key)
       self.class.get_hook(key)
     end
 
-    # Safely calls hook for given key
+    # Calls hook safely.
+    # If a hook for given action exists, calls it with model (self) and
+    # controller (if available, see {StoreController})
+    # @param key (see #get_hook)
+    # @return [Boolean] if hook exists, it's decision, if there's no hook, true
     def call_hook_safe(key)
       hook = self.get_hook(key)
       if hook
