@@ -119,7 +119,14 @@ There are a couple of major differences between 0.3 and 0.4 version. To upgrade,
 2.   public_activity's config YAML file is no longer used (by default in `config/pba.yml`). Move your YAML contents to your `config/locales/*.yml` files.
 
      <br/>**IMPORTANT**: Locales are no longer rendered with ERB, this has been removed in favor of real view partials like in actual Rails apps.
-     Read [Activity views](#activity-views) section above to learn how to use those templates.
+     Read [Activity views](#activity-views) section above to learn how to use those templates.<br/>
+
+3.   Generate and run migration which adds new column to `activities` table:
+
+     ```bash
+     rails g public_activity:migration_upgrade
+     rake db:migrate
+     ```
 
 ## Documentation
 
