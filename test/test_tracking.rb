@@ -115,11 +115,11 @@ describe PublicActivity::Tracked do
     let(:hook) { lambda {} }
 
     it 'retrieves hooks' do
-      hook.must_be_same_as subject.get_hook(:test)
+      assert_same hook, subject.get_hook(:test)
     end
 
     it 'retrieves hooks by string keys' do
-      hook.must_be_same_as subject.get_hook('test')
+      assert_same hook, subject.get_hook('test')
     end
 
     it 'returns nil when no matching hook is present' do
@@ -127,49 +127,30 @@ describe PublicActivity::Tracked do
     end
   end
 
-  def test_get_hook_on_no_hook_available
-    klass = article
-    klass.activity_hooks = {}
-    assert_same nil, klass.get_hook(:nonexistent)
-  end
+    it 'allows hooks to decide if activity should be created' do
+      subject.tracked
+      @article = subject.new(:name => 'Some Name')
+      PublicActivity.set_controller(mock('controller'))
+      pf = proc { |model, controller|
+        controller.must_be_same_as PublicActivity.get_controller
+        model.name.must_equal 'Some Name'
+        false
+      }
+      pt = proc { |model, controller|
+        controller.must_be_same_as PublicActivity.get_controller
+        model.name.must_equal 'Other Name'
+        true # this will save the activity with *.update key
+      }
+      @article.class.activity_hooks = {:create => pf, :update => pt, :destroy => pt}
 
-  def test_refusing_hooks_on_actions
-    @article = article.new(:name => 'Some Name')
-    PublicActivity.set_controller(10)
-    p = proc { |model, controller|
-      assert_equal "Some Name", model.name
-      assert_equal 10, controller
-      false
-    }
-    @article.class.activity_hooks = {:create => p, :update => p, :destroy => p}
+      @article.activities.must_be_empty
+      @article.save # create
+      @article.name = 'Other Name'
+      @article.save # update
+      @article.destroy # destroy
 
-    @article.save
-    @article.published = true
-    @article.save
-    article_id = @article.id
-    @article.destroy
-    assert_empty @article.activities
-  end
-
-  def test_accepting_hooks_on_actions
-    @article = article.new(:name => 'Some Name')
-    PublicActivity.set_controller(10)
-    p = lambda { |model, controller|
-      assert_equal "Some Name", model.name
-      assert_equal 10, controller
-      true
-    }
-    @article.class.activity_hooks = {:create => p, :update => p, :destroy => p}
-
-    @article.save
-    @article.published = true
-    @article.save
-    article_id = @article.id
-    @article.destroy
-    refute_empty @article.activities
-    assert_equal 3, @article.activities.count
-    assert_equal "activity.article.create", @article.activities[0].key
-    assert_equal "activity.article.update", @article.activities[1].key
-    assert_equal "activity.article.destroy", @article.activities[2].key
+      @article.activities.count.must_equal 2
+      @article.activities.first.key.must_equal 'activity.article.update'
+    end
   end
 end

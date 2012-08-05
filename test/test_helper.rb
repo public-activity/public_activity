@@ -5,6 +5,7 @@ if RUBY_VERSION != "1.8.7"
   end
 end
 $:.unshift File.expand_path('../../lib/', __FILE__)
+require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
 require 'public_activity/store_controller'
 require 'minitest/autorun'
@@ -34,3 +35,9 @@ def article(options = {})
 end
 
 class User < ActiveRecord::Base; end
+
+class ViewSpec < MiniTest::Spec
+  include ActiveSupport::Testing::SetupAndTeardown
+  include ActionView::TestCase::Behavior
+end
+MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)
