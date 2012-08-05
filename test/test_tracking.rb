@@ -125,7 +125,6 @@ describe PublicActivity::Tracked do
     it 'returns nil when no matching hook is present' do
       nil.must_be_same_as subject.get_hook(:nonexistent)
     end
-  end
 
     it 'allows hooks to decide if activity should be created' do
       subject.tracked
