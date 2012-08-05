@@ -3,37 +3,9 @@ require 'action_view'
 require 'active_record'
 
 # +public_activity+ keeps track of changes made to models
-# and allows for easy displaying of them.
+# and allows you to display them to the users.
 #
-# Basic usage requires adding one line to your models:
-#
-#   class Article < ActiveRecord::Base
-#     tracked
-#   end
-#
-# And creating a table for activities, by doing this:
-#   rails generate public_activity:migration
-#   rake db:migrate
-#
-# Now when saved, public_activity will create
-# an Activity record containing information about that changed/created
-# model.
-# == Displaying Activities:
-#
-# Minimal example would be:
-#
-#   <% for activity in PublicActivity::Activity.all %>
-#   <%= activity.text %><br/>
-#   <% end %>
-# Now you will need to add translations in your locale .yml, for the example
-# provided above that would be:
-#   en:
-#     activity:
-#       create: 'New article has been created'
-#       update: 'Someone modified the article'
-#       destroy: 'Someone deleted the article!'
-#
-# Check {PublicActivity::ClassMethods#tracked} for more details about customizing and specifing
+# Check {PublicActivity::Tracked::ClassMethods#tracked} for more details about customizing and specifying
 # ownership to users.
 module PublicActivity
   extend ActiveSupport::Concern

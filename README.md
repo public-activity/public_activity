@@ -9,6 +9,10 @@ Here is a simple example showing what this gem is about:
 
 ![Example usage](http://i.imgur.com/uGPSm.png)
 
+## Upgrading to 0.4
+
+If you are using versions earlier than 0.4.0 please click [here](#upgrading) or scroll to the "Upgrading" section at the bottom of this README.
+
 ## First time setup
 
 ### Gem installation
@@ -30,7 +34,7 @@ Create migration for activities and migrate the database (in your Rails project)
 
 ### Model configuration
 
-Include `PublicActivity::Model` and add 'tracked' to the model you want to keep track of:
+Include `PublicActivity::Model` and add `tracked` to the model you want to keep track of:
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -39,7 +43,7 @@ class Article < ActiveRecord::Base
 end
 ```
 
-And now, by default create/update/destroy activities are recorded in activities table. This is all you need to start recording activities for basic actions like update, create or destroy.
+And now, by default create/update/destroy activities are recorded in activities table. This is all you need to start recording activities for basic CRUD actions.
 
 ### Displaying activities
 
@@ -60,17 +64,18 @@ And in your views:
 <% end %>
 ```
 
-*Note*: render_activity is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
+*Note*: `render_activity` is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
 
-You can also pass options to both `activity#render` and `#render_activity` methods. A useful example would be to render activities in a mini-layout, a wrapper.
+You can also pass options to both `activity#render` and `#render_activity` methods, which are passed deeper to the `render_partial` method.
+A useful example would be to render activities wrapped in layout, which shares common elements of an activity, like a timestamp, owner's avatar etc.
 
 ```erb
 <%= for activity in @activities %>
-  <%= render_activity(activity, :layout => :wall_post) %>
+  <%= render_activity(activity, :layout => :activity) %>
 <% end %>
 ```
 
-The activity will be wrapped with the `app/views/layouts/wall_post` layout, in the above example.
+The activity will be wrapped with the `app/views/layouts/activity` layout, in the above example.
 
 ### Activity views
 
@@ -97,6 +102,24 @@ activity:
 ```
 
 This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
+
+## Upgrading
+
+There are a couple of major differences between 0.3 and 0.4 version. To upgrade, follow these steps:
+
+1.  Add `include PublicActivity::Model` above `tracked` method call in your tracked models, like this:
+
+    ```ruby
+    class Article < ActiveRecord::Base
+      include PublicActivity::Model
+      tracked
+    end
+    ```
+
+2.   public_activity's config YAML file is no longer used (by default in `config/pba.yml`). Move your YAML contents to your `config/locales/*.yml` files.
+
+     <br/>**IMPORTANT**: Locales are no longer rendered with ERB, this has been removed in favor of real view partials like in actual Rails apps.
+     Read [Activity views](#activity-views) section above to learn how to use those templates.
 
 ## Documentation
 
