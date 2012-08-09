@@ -5,8 +5,11 @@ if RUBY_VERSION != "1.8.7"
   end
 end
 $:.unshift File.expand_path('../../lib/', __FILE__)
+require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
+require 'public_activity/store_controller'
 require 'minitest/autorun'
+require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'mocha'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
@@ -22,7 +25,8 @@ def article(options = {})
     self.abstract_class = true
     self.table_name = 'articles'
     include PublicActivity::Model
-    tracked options
+    # holds calling #tracked when options are set explicitly to nil
+    tracked options unless options.nil?
 
     belongs_to :user
 
@@ -33,3 +37,9 @@ def article(options = {})
 end
 
 class User < ActiveRecord::Base; end
+
+class ViewSpec < MiniTest::Spec
+  include ActiveSupport::Testing::SetupAndTeardown
+  include ActionView::TestCase::Behavior
+end
+MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)

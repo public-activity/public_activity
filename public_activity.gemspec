@@ -27,10 +27,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '>= 0.9'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'mocha', '>= 0.12.1'
+  s.add_development_dependency 'minitest', '>= 3.2.0'
 
-  if RUBY_VERSION == "1.8.7"
-    s.add_development_dependency 'minitest', '>= 3.2.0'
-  else
+  if RUBY_VERSION != "1.8.7"
     s.add_development_dependency 'simplecov', '>= 0.6.4'
   end
 end
