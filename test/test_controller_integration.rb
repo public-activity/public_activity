@@ -5,19 +5,19 @@ class StoringController < ActionView::TestCase::TestController
   include ActionController::Testing::ClassMethods
 end
 
-class TestStoreController < MiniTest::Unit::TestCase
-  def test_storing_controller
+describe PublicActivity::StoreController do
+  it 'stores controller' do
     controller = StoringController.new
     PublicActivity.set_controller(controller)
-    assert_equal controller, PublicActivity.instance_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
-    assert_equal controller, PublicActivity.get_controller
+    controller.must_be_same_as PublicActivity.instance_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
+    controller.must_be_same_as PublicActivity.get_controller
   end
 
-  def test_extending_controller
+  it 'stores controller with a filter in controller' do
     controller = StoringController.new
-    assert_includes controller._process_action_callbacks.select {|c| c.kind == :before}.map(&:filter), :store_controller_for_public_activity
+    controller._process_action_callbacks.select {|c| c.kind == :before}.map(&:filter).must_include :store_controller_for_public_activity
     controller.instance_eval { store_controller_for_public_activity }
-    assert_equal controller, PublicActivity.class_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
+    controller.must_be_same_as PublicActivity.class_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
   end
 
   def test_threadsafe_controller_storage
