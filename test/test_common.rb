@@ -1,27 +1,39 @@
 require 'test_helper'
 
-class TestCommon < MiniTest::Unit::TestCase
+describe PublicActivity::Common do
+  before do
+    @owner     = User.create(:name => "Peter Pan")
+    @recipient = User.create(:name => "Bruce Wayne")
+    @options   = {:params => {:author_name => "Peter",
+                  :summary => "Default summary goes here..."},
+                  :owner => @owner}
+  end
+  subject { article(@options).new }
 
-  def test_default_settings
-    owner = User.create(:name => "Peter Pan")
-    options = {:params => {:author_name => "Peter"}, :owner => owner}
-    klass = article(options)
-    article = klass.new
-    article.save
-    activity = article.activities.last
-    assert_equal options[:params][:author_name], activity.parameters[:author_name]
-    assert_equal owner.id, activity.owner.id
+  it 'uses global fields' do
+    subject.save
+    activity = subject.activities.last
+    activity.parameters.must_equal @options[:params]
+    activity.owner.must_equal @owner
   end
 
-  def test_params_inheriting
-    options = {:params => {:author_name => "Peter", :summary => "Default summary goes here..."}}
-    klass = article(options)
-    article = klass.new
-    article.activity :params => {:author_name => "Michael"}
-    article.save
-    activity = article.activities.last
+  it 'inherits global parameters' do
+    subject.activity :params => {:author_name => "Michael"}
+    subject.save
+    activity = subject.activities.last
 
-    assert_equal "Michael", activity.parameters[:author_name]
-    assert_equal options[:params][:summary], activity.parameters[:summary]
+    activity.parameters.must_equal @options[:params]
+  end
+
+  it 'accepts instance recipient' do
+    subject.activity :recipient => @recipient
+    subject.save
+    subject.activities.last.recipient.must_equal @recipient
+  end
+
+  it 'accepts instance owner' do
+    subject.activity :owner => @owner
+    subject.save
+    subject.activities.last.owner.must_equal @owner
   end
 end
