@@ -28,6 +28,8 @@ def article(options = {})
     # holds calling #tracked when options are set explicitly to nil
     tracked options unless options.nil?
 
+    belongs_to :user
+
     def self.name
       "Article"
     end

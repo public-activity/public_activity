@@ -31,17 +31,16 @@ module PublicActivity
     # settings specified in tracked() method
     def prepare_settings(action)
       # key
-      key = self.activity_key || ("activity." +
-            self.class.name.parameterize('_') + "." + action)
+      key = self.activity_key || (self.class.name.parameterize('_') + "." + action)
 
       # user responsible for the activity
       owner = self.activity_owner ? self.activity_owner : self.class.activity_owner_global
 
       case owner
         when Symbol
-          owner = __send(owner)
+          owner = __send__(owner)
         when Proc
-          owner = owner.call(self)
+          owner = owner.call(PublicActivity.get_controller, self)
       end
 
       #customizable parameters

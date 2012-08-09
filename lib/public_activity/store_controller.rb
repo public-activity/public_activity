@@ -2,15 +2,18 @@ module PublicActivity
   @@controllers = Hash.new
 
   class << self
+    # Setter for remembering controller instance
     def set_controller(controller)
       @@controllers[Thread.current.object_id] = controller
     end
 
+    # Getter for accessing the controller instance
     def get_controller
       @@controllers[Thread.current.object_id]
     end
   end
 
+  # Module included in controllers to allow p_a access to controller instance
   module StoreController
     extend ActiveSupport::Concern
 
@@ -18,6 +21,7 @@ module PublicActivity
       before_filter :store_controller_for_public_activity
     end
 
+    # Before filter executed to remember current controller
     def store_controller_for_public_activity
       PublicActivity.set_controller(self)
     end
