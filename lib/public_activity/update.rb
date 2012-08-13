@@ -9,9 +9,7 @@ module PublicActivity
     private
       # Creates activity upon modification of the tracked model
       def activity_on_update
-        if call_hook_safe('update')
-          create_activity(prepare_settings('update'))
-        end
+        create_activity(:update)
       end
   end
 end

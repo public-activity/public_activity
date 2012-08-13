@@ -9,9 +9,7 @@ module PublicActivity
     private
       # Records an activity upon destruction of the tracked model
       def activity_on_destroy
-        if call_hook_safe('destroy')
-          create_activity(prepare_settings('destroy'))
-        end
+        create_activity(:destroy)
       end
   end
 end

@@ -4,10 +4,12 @@ module PublicActivity
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :activity_owner_global, :activity_params_global, :activity_hooks
-      self.activity_owner_global = nil
-      self.activity_params_global = {}
-      self.activity_hooks = {}
+      class_attribute :activity_owner_global, :activity_recipient_global,
+                      :activity_params_global, :activity_hooks
+      self.activity_owner_global     = nil
+      self.activity_recipient_global = nil
+      self.activity_params_global    = {}
+      self.activity_hooks            = {}
     end
 
     # @!group Global options
@@ -15,6 +17,11 @@ module PublicActivity
     # @!attribute activity_owner_global
     #   Global version of activity owner
     #   @see #activity_owner
+    #   @return [Model]
+
+    # @!attribute activity_recipient_global
+    #   Global version of activity recipient
+    #   @see #activity_recipient
     #   @return [Model]
 
     # @!attribute activity_params_global
@@ -70,9 +77,6 @@ module PublicActivity
     # Association is polymorphic, thus allowing assignment of
     # all types of models. This can be used for example in the case of sending
     # private notifications for only a single user.
-    #
-    # Note: Unlike other variables, recipient can only be assigned on the
-    # tracked model's instance.
     # @return (see #activity_owner)
     attr_accessor :activity_recipient
     @activity_recipient = nil
@@ -142,7 +146,18 @@ module PublicActivity
       #    tracked :owner => :author
       #    tracked :owner => {|o| o.author}
       #
-      #   Keep in mind that owner relation is polymorphic, so you can't just provide id number of the owner object.
+      #   Keep in mind that owner relation is polymorphic, so you can't just
+      #   provide id number of the owner object.
+      # [:recipient]
+      #   Specify the recipient of the {Activity}
+      #   It can be a Proc, Symbol, or an ActiveRecord object
+      #   == Examples:
+      #
+      #    tracked :recipient => :author
+      #    tracked :recipient => {|o| o.author}
+      #
+      #   Keep in mind that recipient relation is polymorphic, so you can't just
+      #   provide id number of the owner object.
       # [:params]
       #   Accepts a Hash with custom parameters you want to pass to i18n.translate
       #   method. It is later used in {Activity#text} method.
@@ -237,6 +252,9 @@ module PublicActivity
 
         if options[:owner]
           self.activity_owner_global = options[:owner]
+        end
+        if options[:recipient]
+          self.activity_recipient_global = options[:recipient]
         end
         if options[:params]
           self.activity_params_global = options[:params]

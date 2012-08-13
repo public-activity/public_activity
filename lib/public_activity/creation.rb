@@ -9,9 +9,7 @@ module PublicActivity
     private
       # Creates activity upon creation of the tracked model
       def activity_on_create
-        if call_hook_safe('create')
-          create_activity(prepare_settings('create'))
-        end
+        create_activity(:create)
       end
   end
 end
