@@ -2,7 +2,6 @@ require 'rails/generators/test_case'
 require 'generators/public_activity/activity/activity_generator'
 require 'generators/public_activity/migration/migration_generator'
 require 'generators/public_activity/migration_upgrade/migration_upgrade_generator'
-require 'test/unit'
 
 class TestActivityGenerator < Rails::Generators::TestCase
   tests PublicActivity::Generators::ActivityGenerator
