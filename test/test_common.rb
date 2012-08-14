@@ -57,4 +57,42 @@ class TestCommon < MiniTest::Unit::TestCase
     assert_equal owner, activity.owner
   end
 
+  # Creating custom activities
+
+  def test_creating_custom_activities
+    user = User.create(:name => "Phil Dunphy")
+    @article = article(:skip_defaults => true).new(:user => user)
+    @article.activity :owner => :user
+    @article.save
+    @article.create_activity :some_action, :owner => :user, :recipient => user,
+      :params => {:a => :user}
+    assert_operator @article.activities.count, :>=, 1
+    assert_equal 'article.some_action', @article.activities.last.key
+    assert_equal user, @article.activities.last.owner
+    assert_equal user, @article.activities.last.recipient
+    assert_equal({:a => user}, @article.activities.last.parameters)
+  end
+
+  def test_throwing_on_no_key_creating_custom_activities
+    @article = article(:skip_defaults => true).new
+    assert_raises PublicActivity::NoKeyProvided do
+      @article.create_activity
+    end
+  end
+
+  # Smart values
+  def test_resolving_values
+    context = mock('context')
+    context.expects(:accessor).times(2).returns(5)
+    controller = mock('controller')
+    controller.expects(:current_user).returns(:cu)
+    PublicActivity.set_controller(controller)
+    p = proc {|controller, model|
+      assert_equal :cu, controller.current_user
+      assert_equal 5, model.accessor
+    }
+    PublicActivity.resolve_value(context, p)
+    PublicActivity.resolve_value(context, :accessor)
+  end
+
 end

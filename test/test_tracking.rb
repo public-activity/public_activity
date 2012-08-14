@@ -60,9 +60,15 @@ class TestTracking < MiniTest::Unit::TestCase
   end
 
   def test_tracked_options_owner
-    options = {:owner => {:a => 1}}
+    options = {:owner => mock('owner')}
     klass = article(options)
-    assert_equal(options[:owner], klass.activity_owner_global, '#tracked :owner option not set')
+    assert_equal(options[:owner], klass.activity_owner_global)
+  end
+
+ def test_tracked_options_recipient
+    options = {:recipient => mock('recipient')}
+    klass = article(options)
+    assert_equal(options[:recipient], klass.activity_recipient_global)
   end
 
   def test_tracked_options_params
