@@ -1,14 +1,14 @@
+require 'bundler'
+Bundler.setup(:default, :development)
 if RUBY_VERSION != "1.8.7"
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
   end
 end
-$:.unshift File.expand_path('../../lib/', __FILE__)
-require 'public_activity'
+Bundler.require(:default)
 require 'minitest/autorun'
 require 'mocha'
-require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 
 require 'stringio'        # silence the output
