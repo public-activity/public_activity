@@ -2,12 +2,12 @@ module PublicActivity
   # Main module extending classes we want to keep track of.
   module Tracked
     extend ActiveSupport::Concern
-    
+
     included do
       class_attribute :activity_owner_global, :activity_params_global
       self.activity_owner_global = nil
       self.activity_params_global = {}
-    end  
+    end
     # Set or get parameters that will be passed to {Activity} when saving
     #
     # == Usage:
@@ -15,7 +15,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     #
     # In controller
     #   @article = Article.new
@@ -32,7 +32,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     # Controller:
     #
     #   @article = Article.new
@@ -50,7 +50,7 @@ module PublicActivity
     #
     #   class Article < ActiveRecord::Base
     #     tracked
-    #   end 
+    #   end
     #
     # In controller:
     #
@@ -66,19 +66,19 @@ module PublicActivity
     #   @article.activities.last.key #=> "my.custom.article.key"
     attr_accessor :activity_key
     @activity_key = nil
-    
+
     # Module with basic +tracked+ method that enables tracking models.
     module ClassMethods
       # Adds required callbacks for creating and updating
       # tracked models and adds +activities+ relation for listing
       # associated activities.
-      # 
+      #
       # == Parameters:
       # [:owner]
       #   Specify the owner of the {Activity} (person responsible for the action).
       #   It can be a Proc, Symbol or an ActiveRecord object:
       #   == Examples:
-      #    @article.activity :owner => :author    
+      #    @article.activity :owner => :author
       #    @article.activity :owner => {|o| o.author}
       #    @article.activity :owner => User.where(:login => 'piotrek').first
       #   Keep in mind that owner relation is polymorphic, so you can't just provide id number of the owner object.
@@ -89,48 +89,50 @@ module PublicActivity
       #    @article.activity :parameters => {:title => @article.title, :short => truncate(@article.text, :length => 50)}
       #   Everything specified here has a lower priority than parameters specified directly in {#activity} method.
       #   So treat it as a place where you provide 'default' values.
-      #   For more dynamic settings refer to {Activity} model 
+      #   For more dynamic settings refer to {Activity} model
       #   documentation.
       # [:skip_defaults]
       #   Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common#create_activity}
       #   for a guide on how to manually record activities.
       def tracked(options = {})
         include Common
-        
+
         all_options = [:create, :update, :destroy]
-        
-        if !options[:skip_defaults] && !options[:only] && !options[:except] 
+
+        if !options[:skip_defaults] && !options[:only] && !options[:except]
           include Creation
           include Destruction
           include Update
         end
-        
+
         if options[:except].is_a? Array
           options[:only] = all_options - options[:except]
         end
-        
+
         if options[:only].is_a? Array
-            options[:only].each do |opt|
-              if opt.eql?(:create)
-                include Creation
-              elsif opt.eql?(:destroy)
-                include Destruction
-              elsif opt.eql?(:update)
-                include Update
-              end
+          options[:only].each do |opt|
+            if opt.eql?(:create)
+              include Creation
+            elsif opt.eql?(:destroy)
+              include Destruction
+            elsif opt.eql?(:update)
+              include Update
             end
+          end
         end
-            
+
         if options[:owner]
           self.activity_owner_global = options[:owner]
         end
         if options[:params]
           self.activity_params_global = options[:params]
         end
-        has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable      
+        has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
+
+        nil
       end
     end
-    
+
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
     # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.

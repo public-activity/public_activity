@@ -43,7 +43,7 @@ module PublicActivity
 
         case owner
           when Symbol
-            owner = self.try(owner)
+            owner = self.__send__(owner)
           when Proc
             owner = owner.call(self)
         end
