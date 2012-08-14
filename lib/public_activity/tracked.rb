@@ -276,6 +276,8 @@ module PublicActivity
       # @see Tracked#get_hook
       # @param key [String, Symbol] action to retrieve a hook for
       # @return [Proc, nil] callable hook or nil
+      # @since 0.4.0
+      # @api private
       def get_hook(key)
         key = key.to_sym
         if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
@@ -289,6 +291,8 @@ module PublicActivity
     # Shortcut for {Tracked::ClassMethods#get_hook}
     # @param (see Tracked::ClassMethods#get_hook)
     # @return (see Tracked::ClassMethods#get_hook)
+    # @since (see Tracked::ClassMethods#get_hook)
+    # @api (see Tracked::ClassMethods#get_hook)
     def get_hook(key)
       self.class.get_hook(key)
     end
@@ -298,6 +302,8 @@ module PublicActivity
     # controller (if available, see {StoreController})
     # @param key (see #get_hook)
     # @return [Boolean] if hook exists, it's decision, if there's no hook, true
+    # @since 0.4.0
+    # @api private
     def call_hook_safe(key)
       hook = self.get_hook(key)
       if hook

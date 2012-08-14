@@ -5,6 +5,7 @@ module PublicActivity
   # Used to smartly transform value from metadata to data.
   # Accepts Symbols, which it will send against context.
   # Accepts Procs, which it will execute with controller and context.
+  # @since 0.4.0
   def self.resolve_value(context, thing)
     case thing
     when Symbol
@@ -56,8 +57,26 @@ module PublicActivity
     # accessors at {Tracked}, information on hooks is available at
     # {Tracked::ClassMethods#tracked}.
     # @see #prepare_settings
-    # @param args (see #prepare_settings)
     # @return [Model, nil] If created successfully, new activity
+    # @since 0.4.0
+    # @api public
+    # @overload create_activity(action, options = {})
+    #   @param [Symbol,String] action Name of the action
+    #   @param [Hash] options Options with quality higher than instance options
+    #     set in {Tracked#activity}
+    #   @option options [Activist] :owner Owner
+    #   @option options [Activist] :recipient Recipient
+    #   @option options [Hash] :params Parameters, see
+    #     {PublicActivity.resolve_value}
+    # @overload create_activity(options = {})
+    #   @param [Hash] options Options with quality higher than instance options
+    #     set in {Tracked#activity}
+    #   @option options [Symbol,String] :action Name of the action
+    #   @option options [String] :key Full key
+    #   @option options [Activist] :owner Owner
+    #   @option options [Activist] :recipient Recipient
+    #   @option options [Hash] :params Parameters, see
+    #     {PublicActivity.resolve_value}
     def create_activity(*args)
       options = prepare_settings(*args)
 
@@ -75,19 +94,23 @@ module PublicActivity
     # params passed directly to tracked model have priority over
     # settings specified in tracked() method
     #
-    # @param args Name of the action OR hash with options
     # @see #create_activity
     # @return [Hash] Settings with preserved options that were passed
+    # @api private
+    # @overload prepare_settings(action, options = {})
+    #   @see #create_activity
+    # @overload prepare_settings(options = {})
+    #   @see #create_activity
     def prepare_settings(*args)
       # key
       options = args.extract_options!
-      action = args.first || options[:action]
+      action = (args.first || options[:action]).try(:to_s)
       if action.nil? and !options.has_key?(:key)
         raise NoKeyProvided, "No key provided for #{self.class.name}"
       end
-      key = options[:key] ||
+      key = (options[:key] ||
             self.activity_key ||
-            (self.class.name.parameterize('_') + "." + action.to_s)
+            (self.class.name.parameterize('_') + "." + action.to_s)).to_s
 
       # user responsible for the activity
       owner = PublicActivity.resolve_value(self,

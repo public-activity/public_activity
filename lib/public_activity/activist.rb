@@ -2,6 +2,15 @@ module PublicActivity
   # Module extending classes that serve as owners
   module Activist
     extend ActiveSupport::Concern
+
+    # Association of activities as their owner.
+    # @!method activities
+    # @return [Array<Activity>] Activities which self is the owner of.
+
+    # Association of activities as their recipient.
+    # @!method private_activities
+    # @return [Array<Activity>] Activities which self is the recipient of.
+
     # Module extending classes that serve as owners
     module ClassMethods
       # Adds has_many :activities association to model

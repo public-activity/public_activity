@@ -1,4 +1,5 @@
 module PublicActivity
+  # @private
   @@controllers = Hash.new
 
   class << self
