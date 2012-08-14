@@ -128,7 +128,7 @@ module PublicActivity
       self.activity_owner = options[:owner] if options[:owner]
       self.activity_params = options[:params] if options[:params]
       self.activity_recipient = options[:recipient] if options[:recipient]
-      return nil
+      nil
     end
 
     # Module with basic +tracked+ method that enables tracking models.
@@ -265,7 +265,7 @@ module PublicActivity
         end
         has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
 
-        return nil
+        nil
       end
 
       # Extracts a hook from the _:on_ option provided in
@@ -279,9 +279,10 @@ module PublicActivity
       def get_hook(key)
         key = key.to_sym
         if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
-          return self.activity_hooks[key]
+          self.activity_hooks[key]
+        else
+          nil
         end
-        return nil
       end
     end
 
@@ -303,7 +304,7 @@ module PublicActivity
         # provides hook with model and controller
         hook.call(self, PublicActivity.get_controller)
       else
-        return true
+        true
       end
     end
   end

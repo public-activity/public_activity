@@ -122,7 +122,7 @@ module PublicActivity
       path = key.split(".")
       path.delete_at(0) if path[0] == "activity"
       path.unshift "public_activity"
-      return path.join("/")
+      path.join("/")
     end
   end
 end

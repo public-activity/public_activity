@@ -8,11 +8,12 @@ module PublicActivity
   def self.resolve_value(context, thing)
     case thing
     when Symbol
-      return context.__send__(thing)
+      context.__send__(thing)
     when Proc
-      return thing.call(PublicActivity.get_controller, context)
+      thing.call(PublicActivity.get_controller, context)
+    else
+      thing
     end
-    return thing
   end
 
   # Common methods shared across the gem.
