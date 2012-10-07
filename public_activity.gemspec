@@ -12,11 +12,15 @@ Gem::Specification.new do |s|
   s.summary = "Smooth activity tracking for ActiveRecord models"
   s.description = "Smooth activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
 
-  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE']
+  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE', 'UPGRADING']
   s.test_files = `git ls-files spec`.split("\n")
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 1.8.7'
+  
+  if File.exists?('UPGRADING')
+    s.post_install_message = File.read("UPGRADING")
+  end
 
   s.add_dependency 'activerecord', '>= 3.0.0'
   s.add_dependency 'activesupport', '>= 3.0.0'
