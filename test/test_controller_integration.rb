@@ -19,4 +19,23 @@ class TestStoreController < MiniTest::Unit::TestCase
     controller.instance_eval { store_controller_for_public_activity }
     assert_equal controller, PublicActivity.class_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
   end
+
+  def test_threadsafe_controller_storage
+    reset_controllers
+    PublicActivity.set_controller(1)
+    assert_equal 1, PublicActivity.get_controller
+
+    a = Thread.new {
+      PublicActivity.set_controller(2)
+      assert_equal 2, PublicActivity.get_controller
+    }
+
+    assert_equal 1, PublicActivity.get_controller
+    # cant really test finalizers though
+  end
+
+  private
+  def reset_controllers
+    PublicActivity.class_eval { class_variable_set(:@@controllers, {}) }
+  end
 end

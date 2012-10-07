@@ -12,7 +12,6 @@ module PublicActivity
   extend ActiveSupport::Autoload
   autoload :Activist
   autoload :Activity
-  autoload :StoreController
   autoload :Tracked
   autoload :Creation
   autoload :Update
@@ -30,4 +29,5 @@ module PublicActivity
   end
 end
 
+require 'public_activity/store_controller'
 require 'public_activity/view_helpers'

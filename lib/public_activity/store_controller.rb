@@ -1,10 +1,16 @@
 module PublicActivity
   # @private
   @@controllers = Hash.new
+  Finalizer = lambda { |id|
+    @@controllers.delete id
+  }
 
   class << self
     # Setter for remembering controller instance
     def set_controller(controller)
+      unless @@controllers.has_key?(Thread.current.object_id)
+        ObjectSpace.define_finalizer Thread.current, Finalizer
+      end if RUBY_VERSION != "1.9.3"
       @@controllers[Thread.current.object_id] = controller
     end
 
