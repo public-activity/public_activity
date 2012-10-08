@@ -1,3 +1,4 @@
+require 'test_helper'
 require 'rails/generators/test_case'
 require 'generators/public_activity/activity/activity_generator'
 require 'generators/public_activity/migration/migration_generator'
