@@ -132,5 +132,10 @@ There are a couple of major differences between 0.3 and 0.4 version. To upgrade,
 
 For more customization go [here](http://rubydoc.info/gems/public_activity/index)
 
+## Useful examples
+
+* [[How to] Set the Activity's owner to current_user by default](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity's-owner-to-current_user-by-default)
+
+
 ## License
 Copyright (c) 2012 Piotrek Okoński, released under the MIT license
