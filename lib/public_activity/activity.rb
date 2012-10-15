@@ -14,7 +14,7 @@ module PublicActivity
     class_attribute :template
 
     # should recipient and owner be accessible?
-    attr_accessible :key, :owner, :parameters, :recipient
+    attr_accessible :key, :owner, :parameters, :recipient, :trackable
     # Virtual attribute returning text description of the activity
     # using basic ERB templating
     #
