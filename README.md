@@ -23,7 +23,9 @@ You can install `public_activity` as you would any other gem:
 
 or in your Gemfile:
 
-    gem 'public_activity'
+```ruby
+gem 'public_activity'
+```
 
 ### Database setup
 
