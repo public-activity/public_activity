@@ -7,7 +7,7 @@ Simply put: it records what has been changed or edited and gives you the ability
 
 Here is a simple example showing what this gem is about:
 
-![Example usage](http://i.imgur.com/uGPSm.png)
+![Example usage](http://i.imgur.com/q0TVx.png)
 
 ## Upgrading to 0.4
 
