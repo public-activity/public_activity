@@ -11,7 +11,7 @@ Here is a simple example showing what this gem is about:
 
 ### Online demo
 
-You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/
+You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
 
 ## Upgrading to 0.4
 
