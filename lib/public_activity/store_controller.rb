@@ -1,6 +1,7 @@
 module PublicActivity
   # @private
   @@controllers = Hash.new
+  # Lambda called after the thread is destroyed.
   Finalizer = lambda { |id|
     @@controllers.delete id
   }
