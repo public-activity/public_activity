@@ -141,7 +141,7 @@ For more customization go [here](http://rubydoc.info/gems/public_activity/index)
 ## Useful examples
 
 * [[How to] Set the Activity's owner to current_user by default](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity's-owner-to-current_user-by-default)
-
+* [[How to] Disable tracking for a class or globally](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Disable-tracking-for-a-class-or-globally)
 
 ## License
 Copyright (c) 2012 Piotrek Okoński, released under the MIT license
