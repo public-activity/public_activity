@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    public_activity (0.4.1)
+    public_activity (0.5.0)
       actionpack (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)

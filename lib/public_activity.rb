@@ -22,7 +22,7 @@ module PublicActivity
 
   # Switches PublicActivity on or off.
   # @param value [Boolean]
-  # @since 0.4.3
+  # @since 0.5.0
   def self.enabled=(value)
     PublicActivity.config.enabled = value
   end
@@ -30,13 +30,13 @@ module PublicActivity
   # Returns `true` if PublicActivity is on, `false` otherwise.
   # Enabled by default.
   # @return [Boolean]
-  # @since 0.4.3
+  # @since 0.5.0
   def self.enabled?
     !!PublicActivity.config.enabled
   end
 
   # Returns PublicActivity's configuration object.
-  # @since 0.4.3
+  # @since 0.5.0
   def self.config
     @@config ||= PublicActivity::Config.instance
   end

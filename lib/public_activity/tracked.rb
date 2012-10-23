@@ -303,7 +303,7 @@ module PublicActivity
     # globally and for this class.
     # @return [Boolean]
     # @api private
-    # @since 0.4.3
+    # @since 0.5.0
     def public_activity_enabled?
       PublicActivity.enabled? && self.class.public_activity_enabled_for_model
     end
