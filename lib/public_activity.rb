@@ -12,12 +12,34 @@ module PublicActivity
   extend ActiveSupport::Autoload
   autoload :Activist
   autoload :Activity
+  autoload :Config
   autoload :Tracked
   autoload :Creation
   autoload :Update
   autoload :Destruction
   autoload :VERSION
   autoload :Common
+
+  # Switches PublicActivity on or off.
+  # @param value [Boolean]
+  # @since 0.4.3
+  def self.enabled=(value)
+    PublicActivity.config.enabled = value
+  end
+
+  # Returns `true` if PublicActivity is on, `false` otherwise.
+  # Enabled by default.
+  # @return [Boolean]
+  # @since 0.4.3
+  def self.enabled?
+    !!PublicActivity.config.enabled
+  end
+
+  # Returns PublicActivity's configuration object.
+  # @since 0.4.3
+  def self.config
+    @@config ||= PublicActivity::Config.instance
+  end
 
   # Module to be included in ActiveRecord models. Adds required functionality.
   module Model

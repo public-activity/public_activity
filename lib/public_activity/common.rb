@@ -78,6 +78,7 @@ module PublicActivity
     #   @option options [Hash] :params Parameters, see
     #     {PublicActivity.resolve_value}
     def create_activity(*args)
+      return unless self.public_activity_enabled?
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)

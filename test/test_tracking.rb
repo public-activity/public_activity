@@ -156,4 +156,30 @@ class TestTracking < MiniTest::Unit::TestCase
     assert_equal "article.update", @article.activities[1].key
     assert_equal "article.destroy", @article.activities[2].key
   end
+
+  def test_globally_disabling_public_activity
+    PublicActivity.enabled = false
+    activity_count_before = PublicActivity::Activity.count
+
+    klass = article
+    @article = klass.new
+    @article.activity :key => 'test'
+    @article.save
+    assert_equal activity_count_before, PublicActivity::Activity.count
+
+    PublicActivity.enabled = true
+  end
+
+  def test_disabling_public_activity_in_a_class
+    activity_count_before = PublicActivity::Activity.count
+
+    klass = article
+    klass.public_activity_off
+    @article = klass.new
+    @article.activity :key => 'test'
+    @article.save
+    assert_equal activity_count_before, PublicActivity::Activity.count
+
+    klass.public_activity_on
+  end
 end

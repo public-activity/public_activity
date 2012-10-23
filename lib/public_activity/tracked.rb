@@ -5,11 +5,12 @@ module PublicActivity
 
     included do
       class_attribute :activity_owner_global, :activity_recipient_global,
-                      :activity_params_global, :activity_hooks
-      self.activity_owner_global     = nil
-      self.activity_recipient_global = nil
-      self.activity_params_global    = {}
-      self.activity_hooks            = {}
+                      :activity_params_global, :activity_hooks, :public_activity_enabled_for_model
+      self.activity_owner_global             = nil
+      self.activity_recipient_global         = nil
+      self.activity_params_global            = {}
+      self.activity_hooks                    = {}
+      self.public_activity_enabled_for_model = true
     end
 
     # @!group Global options
@@ -286,6 +287,25 @@ module PublicActivity
           nil
         end
       end
+
+      # Switches public_activity off for this class
+      def public_activity_off
+        self.public_activity_enabled_for_model = false
+      end
+
+      # Switches public_activity on for this class
+      def public_activity_on
+        self.public_activity_enabled_for_model = true
+      end
+    end
+
+    # Returns true if PublicActivity is enabled
+    # globally and for this class.
+    # @return [Boolean]
+    # @api private
+    # @since 0.4.3
+    def public_activity_enabled?
+      PublicActivity.enabled? && self.class.public_activity_enabled_for_model
     end
 
     # Shortcut for {Tracked::ClassMethods#get_hook}

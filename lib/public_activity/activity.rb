@@ -89,7 +89,7 @@ module PublicActivity
     # == Variables in templates
     # From within a template there are two variables at your disposal:
     # * activity (aliased as *a* for a shortcut)
-    # * params   (aliased as *p*) [converted into a {HashWithIndifferentAccess}]
+    # * params   (aliased as *p*) [converted into a HashWithIndifferentAccess]
     #
     # @example Template for key: _activity.article.create_ (erb)
     #   <p>
