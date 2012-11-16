@@ -65,7 +65,7 @@ end
 And in your views:
 
 ```erb
-<%= for activity in @activities %>
+<% for activity in @activities %>
   <%= render_activity(activity) %>
 <% end %>
 ```
