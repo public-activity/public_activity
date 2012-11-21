@@ -13,6 +13,7 @@ Here is a simple example showing what this gem is about:
 
 You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
 
+The source code of the demo is hosted here: https://github.com/pokonski/activity_blog
 ## Upgrading to 0.4
 
 If you are using versions earlier than 0.4.0 please click [here](#upgrading) or scroll to the "Upgrading" section at the bottom of this README.
