@@ -52,6 +52,16 @@ end
 
 And now, by default create/update/destroy activities are recorded in activities table. This is all you need to start recording activities for basic CRUD actions.
 
+#### Custom activities
+
+You can trigger custom activities by setting all your required parameters and triggering `create_activity` on the tracked model, like this:
+
+```ruby
+@article.activity key: 'article.commented_on', owner: current_user
+@article.create_activity
+```
+
+
 ### Displaying activities
 
 To display them you simply query the `PublicActivity::Activity` ActiveRecord model:
