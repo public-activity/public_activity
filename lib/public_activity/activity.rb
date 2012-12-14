@@ -13,8 +13,6 @@ module PublicActivity
     # Serialize parameters Hash
     serialize :parameters, Hash
 
-    class_attribute :template
-
     # should recipient and owner be accessible?
     attr_accessible :key, :owner, :parameters, :recipient, :trackable
   end
