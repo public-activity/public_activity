@@ -10,6 +10,7 @@ Bundler.require(:default)
 require 'minitest/autorun'
 require 'mocha'
 require 'active_record/connection_adapters/sqlite3_adapter'
+require 'turn/autorun'
 
 require 'stringio'        # silence the output
 $stdout = StringIO.new    # from migrator
