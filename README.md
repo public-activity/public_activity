@@ -61,6 +61,7 @@ You can trigger custom activities by setting all your required parameters and tr
 @article.create_activity
 ```
 
+See this entry http://rubydoc.info/gems/public_activity/PublicActivity/Common:create_activity for more details.
 
 ### Displaying activities
 
