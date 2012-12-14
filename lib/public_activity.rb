@@ -19,6 +19,7 @@ module PublicActivity
   autoload :Destruction
   autoload :VERSION
   autoload :Common
+  autoload :Renderable
 
   # Switches PublicActivity on or off.
   # @param value [Boolean]
