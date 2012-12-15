@@ -1,8 +1,17 @@
-##################################################
-#  NOTE FOR UPGRADING FROM PRE-0.4.0 VERSION     #
-##################################################
+################################################
+#          RUBY 1.8.7 IS NOW DEPRECATED        #
+################################################
+
+The 0.5.1 version of public_activity will be the
+last to support versions older than 1.9.3. Please
+update your Ruby if you wish to continue using
+this gem.
+
+--------------------------------------------------
+|  NOTE FOR UPGRADING FROM PRE-0.4.0 VERSION     |
+--------------------------------------------------
 
 public_activity 0.4.0 brings major changes compared to 0.3.X versions,
-please read https://github.com/pokonski/public_activity#upgrading 
+please read https://github.com/pokonski/public_activity#upgrading
 to learn about all the changes you need to apply to properly
 upgrade your applications.
