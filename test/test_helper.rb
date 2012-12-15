@@ -1,6 +1,6 @@
 require 'bundler'
 Bundler.setup(:default, :development)
-if RUBY_VERSION != "1.8.7"
+if not ENV['NOCOV']
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
@@ -14,7 +14,7 @@ require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'mocha/setup'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
-#require 'turn/autorun'
+require 'turn/autorun' if ENV['CI'] || ENV['PRETTY']
 
 require 'stringio'        # silence the output
 $stdout = StringIO.new    # from migrator
