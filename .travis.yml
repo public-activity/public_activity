@@ -2,12 +2,14 @@ language: ruby
 rvm:
   - 1.9.2
   - 1.9.3
-  - 2.0.0-preview1
 env:
   - NOCOV=true
 matrix:
   allow_failures:
-    - rvm: 2.0.0-preview1
+    - rvm: 2.0.0
+  include:
+    - rvm: 2.0.0
+      env: "NOCOV=true WITH_PRIDE=true"
 email:
   recipients:
     - piotrek@okonski.org
