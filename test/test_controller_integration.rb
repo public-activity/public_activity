@@ -20,17 +20,17 @@ describe PublicActivity::StoreController do
     controller.must_be_same_as PublicActivity.class_eval { class_variable_get(:@@controllers)[Thread.current.object_id] }
   end
 
-  def test_threadsafe_controller_storage
+  it 'stores controller in a threadsafe way' do
     reset_controllers
     PublicActivity.set_controller(1)
-    assert_equal 1, PublicActivity.get_controller
+    PublicActivity.get_controller.must_equal 1
 
     a = Thread.new {
       PublicActivity.set_controller(2)
-      assert_equal 2, PublicActivity.get_controller
+      PublicActivity.get_controller.must_equal 2
     }
 
-    assert_equal 1, PublicActivity.get_controller
+    PublicActivity.get_controller.must_equal 1
     # cant really test finalizers though
   end
 
