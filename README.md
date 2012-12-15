@@ -57,8 +57,7 @@ And now, by default create/update/destroy activities are recorded in activities 
 You can trigger custom activities by setting all your required parameters and triggering `create_activity` on the tracked model, like this:
 
 ```ruby
-@article.activity key: 'article.commented_on', owner: current_user
-@article.create_activity
+@article.create_activity key: 'article.commented_on', owner: current_user
 ```
 
 See this entry http://rubydoc.info/gems/public_activity/PublicActivity/Common:create_activity for more details.
