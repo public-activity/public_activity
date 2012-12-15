@@ -1,4 +1,22 @@
 rvm:
-  - 1.8.7 
   - 1.9.2
   - 1.9.3
+  - 2.0.0
+env:
+  - NOCOV=true
+matrix:
+  allow_failures:
+    - rvm: 2.0.0
+  include:
+    rvm: 2.0.0
+    env:
+      - "WITH_PRIDE=true NOCOV=true"
+  exclude:
+    rvm: 2.0.0
+    env: NOCOV=true
+email:
+  recipients:
+    - piotrek@okonski.org
+    - jakub@okonski.org
+  on_success: change
+  on_failure: always

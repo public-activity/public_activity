@@ -1,16 +1,20 @@
 require 'bundler'
 Bundler.setup(:default, :development)
-if RUBY_VERSION != "1.8.7"
+if not ENV['NOCOV']
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
   end
 end
-Bundler.require(:default)
+$:.unshift File.expand_path('../../lib/', __FILE__)
+require 'active_support/testing/setup_and_teardown'
+require 'public_activity'
 require 'minitest/autorun'
-require 'mocha'
+require 'minitest/pride' if ENV['WITH_PRIDE']
+require 'mocha/setup'
+require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
-require 'turn/autorun'
+require 'turn/autorun' if ENV['CI'] || ENV['PRETTY']
 
 require 'stringio'        # silence the output
 $stdout = StringIO.new    # from migrator
@@ -23,7 +27,7 @@ def article(options = {})
     self.abstract_class = true
     self.table_name = 'articles'
     include PublicActivity::Model
-    tracked options
+    tracked options if options
 
     belongs_to :user
 
@@ -34,3 +38,9 @@ def article(options = {})
 end
 
 class User < ActiveRecord::Base; end
+
+class ViewSpec < MiniTest::Spec
+  include ActiveSupport::Testing::SetupAndTeardown
+  include ActionView::TestCase::Behavior
+end
+MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)
