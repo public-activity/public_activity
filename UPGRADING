@@ -2,8 +2,8 @@
 #          RUBY 1.8.7 IS NOW DEPRECATED        #
 ################################################
 
-The 0.5.1 version of public_activity will be the
-last to support versions older than 1.9.3. Please
+The 0.5 version of public_activity will be the
+last to support versions older than 1.9.2. Please
 update your Ruby if you wish to continue using
 this gem.
 
