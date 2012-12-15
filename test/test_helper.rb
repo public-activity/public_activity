@@ -11,10 +11,10 @@ require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
 require 'minitest/autorun'
 require 'minitest/pride' if ENV['WITH_PRIDE']
-require 'mocha'
+require 'mocha/setup'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
-require 'turn/autorun'
+#require 'turn/autorun'
 
 require 'stringio'        # silence the output
 $stdout = StringIO.new    # from migrator
@@ -27,7 +27,7 @@ def article(options = {})
     self.abstract_class = true
     self.table_name = 'articles'
     include PublicActivity::Model
-    tracked options
+    tracked options if options
 
     belongs_to :user
 

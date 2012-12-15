@@ -149,7 +149,7 @@ describe PublicActivity::Tracked do
       @article.destroy # destroy
 
       @article.activities.count.must_equal 2
-      @article.activities.first.key.must_equal 'activity.article.update'
+      @article.activities.first.key.must_equal 'article.update'
     end
   end
 end

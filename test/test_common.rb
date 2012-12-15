@@ -17,12 +17,12 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
-  it 'inherits global parameters' do
+  it 'inherits instance parameters' do
     subject.activity :params => {:author_name => "Michael"}
     subject.save
     activity = subject.activities.last
 
-    activity.parameters.must_equal @options[:params]
+    activity.parameters[:author_name].must_equal "Michael"
   end
 
   it 'accepts instance recipient' do
