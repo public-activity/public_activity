@@ -25,6 +25,25 @@ describe PublicActivity::Tracked do
     specify { activity.recipient.must_equal              options[:recipient] }
   end
 
+  it 'should reset instance options on successful create_activity' do
+    a = article.new
+    a.activity key: 'test'
+    a.save
+    a.activities.count.must_equal 1
+    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    a.activity key: 'asd'
+    a.create_activity
+    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
+  end
+
+  it 'should not accept global key option' do
+    # this example tests the lack of presence of sth that should not be here
+    a = article(key: 'asd').new
+    a.save
+    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    a.activities.count.must_equal 1
+  end
+
   describe 'disabling functionality' do
     it 'allows for global disable' do
       PublicActivity.enabled = false
