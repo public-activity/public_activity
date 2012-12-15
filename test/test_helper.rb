@@ -15,7 +15,7 @@ require 'minitest/autorun'
 require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
-require 'turn/autorun' if ENV['CI'] || ENV['PRETTY']
+require 'turn/autorun' if !ENV['CI']
 
 require 'stringio'        # silence the output
 $stdout = StringIO.new    # from migrator
