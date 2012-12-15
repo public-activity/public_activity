@@ -1,5 +1,7 @@
-require 'bundler'
-Bundler.setup(:default, :development)
+require "rubygems"
+require "bundler"
+Bundler.setup(:default, :test)
+
 if not ENV['NOCOV']
   require 'simplecov'
   SimpleCov.start do
@@ -11,7 +13,6 @@ require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
 require 'minitest/autorun'
 require 'minitest/pride' if ENV['WITH_PRIDE']
-require 'mocha/setup'
 require 'active_record'
 require 'active_record/connection_adapters/sqlite3_adapter'
 require 'turn/autorun' if ENV['CI'] || ENV['PRETTY']
