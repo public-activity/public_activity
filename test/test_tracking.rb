@@ -25,6 +25,33 @@ describe PublicActivity::Tracked do
     specify { activity.recipient.must_equal              options[:recipient] }
   end
 
+  describe 'disabling functionality' do
+    it 'allows for global disable' do
+      PublicActivity.enabled = false
+      activity_count_before = PublicActivity::Activity.count
+
+      @article = article().new
+      @article.save
+      PublicActivity::Activity.count.must_equal activity_count_before
+
+      PublicActivity.enabled = true
+    end
+
+    it 'allows for class-wide disable' do
+      activity_count_before = PublicActivity::Activity.count
+
+      klass = article
+      klass.public_activity_off
+      @article = klass.new
+      @article.save
+      PublicActivity::Activity.count.must_equal activity_count_before
+
+      klass.public_activity_on
+      @article.save
+      PublicActivity::Activity.count.must_be :>, activity_count_before
+    end
+  end
+
   describe '#tracked' do
     subject { article(nil) }
 
@@ -107,6 +134,14 @@ describe PublicActivity::Tracked do
       subject.activity_hooks.must_include :proper
       subject.activity_hooks.must_include :proper_proc
       subject.activity_hooks.wont_include :unpassable
+    end
+
+    describe 'global options' do
+      subject { article(recipient: :test, owner: :test2, params: {a: 'b'}) }
+
+      specify { subject.activity_recipient_global.must_equal :test }
+      specify { subject.activity_owner_global.must_equal :test2    }
+      specify { subject.activity_params_global.must_equal(a: 'b')  }
     end
   end
 
