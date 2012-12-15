@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    public_activity (0.5.0)
+    public_activity (0.5.1.1)
       actionpack (>= 3.0.0)
       activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
@@ -39,6 +39,7 @@ GEM
     journey (1.0.4)
     json (1.7.5)
     metaclass (0.0.1)
+    minitest (3.2.0)
     mocha (0.12.2)
       metaclass (~> 0.0.1)
     multi_json (1.3.6)
@@ -59,10 +60,6 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
-    simplecov (0.6.4)
-      multi_json (~> 1.0)
-      simplecov-html (~> 0.5.3)
-    simplecov-html (0.5.3)
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -70,7 +67,7 @@ GEM
     sqlite3 (1.3.6)
     thor (0.16.0)
     tilt (1.3.3)
-    tzinfo (0.3.33)
+    tzinfo (0.3.35)
     yard (0.8.2.1)
 
 PLATFORMS
@@ -78,10 +75,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (>= 1.1)
+  minitest (= 3.2.0)
   mocha (>= 0.12.1)
   public_activity!
   railties (>= 3.0.0)
   rake (>= 0.9)
-  simplecov (>= 0.6.4)
   sqlite3
   yard

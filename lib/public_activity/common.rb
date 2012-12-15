@@ -88,6 +88,7 @@ module PublicActivity
           :recipient  => options[:recipient],
           :parameters => options[:params]
         )
+        reset_activity_instance_options
       end
     end
 
@@ -106,7 +107,7 @@ module PublicActivity
       # key
       options = args.extract_options!
       action = (args.first || options[:action]).try(:to_s)
-      if action.nil? and !options.has_key?(:key)
+      if action.nil? and !options.has_key?(:key) and !self.activity_key
         raise NoKeyProvided, "No key provided for #{self.class.name}"
       end
       key = (options[:key] ||
@@ -139,6 +140,17 @@ module PublicActivity
         :recipient  => recipient,
         :params     => params
       }
+    end
+
+    # Resets all instance options on the object
+    # triggered by a successful #create_activity, should not be
+    # called from any other place, or from application code.
+    # @private
+    def reset_activity_instance_options
+      @activity_params = {}
+      @activity_key = nil
+      @activity_owner = nil
+      @activity_recipient = nil
     end
   end
 end

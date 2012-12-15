@@ -6,10 +6,10 @@ class TestTracking < MiniTest::Unit::TestCase
     # TODO: test :owner on real object
     options = {:key => 'key', :params => {:a => 1}}
     @article.activity(options)
-    @article.save
     assert_equal(options[:key], @article.activity_key)
     #assert_equal(@article.activity_owner, options[:owner])
     assert_equal(options[:params], @article.activity_params)
+    @article.save
     assert_equal(options[:key], @article.activities.last.key)
     #assert_equal(@article.activities.last.owner, options[:owner])
     assert_equal(options[:params], @article.activities.last.parameters)
@@ -57,6 +57,17 @@ class TestTracking < MiniTest::Unit::TestCase
     assert_includes klass.included_modules, PublicActivity::Creation
     assert_includes klass.included_modules, PublicActivity::Destruction
     assert_includes klass.included_modules, PublicActivity::Update
+  end
+
+  def test_reset_instance_options_on_save
+    a = article.new
+    a.activity :key => 'test'
+    a.save
+    a.activities.count.must_equal 1
+    proc {a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    a.activity :key => 'asd'
+    a.create_activity
+    proc {a.create_activity}.must_raise PublicActivity::NoKeyProvided
   end
 
   def test_tracked_options_owner
