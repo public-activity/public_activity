@@ -107,12 +107,12 @@ module PublicActivity
       # key
       options = args.extract_options!
       action = (args.first || options[:action]).try(:to_s)
-      if action.nil? and !options.has_key?(:key) and !self.activity_key
-        raise NoKeyProvided, "No key provided for #{self.class.name}"
-      end
+
       key = (options[:key] ||
             self.activity_key ||
-            (self.class.name.parameterize('_') + "." + action.to_s)).to_s
+            ((self.class.name.parameterize('_') + "." + action.to_s) if action)).try(:to_s)
+
+      raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
 
       # user responsible for the activity
       owner = PublicActivity.resolve_value(self,
