@@ -19,7 +19,6 @@ module PublicActivity
 
   # Common methods shared across the gem.
   module Common
-    extend ActiveSupport::Concern
     # Directly creates activity record in the database, based on supplied options.
     #
     # It's meant for creating custom activities while *preserving* *all*
