@@ -76,7 +76,7 @@ end
 And in your views:
 
 ```erb
-<% for activity in @activities %>
+<% @activities.each do |activity| %>
   <%= render_activity(activity) %>
 <% end %>
 ```
@@ -87,7 +87,7 @@ You can also pass options to both `activity#render` and `#render_activity` metho
 A useful example would be to render activities wrapped in layout, which shares common elements of an activity, like a timestamp, owner's avatar etc.
 
 ```erb
-<% for activity in @activities %>
+<% @activities.each do |activity| %>
   <%= render_activity(activity, :layout => :activity) %>
 <% end %>
 ```
