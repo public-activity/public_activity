@@ -63,11 +63,11 @@ class TestTracking < MiniTest::Unit::TestCase
     a = article.new
     a.activity :key => 'test'
     a.save
-    a.activities.count.must_equal 1
-    proc {a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    assert_equal 1, a.activities.count
+    assert_raises(PublicActivity::NoKeyProvided) {a.create_activity}
     a.activity :key => 'asd'
     a.create_activity
-    proc {a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    assert_raises(PublicActivity::NoKeyProvided) {a.create_activity}
   end
 
   def test_tracked_options_owner
