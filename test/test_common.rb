@@ -1,5 +1,9 @@
 require 'test_helper'
 
+CamelCase = Class.new do
+  include PublicActivity::Common
+end
+
 class TestCommon < MiniTest::Unit::TestCase
 
   def test_default_settings
@@ -93,6 +97,24 @@ class TestCommon < MiniTest::Unit::TestCase
     }
     PublicActivity.resolve_value(context, p)
     PublicActivity.resolve_value(context, :accessor)
+  end
+
+  def test_key_on_camelcase_classes
+    assert_equal 'my_custom_key', CamelCase.new.extract_key(:create, :key => :my_custom_key)
+
+    @camel_case = CamelCase.new
+
+    def @camel_case.activity_key
+      "my_custom_key"
+    end
+    #camel_case.activity :key => 'my_custom_key'
+    assert_equal 'my_custom_key', @camel_case.extract_key(:create, {})
+
+    @camel_case = CamelCase.new
+    def @camel_case.activity_key
+      nil
+    end
+    assert_equal 'camel_case.create', @camel_case.extract_key(:create, {})
   end
 
 end
