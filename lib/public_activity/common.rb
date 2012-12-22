@@ -107,9 +107,7 @@ module PublicActivity
       options = args.extract_options!
       action = (args.first || options[:action]).try(:to_s)
 
-      key = (options[:key] ||
-            self.activity_key ||
-            ((self.class.name.parameterize('_') + "." + action.to_s) if action)).try(:to_s)
+      key = extract_key(action, options)
 
       raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
 
@@ -139,6 +137,12 @@ module PublicActivity
         :recipient  => recipient,
         :params     => params
       }
+    end
+
+    def extract_key(action, options)
+      (options[:key] ||
+        self.activity_key ||
+        ((self.class.name.underscore + "." + action.to_s) if action)).try(:to_s)
     end
 
     # Resets all instance options on the object
