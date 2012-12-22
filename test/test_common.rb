@@ -46,7 +46,7 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
-  describe 'extract key' do
+  describe '#extract_key' do
     CamelCase = Class.new do
       include PublicActivity::Common
     end
