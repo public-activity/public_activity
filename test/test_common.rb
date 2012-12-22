@@ -46,6 +46,34 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
+  describe 'extract key' do
+    CamelCase = Class.new do
+      include PublicActivity::Common
+    end
+
+    before do
+      @camel_case = CamelCase.new
+    end
+
+    it 'assigns key value from options hash' do
+      @camel_case.extract_key(:create, :key => :my_custom_key).must_equal "my_custom_key"
+    end
+
+    it 'assigns key to value of activity_key if set' do
+      def @camel_case.activity_key
+        "my_custom_key"
+      end
+      @camel_case.extract_key(:create, {}).must_equal "my_custom_key"
+    end
+
+    it 'assigns key based on class name as fallback' do
+      def @camel_case.activity_key
+        nil
+      end
+      @camel_case.extract_key(:create, {}).must_equal "camel_case.create"
+    end
+  end
+
   # no key implicated or given
   specify { ->{subject.prepare_settings}.must_raise PublicActivity::NoKeyProvided }
 
