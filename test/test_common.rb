@@ -47,30 +47,39 @@ describe PublicActivity::Common do
   end
 
   describe '#extract_key' do
-    CamelCase = Class.new do
-      include PublicActivity::Common
-    end
-
-    before do
-      @camel_case = CamelCase.new
-    end
-
-    it 'assigns key value from options hash' do
-      @camel_case.extract_key(:create, :key => :my_custom_key).must_equal "my_custom_key"
-    end
-
-    it 'assigns key to value of activity_key if set' do
-      def @camel_case.activity_key
-        "my_custom_key"
+    describe 'for class#activity_key method' do
+      before do
+        @article = article(:owner => :user).new(:user => @owner)
       end
-      @camel_case.extract_key(:create, {}).must_equal "my_custom_key"
+
+      it 'assigns key to value of activity_key if set' do
+        def @article.activity_key; "my_custom_key" end
+
+        @article.extract_key(:create, {}).must_equal "my_custom_key"
+      end
+
+      it 'assigns key based on class name as fallback' do
+        def @article.activity_key; nil end
+
+        @article.extract_key(:create).must_equal "article.create"
+      end
+
+      it 'assigns key value from options hash' do
+        @article.extract_key(:create, :key => :my_custom_key).must_equal "my_custom_key"
+      end
     end
 
-    it 'assigns key based on class name as fallback' do
-      def @camel_case.activity_key
-        nil
+    describe 'for camel cased classes' do
+      before do
+        class CamelCase < article(:owner => :user)
+          def self.name; 'CamelCase' end
+        end
+        @camel_case = CamelCase.new
       end
-      @camel_case.extract_key(:create, {}).must_equal "camel_case.create"
+
+      it 'assigns generates key from class name' do
+        @camel_case.extract_key(:create, {}).must_equal "camel_case.create"
+      end
     end
   end
 
