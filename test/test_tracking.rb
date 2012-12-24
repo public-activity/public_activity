@@ -25,6 +25,25 @@ describe PublicActivity::Tracked do
     specify { activity.recipient.must_equal              options[:recipient] }
   end
 
+  it 'can be tracked and be an activist at the same time' do
+    a = Class.new(ActiveRecord::Base) do
+      self.abstract_class = true
+      self.table_name = 'articles'
+      include PublicActivity::Model
+      tracked
+      activist
+
+      belongs_to :user
+
+      def self.name
+        "Article"
+      end
+    end.new
+    a.save
+    a.activities.last.trackable_id.must_equal a.id
+    a.activities.last.owner_id.must_equal nil
+  end
+
   it 'should reset instance options on successful create_activity' do
     a = article.new
     a.activity key: 'test'
