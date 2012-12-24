@@ -50,6 +50,25 @@ class TestTracking < MiniTest::Unit::TestCase
     assert_includes klass.included_modules, PublicActivity::Update
   end
 
+  def test_tracked_and_activist_at_the_same_time
+    a = Class.new(ActiveRecord::Base) do
+      self.abstract_class = true
+      self.table_name = 'articles'
+      include PublicActivity::Model
+      tracked
+      activist
+
+      belongs_to :user
+
+      def self.name
+        "Article"
+      end
+    end.new
+    a.save
+    assert_equal a.id, a.activities.last.trackable_id
+    assert_equal nil, a.activities.last.owner_id
+  end
+
   def test_tracked_options_only
     options = {:only => [:create, :destroy, :update]}
     klass = article(options)
