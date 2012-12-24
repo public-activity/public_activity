@@ -39,9 +39,9 @@ describe PublicActivity::Common do
 
   it 'accepts owner as a symbol' do
     klass = article(:owner => :user)
-    @article = klass.new(:user => @owner)
-    @article.save
-    activity = @article.activities.last
+    article = klass.new(:user => @owner)
+    article.save
+    activity = article.activities.last
 
     activity.owner.must_equal @owner
   end
