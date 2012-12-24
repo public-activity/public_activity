@@ -140,10 +140,14 @@ module PublicActivity
       }
     end
 
-    def extract_key(action, options)
-      (options[:key] ||
-        self.activity_key ||
-        ((self.class.name.underscore + "." + action.to_s) if action)).try(:to_s)
+    # Helper method to serialize class name into relevant key
+    # @return [String] the resulted key
+    # @param [Symbol] or [String] the name of the operation to be done on class
+    # @param [Hash] options to be used on key generation, defaults to {}
+    def extract_key(action, options = {})
+      (options[:key] || self.activity_key ||
+        ((self.class.name.underscore.parameterize('_') + "." + action.to_s) if action)
+      ).try(:to_s)
     end
 
     # Resets all instance options on the object
