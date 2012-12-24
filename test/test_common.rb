@@ -4,6 +4,12 @@ CamelCase = Class.new do
   include PublicActivity::Common
 end
 
+module ::MyNamespace
+  class CamelCase < article(:owner => :user)
+    def self.name; 'MyNamespace::CamelCase' end
+  end
+end
+
 class TestCommon < MiniTest::Unit::TestCase
 
   def test_default_settings
@@ -117,4 +123,8 @@ class TestCommon < MiniTest::Unit::TestCase
     assert_equal 'camel_case.create', @camel_case.extract_key(:create, {})
   end
 
+  def test_key_on_namespaced_classes
+    @namespaced_camel_case = MyNamespace::CamelCase.new
+    assert_equal 'my_namespace_camel_case.create', @namespaced_camel_case.extract_key(:create, {})
+  end
 end
