@@ -21,6 +21,7 @@ module PublicActivity
       # In model:
       #
       #   class User < ActiveRecord::Base
+      #     include PublicActivity::Model
       #     activist
       #   end
       #
