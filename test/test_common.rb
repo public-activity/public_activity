@@ -81,6 +81,21 @@ describe PublicActivity::Common do
         @camel_case.extract_key(:create, {}).must_equal "camel_case.create"
       end
     end
+
+    describe 'for namespaced classes' do
+      before do
+        module ::MyNamespace;
+          class CamelCase < article(:owner => :user)
+            def self.name; 'MyNamespace::CamelCase' end
+          end
+        end
+        @namespaced_camel_case = MyNamespace::CamelCase.new
+      end
+
+      it 'assigns key value from options hash' do
+        @namespaced_camel_case.extract_key(:create, {}).must_equal "my_namespace_camel_case.create"
+      end
+    end
   end
 
   # no key implicated or given
