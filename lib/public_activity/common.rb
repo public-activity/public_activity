@@ -145,7 +145,7 @@ module PublicActivity
     # @param [Hash] options to be used on key generation, defaults to {}
     def extract_key(action, options = {})
       (options[:key] || self.activity_key ||
-        ((self.class.name.underscore.parameterize('_') + "." + action.to_s) if action)
+        ((self.class.name.underscore.gsub('/', '_') + "." + action.to_s) if action)
       ).try(:to_s)
     end
 
