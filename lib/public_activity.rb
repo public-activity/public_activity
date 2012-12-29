@@ -10,13 +10,13 @@ require 'active_record'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
-  autoload :Activist
+  autoload :Activist, 'public_activity/roles/activist.rb'
   autoload :Activity
   autoload :Config
-  autoload :Tracked
-  autoload :Creation
-  autoload :Update
-  autoload :Destruction
+  autoload :Tracked, 'public_activity/roles/tracked.rb'
+  autoload :Creation, 'public_activity/actions/creation.rb'
+  autoload :Update, 'public_activity/actions/update.rb'
+  autoload :Destruction, 'public_activity/actions/destruction.rb'
   autoload :VERSION
   autoload :Common
   autoload :Renderable
@@ -52,5 +52,5 @@ module PublicActivity
   end
 end
 
-require 'public_activity/store_controller'
-require 'public_activity/view_helpers'
+require 'public_activity/utility/store_controller'
+require 'public_activity/utility/view_helpers'
