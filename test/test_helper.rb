@@ -23,6 +23,8 @@ ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':me
 ActiveRecord::Migrator.migrate(File.expand_path('../migrations', __FILE__))
 $stdout = STDOUT
 
+PublicActivity.config # enforce ORM loading temporarily
+
 def article(options = {})
   Class.new(ActiveRecord::Base) do
     self.abstract_class = true

@@ -81,12 +81,7 @@ module PublicActivity
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)
-        self.activities.create(
-          :key        => options[:key],
-          :owner      => options[:owner],
-          :recipient  => options[:recipient],
-          :parameters => options[:params]
-        )
+        PublicActivity::Adapter.create_activity(self, options)
         reset_activity_instance_options
       end
     end

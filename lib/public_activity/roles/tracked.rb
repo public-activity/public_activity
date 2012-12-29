@@ -264,7 +264,7 @@ module PublicActivity
           self.activity_hooks = options[:on].delete_if {|_, v| !v.is_a? Proc}.symbolize_keys if RUBY_VERSION == "1.8.7"
           self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys if RUBY_VERSION != "1.8.7"
         end
-        has_many :activities, :class_name => "PublicActivity::Activity", :as => :trackable
+        has_many :activities, :class_name => "::PublicActivity::Activity", :as => :trackable
 
         nil
       end

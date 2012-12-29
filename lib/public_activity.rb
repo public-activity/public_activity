@@ -10,8 +10,6 @@ require 'active_record'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
-  autoload :Activist, 'public_activity/roles/activist.rb'
-  autoload :Activity
   autoload :Config
   autoload :Tracked, 'public_activity/roles/tracked.rb'
   autoload :Creation, 'public_activity/actions/creation.rb'
@@ -51,6 +49,8 @@ module PublicActivity
     end
   end
 end
+
+require 'public_activity/orm/active_record'
 
 require 'public_activity/utility/store_controller'
 require 'public_activity/utility/view_helpers'
