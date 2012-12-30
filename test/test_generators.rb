@@ -1,3 +1,5 @@
+exit unless ENV["PA_ORM"] == "active_record"
+
 require 'test_helper'
 require 'rails/generators/test_case'
 require 'generators/public_activity/activity/activity_generator'

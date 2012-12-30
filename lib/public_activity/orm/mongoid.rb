@@ -1,9 +1,9 @@
-require_relative "active_record/activity.rb"
-require_relative "active_record/adapter.rb"
-require_relative "active_record/activist.rb"
-require_relative "active_record/trackable.rb"
+require_relative "mongoid/activity.rb"
+require_relative "mongoid/adapter.rb"
+require_relative "mongoid/activist.rb"
+require_relative "mongoid/trackable.rb"
 
-m = PublicActivity::ORM::ActiveRecord
+m = PublicActivity::ORM::Mongoid
 
 ::PublicActivity.const_set(:Activity, m.const_get(:Activity))
 ::PublicActivity.const_set(:Adapter, m.const_get(:Adapter))

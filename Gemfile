@@ -1,8 +1,17 @@
+ENV['PA_ORM'] ||= 'active_record'
+
 source :rubygems
 
-gemspec
 
 gem 'yard'
+
+case ENV['PA_ORM']
+when 'active_record'
+  gem 'activerecord', '~> 3.0'
+
+when 'mongoid'
+  gem 'mongoid', '~> 3.0'
+end
 
 group :development, :test do
   gem 'turn', require: false
@@ -11,3 +20,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'minitest', '>= 4.3.0'
 end
+
+gemspec

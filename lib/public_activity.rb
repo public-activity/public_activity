@@ -1,6 +1,5 @@
 require 'active_support'
 require 'action_view'
-require 'active_record'
 
 # +public_activity+ keeps track of changes made to models
 # and allows you to display them to the users.
@@ -11,10 +10,10 @@ module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
   autoload :Config
-  autoload :Tracked, 'public_activity/roles/tracked.rb'
-  autoload :Creation, 'public_activity/actions/creation.rb'
-  autoload :Update, 'public_activity/actions/update.rb'
-  autoload :Destruction, 'public_activity/actions/destruction.rb'
+  autoload :Tracked,      'public_activity/roles/tracked.rb'
+  autoload :Creation,     'public_activity/actions/creation.rb'
+  autoload :Update,       'public_activity/actions/update.rb'
+  autoload :Destruction,  'public_activity/actions/destruction.rb'
   autoload :VERSION
   autoload :Common
   autoload :Renderable
@@ -50,8 +49,6 @@ module PublicActivity
     end
   end
 end
-
-require 'public_activity/orm/active_record'
 
 require 'public_activity/utility/store_controller'
 require 'public_activity/utility/view_helpers'

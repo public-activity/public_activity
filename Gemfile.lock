@@ -3,7 +3,6 @@ PATH
   specs:
     public_activity (1.0.0)
       actionpack (>= 3.0.0)
-      activerecord (>= 3.0.0)
       activesupport (>= 3.0.0)
       i18n (>= 0.5.0)
       railties (>= 3.0.0)
@@ -83,6 +82,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord (~> 3.0)
   minitest (>= 4.3.0)
   mocha (>= 0.12.1)
   public_activity!

@@ -1,0 +1,7 @@
+test:
+  sessions:
+    default:
+      hosts:
+        - localhost:27017
+      # Define the default database name.
+      database: public_activity_test
