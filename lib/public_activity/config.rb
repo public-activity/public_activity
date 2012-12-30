@@ -17,6 +17,7 @@ module PublicActivity
     end
 
     def load_orm
+      require 'active_record' if @orm == :active_record
       require_relative "orm/#{@orm}"
     end
   end

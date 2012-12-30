@@ -48,36 +48,39 @@ when :active_record
 when :mongoid
   require 'mongoid'
 
-  Mongoid.load!(File.expand_path("test/mongoid.yml"), :test)
-
-  class Article
-    include Mongoid::Document
-    include Mongoid::Timestamps
-    include PublicActivity::Model
-    belongs_to :user
-
-    field :name, type: String
-    field :published, type: Boolean
-  end
-
-  def article(options = {})
-    Article.class_eval do
-      tracked options if options
-    end
-
-    Article
-  end
+  Mongoid.load!(File.expand_path("test/mongoid.yml"), ENV['CI'] ? :test_travis : :test)
 
   class User
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    has_many :articles, class_name: "Article"
+    has_many :articles, inverse_class_name: 'Article'
 
     field :name, type: String
   end
+
+  def article(options = {})
+    klass = Class.new do
+      include Mongoid::Document
+      include Mongoid::Timestamps
+      include PublicActivity::Model
+
+      belongs_to :user, inverse_class_name: 'User'
+
+      field :name, type: String
+      field :published, type: Boolean
+
+      tracked options if options
+    end
+
+    Object.const_set(:Article, klass)
+    klass
+  end
 end
 
+article()
+
+puts Article.inspect
 class ViewSpec < MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
   include ActionView::TestCase::Behavior

@@ -4,12 +4,18 @@ rvm:
   - 1.9.3
 env:
   - NOCOV=true
+  - PA_ORM=mongoid
+services:
+  - mongodb
 matrix:
   allow_failures:
     - rvm: 2.0.0
   include:
     - rvm: 2.0.0
       env: "NOCOV=true WITH_PRIDE=true"
+  exclude:
+    - rvm: 1.9.2
+    - env: PA_ORM=mongoid
 email:
   recipients:
     - piotrek@okonski.org

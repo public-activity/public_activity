@@ -3,5 +3,13 @@ test:
     default:
       hosts:
         - localhost:27017
-      # Define the default database name.
       database: public_activity_test
+
+test_travis:
+  sessions:
+    default:
+      hosts:
+        - localhost:27017
+      database: public_activity_test
+      username: travis
+      password: travis
