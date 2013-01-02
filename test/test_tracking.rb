@@ -121,7 +121,7 @@ describe PublicActivity::Tracked do
       end.wont_be_empty }
     end
 
-    it 'accepts :except option' do
+    it 'accepts :except option with an array of symbols' do
       options = {:except => [:create]}
       subject.tracked(options)
       options[:only].wont_include :create
@@ -133,13 +133,34 @@ describe PublicActivity::Tracked do
       subject.must_include PublicActivity::Destruction
     end
 
-    it 'accepts :only option' do
+    it 'accepts :except option with a single symbol' do
+      options = {:except => :create}
+      subject.tracked(options)
+      options[:only].wont_include :create
+      options[:only].must_include :update
+      options[:only].must_include :destroy
+
+      subject.wont_include PublicActivity::Creation
+      subject.must_include PublicActivity::Update
+      subject.must_include PublicActivity::Destruction
+    end
+
+    it 'accepts :only option with an array of symbols' do
       options = {:only => [:create, :update]}
       subject.tracked(options)
       subject.must_include PublicActivity::Common
       subject.must_include PublicActivity::Creation
       subject.wont_include PublicActivity::Destruction
       subject.must_include PublicActivity::Update
+    end
+
+    it 'accepts :only option with a single symbol' do
+      options = {:only => :create}
+      subject.tracked(options)
+      subject.must_include PublicActivity::Common
+      subject.must_include PublicActivity::Creation
+      subject.wont_include PublicActivity::Destruction
+      subject.wont_include PublicActivity::Update
     end
 
     it 'accepts :owner option' do
