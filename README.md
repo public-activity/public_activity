@@ -3,6 +3,23 @@
 public_activity provides smooth activity tracking for your ActiveRecord models in Rails 3.
 Simply put: it records what has been changed or edited and gives you the ability to present those recorded activities to users - in a similar way to how Github does it.
 
+## Table of contents
+
+1. [Example](#example)
+    * [Demo](#online-demo)
+3. **[Upgrading](#upgrading)**
+4. [Setup](#setup)
+    1. [Gem installation](#gem-installation)
+    2. [Database setup](#database-setup)
+    3. [Model configuration](#model-configuration)
+    4. [Custom activities](#custom-activities)
+    5. [Displaying activities](#displaying-activities)
+        1. [Activity views](#activity-views)
+        2. [i18n](#i18n)
+5. [Documentation](#documentation)
+6. **[Help](#help)**
+
+
 ## Example
 
 Here is a simple example showing what this gem is about:
@@ -14,11 +31,12 @@ Here is a simple example showing what this gem is about:
 You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
 
 The source code of the demo is hosted here: https://github.com/pokonski/activity_blog
-## Upgrading to 0.4
+
+## Upgrading from pre-0.4.0
 
 If you are using versions earlier than 0.4.0 please click [here](#upgrading) or scroll to the "Upgrading" section at the bottom of this README.
 
-## First time setup
+## Setup
 
 ### Gem installation
 
@@ -94,7 +112,7 @@ A useful example would be to render activities wrapped in layout, which shares c
 
 The activity will be wrapped with the `app/views/layouts/activity` layout, in the above example.
 
-### Activity views
+#### Activity views
 
 Since version `0.4.0` you can use views to render activities. `public_activity` looks for views in `app/views/public_activity`, and this is now the *default* behaviour.
 
@@ -104,7 +122,7 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using `I18n#translate` method (see the section below).
 
-### i18n
+#### i18n
 
 Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided.
 
@@ -154,6 +172,14 @@ For more customization go [here](http://rubydoc.info/gems/public_activity/index)
 * [[How to] Set the Activity's owner to current_user by default](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity's-owner-to-current_user-by-default)
 * [[How to] Disable tracking for a class or globally](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Disable-tracking-for-a-class-or-globally)
 * [[How to] Create custom activities](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Create-custom-activities)
+
+## Help
+
+If you need help with using public_activity please visit our discussion group and ask a question there:
+
+https://groups.google.com/forum/?fromgroups#!forum/public-activity
+
+Please do not ask general questions in the Github Issues.
 
 ## License
 Copyright (c) 2012 Piotrek Okoński, released under the MIT license
