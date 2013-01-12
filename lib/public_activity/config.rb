@@ -1,7 +1,7 @@
 module PublicActivity
   # Class used to initialize configuration object.
   class Config
-    include Singleton
+    include ::Singleton
     attr_accessor :enabled
 
     # Static public variable to specify which orm is used
