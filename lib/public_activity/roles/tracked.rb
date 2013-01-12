@@ -6,11 +6,7 @@ module PublicActivity
     included do
       class_attribute :activity_owner_global, :activity_recipient_global,
                       :activity_params_global, :activity_hooks, :public_activity_enabled_for_model
-      self.activity_owner_global             = nil
-      self.activity_recipient_global         = nil
-      self.activity_params_global            = {}
-      self.activity_hooks                    = {}
-      self.public_activity_enabled_for_model = true
+      set_public_activity_class_defaults
     end
 
     # @!group Global options
@@ -294,6 +290,17 @@ module PublicActivity
 
       # Switches public_activity on for this class
       def public_activity_on
+        self.public_activity_enabled_for_model = true
+      end
+
+      private
+      # @since 1.0.0
+      # @api private
+      def set_public_activity_class_defaults
+        self.activity_owner_global             = nil
+        self.activity_recipient_global         = nil
+        self.activity_params_global            = {}
+        self.activity_hooks                    = {}
         self.public_activity_enabled_for_model = true
       end
     end
