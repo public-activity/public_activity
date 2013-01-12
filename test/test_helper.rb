@@ -55,7 +55,7 @@ when :active_record
 when :mongoid
   require 'mongoid'
 
-  Mongoid.load!(File.expand_path("test/mongoid.yml"), ENV['CI'] ? :test_travis : :test)
+  Mongoid.load!(File.expand_path("test/mongoid.yml"), :test)
 
   class User
     include Mongoid::Document
