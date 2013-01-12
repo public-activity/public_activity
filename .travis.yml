@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.9.2
   - 1.9.3
 env:
   - NOCOV=true
@@ -13,9 +12,6 @@ matrix:
   include:
     - rvm: 2.0.0
       env: "NOCOV=true WITH_PRIDE=true"
-  exclude:
-    - rvm: 1.9.2
-    - env: PA_ORM=mongoid
 email:
   recipients:
     - piotrek@okonski.org
