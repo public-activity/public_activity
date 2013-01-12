@@ -25,6 +25,10 @@ $stdout = STDOUT
 
 PublicActivity.config # enforce ORM loading temporarily
 
+PublicActivity::Activity.class_eval do
+  attr_accessible :nonstandard
+end
+
 def article(options = {})
   Class.new(ActiveRecord::Base) do
     self.abstract_class = true

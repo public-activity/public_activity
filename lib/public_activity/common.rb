@@ -102,19 +102,19 @@ module PublicActivity
       options = args.extract_options!
       action = (args.first || options[:action]).try(:to_s)
 
-      key = extract_key(action, options)
+      options[:key] = extract_key(action, options)
 
-      raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
+      raise NoKeyProvided, "No key provided for #{self.class.name}" unless options[:key]
 
       # user responsible for the activity
-      owner = PublicActivity.resolve_value(self,
+      options[:owner] = PublicActivity.resolve_value(self,
         options[:owner] ||
         self.activity_owner ||
         self.class.activity_owner_global
       )
 
       # recipient of the activity
-      recipient = PublicActivity.resolve_value(self,
+      options[:recipient] = PublicActivity.resolve_value(self,
         options[:recipient] ||
         self.activity_recipient ||
         self.class.activity_recipient_global
@@ -125,13 +125,10 @@ module PublicActivity
       params.merge!(self.class.activity_params_global)
       params.merge!(self.activity_params) if self.activity_params
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
+      options[:parameters] = params
+      options.delete(:params)
 
-      {
-        :key        => key,
-        :owner      => owner,
-        :recipient  => recipient,
-        :params     => params
-      }
+      options
     end
 
     # Helper method to serialize class name into relevant key
