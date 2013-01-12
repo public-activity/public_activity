@@ -113,6 +113,8 @@ module PublicActivity
 
       raise NoKeyProvided, "No key provided for #{self.class.name}" unless options[:key]
 
+      options.delete(:action)
+
       # user responsible for the activity
       options[:owner] = PublicActivity.resolve_value(self,
         options[:owner] ||
