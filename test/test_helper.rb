@@ -48,6 +48,10 @@ when :active_record
 
   class User < ActiveRecord::Base; end
 
+  PublicActivity::Activity.class_eval do
+      attr_accessible :nonstandard
+  end
+
 when :mongoid
   require 'mongoid'
 
