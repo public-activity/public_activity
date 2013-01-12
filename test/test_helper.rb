@@ -29,11 +29,11 @@ when :active_record
   $stdout = STDOUT
 
   def article(options = {})
-    Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord::Base) do
       self.abstract_class = true
       self.table_name = 'articles'
       include PublicActivity::Model
-      tracked options if options
+      tracked options
 
       belongs_to :user
 
@@ -41,6 +41,7 @@ when :active_record
         "Article"
       end
     end
+    klass
   end
 
   class User < ActiveRecord::Base; end
@@ -54,33 +55,31 @@ when :mongoid
     include Mongoid::Document
     include Mongoid::Timestamps
 
-    has_many :articles, inverse_class_name: 'Article'
+    has_many :articles
 
     field :name, type: String
   end
 
+  class Article
+    include Mongoid::Document
+    include Mongoid::Timestamps
+    include PublicActivity::Model
+
+    belongs_to :user
+
+    field :name, type: String
+    field :published, type: Boolean
+  end
+
   def article(options = {})
-    klass = Class.new do
-      include Mongoid::Document
-      include Mongoid::Timestamps
-      include PublicActivity::Model
-
-      belongs_to :user, inverse_class_name: 'User'
-
-      field :name, type: String
-      field :published, type: Boolean
-
-      tracked options if options
+    Article.class_eval do
+      set_public_activity_class_defaults
+      tracked options
     end
-
-    Object.const_set(:Article, klass)
-    klass
+    Article
   end
 end
 
-article()
-
-puts Article.inspect
 class ViewSpec < MiniTest::Spec
   include ActiveSupport::Testing::SetupAndTeardown
   include ActionView::TestCase::Behavior

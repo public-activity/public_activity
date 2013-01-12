@@ -26,22 +26,34 @@ describe PublicActivity::Tracked do
   end
 
   it 'can be tracked and be an activist at the same time' do
-    a = Class.new(ActiveRecord::Base) do
-      self.abstract_class = true
-      self.table_name = 'articles'
-      include PublicActivity::Model
-      tracked
-      activist
+    if PublicActivity.config.orm == :mongoid
+      class ActivistAndTrackedArticle
+        include Mongoid::Document
+        include Mongoid::Timestamps
+        include PublicActivity::Model
 
-      belongs_to :user
+        belongs_to :user
 
-      def self.name
-        "Article"
+        field :name, type: String
+        field :published, type: Boolean
+        tracked
+        activist
       end
-    end.new
-    a.save
-    a.activities.last.trackable_id.must_equal a.id
-    a.activities.last.owner_id.must_equal nil
+    else
+      class ActivistAndTrackedArticle < ActiveRecord::Base
+        self.table_name = 'articles'
+        include PublicActivity::Model
+        tracked
+        activist
+
+        belongs_to :user
+      end
+    end
+
+    art = ActivistAndTrackedArticle.new
+    art.save
+    art.activities.last.trackable_id.must_equal art.id
+    art.activities.last.owner_id.must_equal nil
   end
 
   it 'should reset instance options on successful create_activity' do
@@ -91,19 +103,33 @@ describe PublicActivity::Tracked do
   end
 
   describe '#tracked' do
-    subject { article(nil) }
+    subject { article(options) }
+    let(:options) { {} }
 
     it 'allows skipping the tracking on CRUD actions' do
-      subject.tracked(:skip_defaults => true)
-      subject.must_include PublicActivity::Common
-      subject.wont_include PublicActivity::Creation
-      subject.wont_include PublicActivity::Update
-      subject.wont_include PublicActivity::Destruction
+      if PublicActivity.config.orm == :mongoid
+        art = Class.new do
+          include Mongoid::Document
+          include Mongoid::Timestamps
+          include PublicActivity::Model
+
+          belongs_to :user
+
+          field :name, type: String
+          field :published, type: Boolean
+          tracked :skip_defaults => true
+        end
+      else
+        art = article(:skip_defaults => true)
+      end
+
+      art.must_include PublicActivity::Common
+      art.wont_include PublicActivity::Creation
+      art.wont_include PublicActivity::Update
+      art.wont_include PublicActivity::Destruction
     end
 
     describe 'default options' do
-      subject { article }
-
       specify { subject.must_include PublicActivity::Creation }
       specify { subject.must_include PublicActivity::Destruction }
       specify { subject.must_include PublicActivity::Update }
@@ -122,24 +148,48 @@ describe PublicActivity::Tracked do
     end
 
     it 'accepts :except option' do
-      options = {:except => [:create]}
-      subject.tracked(options)
-      options[:only].wont_include :create
-      options[:only].must_include :update
-      options[:only].must_include :destroy
+      if PublicActivity.config.orm == :mongoid
+        art = Class.new do
+          include Mongoid::Document
+          include Mongoid::Timestamps
+          include PublicActivity::Model
 
-      subject.wont_include PublicActivity::Creation
-      subject.must_include PublicActivity::Update
-      subject.must_include PublicActivity::Destruction
+          belongs_to :user
+
+          field :name, type: String
+          field :published, type: Boolean
+          tracked :except => [:create]
+        end
+      else
+        art = article(:except => [:create])
+      end
+
+      art.wont_include PublicActivity::Creation
+      art.must_include PublicActivity::Update
+      art.must_include PublicActivity::Destruction
     end
 
     it 'accepts :only option' do
-      options = {:only => [:create, :update]}
-      subject.tracked(options)
-      subject.must_include PublicActivity::Common
-      subject.must_include PublicActivity::Creation
-      subject.wont_include PublicActivity::Destruction
-      subject.must_include PublicActivity::Update
+      if PublicActivity.config.orm == :mongoid
+        art = Class.new do
+          include Mongoid::Document
+          include Mongoid::Timestamps
+          include PublicActivity::Model
+
+          belongs_to :user
+
+          field :name, type: String
+          field :published, type: Boolean
+
+          tracked :only => [:create, :update]
+        end
+      else
+        art = article({:only => [:create, :update]})
+      end
+
+      art.must_include PublicActivity::Creation
+      art.wont_include PublicActivity::Destruction
+      art.must_include PublicActivity::Update
     end
 
     it 'accepts :owner option' do
