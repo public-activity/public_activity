@@ -137,11 +137,12 @@ module PublicActivity
       options[:parameters] = params
       options.delete(:params)
 
-      all_options.each do  |k, v|
-        all_options[k] = PublicActivity.resolve_value(self, v)
-      end.merge! options
-
-      all_options
+      customs = self.class.activity_custom_fields_global
+      customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
+      customs.merge!(all_options)
+      customs.each do  |k, v|
+        customs[k] = PublicActivity.resolve_value(self, v)
+      end.merge options
     end
 
     # Helper method to serialize class name into relevant key
@@ -163,6 +164,7 @@ module PublicActivity
       @activity_key = nil
       @activity_owner = nil
       @activity_recipient = nil
+      @activity_custom_fields = {}
     end
   end
 end

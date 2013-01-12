@@ -14,7 +14,7 @@ when 'mongoid'
 end
 
 group :development, :test do
-  gem 'mocha', '~> 0.13.0'
+  gem 'mocha', '~> 0.13.0', require: false
   gem 'simplecov', '~> 0.7.0'
   gem 'minitest', '>= 4.3.0'
 end

@@ -5,7 +5,8 @@ module PublicActivity
 
     included do
       class_attribute :activity_owner_global, :activity_recipient_global,
-                      :activity_params_global, :activity_hooks, :public_activity_enabled_for_model
+                      :activity_params_global, :activity_hooks, :public_activity_enabled_for_model,
+                      :activity_custom_fields_global
       set_public_activity_class_defaults
     end
 
@@ -90,6 +91,12 @@ module PublicActivity
     attr_accessor :activity_key
     @activity_key = nil
 
+    # Set or get custom fields for later processing
+    #
+    # @return [Hash]
+    attr_accessor :activity_custom_fields
+    @activity_custom_fields = {}
+
     # @!visibility private
     @@activity_hooks = {}
 
@@ -121,10 +128,12 @@ module PublicActivity
     # @param options [Hash] instance options to set on the tracked model
     # @return [nil]
     def activity(options = {})
-      self.activity_key = options[:key] if options[:key]
-      self.activity_owner = options[:owner] if options[:owner]
-      self.activity_params = options[:params] if options[:params]
-      self.activity_recipient = options[:recipient] if options[:recipient]
+      rest = options.clone
+      self.activity_key = rest.delete(:key) if rest[:key]
+      self.activity_owner = rest.delete(:owner) if rest[:owner]
+      self.activity_params = rest.delete(:params) if rest[:params]
+      self.activity_recipient = rest.delete(:recipient) if rest[:recipient]
+      self.activity_custom_fields = rest if rest.count > 0
       nil
     end
 
@@ -221,8 +230,9 @@ module PublicActivity
       #   if the published status is set to true on that article.
       # @param options [Hash] options
       # @return [nil] options
-      def tracked(options = {})
+      def tracked(opts = {})
         include Common
+        options = opts.clone
 
         all_options = [:create, :update, :destroy]
 
@@ -231,9 +241,10 @@ module PublicActivity
           include Destruction
           include Update
         end
+        options.delete(:skip_defaults)
 
         if options[:except]
-          options[:only] = all_options - Array(options[:except])
+          options[:only] = all_options - Array(options.delete(:except))
         end
 
         if options[:only]
@@ -246,20 +257,24 @@ module PublicActivity
               include Update
             end
           end
+          options.delete(:only)
         end
 
         if options[:owner]
-          self.activity_owner_global = options[:owner]
+          self.activity_owner_global = options.delete(:owner)
         end
         if options[:recipient]
-          self.activity_recipient_global = options[:recipient]
+          self.activity_recipient_global = options.delete(:recipient)
         end
         if options[:params]
-          self.activity_params_global = options[:params]
+          self.activity_params_global = options.delete(:params)
         end
         if options.has_key?(:on) and options[:on].is_a? Hash
-          self.activity_hooks = options[:on].delete_if {|_, v| !v.is_a? Proc}.symbolize_keys if RUBY_VERSION == "1.8.7"
-          self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys if RUBY_VERSION != "1.8.7"
+          self.activity_hooks = options.delete(:on).select {|_, v| v.is_a? Proc}.symbolize_keys
+        end
+
+        options.each do |k, v|
+          self.activity_custom_fields_global[k] = v
         end
 
         nil
@@ -302,6 +317,7 @@ module PublicActivity
         self.activity_recipient_global         = nil
         self.activity_params_global            = {}
         self.activity_hooks                    = {}
+        self.activity_custom_fields_global     = {}
         self.public_activity_enabled_for_model = true
       end
     end

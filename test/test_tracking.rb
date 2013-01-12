@@ -56,12 +56,45 @@ describe PublicActivity::Tracked do
     art.activities.last.owner_id.must_equal nil
   end
 
+  describe 'custom fields' do
+    describe 'global' do
+      it 'should resolve symbols' do
+        a = article(nonstandard: :name).new(name: 'Symbol resolved')
+        a.save
+        a.activities.last.nonstandard.must_equal 'Symbol resolved'
+      end
+
+      it 'should resolve procs' do
+        a = article(nonstandard: proc {|_, model| model.name}).new(name: 'Proc resolved')
+        a.save
+        a.activities.last.nonstandard.must_equal 'Proc resolved'
+      end
+    end
+
+    describe 'instance' do
+      it 'should resolve symbols' do
+        a = article.new(name: 'Symbol resolved')
+        a.activity nonstandard: :name
+        a.save
+        a.activities.last.nonstandard.must_equal 'Symbol resolved'
+      end
+
+      it 'should resolve procs' do
+        a = article.new(name: 'Proc resolved')
+        a.activity nonstandard: proc {|_, model| model.name}
+        a.save
+        a.activities.last.nonstandard.must_equal 'Proc resolved'
+      end
+    end
+  end
+
   it 'should reset instance options on successful create_activity' do
     a = article.new
-    a.activity key: 'test'
+    a.activity key: 'test', params: {test: 1}
     a.save
     a.activities.count.must_equal 1
     ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    a.activity_params.must_be_empty
     a.activity key: 'asd'
     a.create_activity
     ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
