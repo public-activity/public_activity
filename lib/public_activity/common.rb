@@ -99,7 +99,14 @@ module PublicActivity
     #   @see #create_activity
     def prepare_settings(*args)
       # key
-      options = args.extract_options!
+      all_options = args.extract_options!
+      options = {
+        key: all_options.delete(:key),
+        owner: all_options.delete(:key),
+        action: all_options.delete(:action),
+        recipient: all_options.delete(:recipient),
+        parameters: all_options.delete(:parameters) || all_options.delete(:params)
+      }
       action = (args.first || options[:action]).try(:to_s)
 
       options[:key] = extract_key(action, options)
@@ -128,7 +135,11 @@ module PublicActivity
       options[:parameters] = params
       options.delete(:params)
 
-      options
+      all_options.each do  |k, v|
+        all_options[k] = PublicActivity.resolve_value(self, v)
+      end.merge! options
+
+      all_options
     end
 
     # Helper method to serialize class name into relevant key
