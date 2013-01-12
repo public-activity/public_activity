@@ -121,7 +121,7 @@ module PublicActivity
       )
 
       #customizable parameters
-      params = options[:params] || {}
+      params = options[:params] || options[:parameters] || {}
       params.merge!(self.class.activity_params_global)
       params.merge!(self.activity_params) if self.activity_params
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
