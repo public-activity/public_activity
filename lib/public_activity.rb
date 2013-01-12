@@ -44,6 +44,7 @@ module PublicActivity
   module Model
     extend ActiveSupport::Concern
     included do
+      ::PublicActivity.config
       include Trackable # associations by tracked
       include Tracked
       include Activist  # optional associations by recipient|owner
