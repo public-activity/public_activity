@@ -1,3 +1,5 @@
+require 'singleton'
+
 module PublicActivity
   # Class used to initialize configuration object.
   class Config
