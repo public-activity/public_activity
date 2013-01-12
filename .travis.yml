@@ -4,7 +4,7 @@ rvm:
   - 1.9.3
 env:
   - NOCOV=true
-  - PA_ORM=mongoid
+  - NOCOV=true PA_ORM=mongoid
 services:
   - mongodb
 matrix:
@@ -15,7 +15,7 @@ matrix:
       env: "NOCOV=true WITH_PRIDE=true"
   exclude:
     - rvm: 1.9.2
-      env: PA_ORM=mongoid
+      env: "NOCOV=true PA_ORM=mongoid"
 email:
   recipients:
     - piotrek@okonski.org
