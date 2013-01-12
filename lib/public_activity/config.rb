@@ -22,9 +22,9 @@ module PublicActivity
 
     def load_orm
       m = ORMMapping[@@orm].tap {|m| m.touch}
-      ::PublicActivity.const_set(:Activity, m.const_get(:Activity))
-      ::PublicActivity.const_set(:Adapter, m.const_get(:Adapter))
-      ::PublicActivity.const_set(:Activist, m.const_get(:Activist))
+      ::PublicActivity.const_set(:Activity,  m.const_get(:Activity))
+      ::PublicActivity.const_set(:Adapter,   m.const_get(:Adapter))
+      ::PublicActivity.const_set(:Activist,  m.const_get(:Activist))
       ::PublicActivity.const_set(:Trackable, m.const_get(:Trackable))
     end
   end
