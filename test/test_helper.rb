@@ -12,9 +12,7 @@ $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
 require 'minitest/autorun'
-require 'minitest/pride' if ENV['WITH_PRIDE']
-require 'turn/autorun' if !ENV['CI']
-
+require 'minitest/pride' if ENV['WITH_PRIDE'] or ENV['PRIDE']
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
