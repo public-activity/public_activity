@@ -4,3 +4,4 @@
 /coverage/
 /*.sublime-workspace
 /tmp
+/Gemfile.lock
