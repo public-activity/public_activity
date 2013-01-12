@@ -16,9 +16,11 @@ require 'minitest/pride' if ENV['WITH_PRIDE']
 require 'turn/autorun' if !ENV['CI']
 
 
-PublicActivity.config.orm = (ENV['PA_ORM'] || :active_record)
+PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
-case PublicActivity.config.orm
+PublicActivity.config # touch config to load ORM, needed in some separate tests
+
+case PublicActivity::Config.orm
 when :active_record
   require 'active_record'
   require 'active_record/connection_adapters/sqlite3_adapter'

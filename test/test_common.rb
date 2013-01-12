@@ -17,6 +17,22 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
+  it 'allows custom fields' do
+    subject.save
+    subject.create_activity :with_custom_fields, nonstandard: "Custom allowed"
+    subject.activities.last.nonstandard.must_equal "Custom allowed"
+  end
+
+  it 'allows resolving custom fields' do
+    subject.name      = "Resolving is great"
+    subject.published = true
+    subject.save
+    subject.create_activity :with_custom_fields, nonstandard: :name
+    subject.activities.last.nonstandard.must_equal "Resolving is great"
+    subject.create_activity :with_custom_fields_2, nonstandard: proc {|_, model| model.published.to_s}
+    subject.activities.last.nonstandard.must_equal "true"
+  end
+
   it 'inherits instance parameters' do
     subject.activity :params => {:author_name => "Michael"}
     subject.save

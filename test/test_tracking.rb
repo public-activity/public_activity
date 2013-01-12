@@ -130,6 +130,8 @@ describe PublicActivity::Tracked do
     end
 
     describe 'default options' do
+      subject { article }
+
       specify { subject.must_include PublicActivity::Creation }
       specify { subject.must_include PublicActivity::Destruction }
       specify { subject.must_include PublicActivity::Update }

@@ -99,39 +99,49 @@ module PublicActivity
     #   @see #create_activity
     def prepare_settings(*args)
       # key
-      options = args.extract_options!
+      all_options = args.extract_options!
+      options = {
+        key: all_options.delete(:key),
+        owner: all_options.delete(:key),
+        action: all_options.delete(:action),
+        recipient: all_options.delete(:recipient),
+        parameters: all_options.delete(:parameters) || all_options.delete(:params)
+      }
       action = (args.first || options[:action]).try(:to_s)
 
-      key = extract_key(action, options)
+      options[:key] = extract_key(action, options)
 
-      raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
+      raise NoKeyProvided, "No key provided for #{self.class.name}" unless options[:key]
+
+      options.delete(:action)
 
       # user responsible for the activity
-      owner = PublicActivity.resolve_value(self,
+      options[:owner] = PublicActivity.resolve_value(self,
         options[:owner] ||
         self.activity_owner ||
         self.class.activity_owner_global
       )
 
       # recipient of the activity
-      recipient = PublicActivity.resolve_value(self,
+      options[:recipient] = PublicActivity.resolve_value(self,
         options[:recipient] ||
         self.activity_recipient ||
         self.class.activity_recipient_global
       )
 
       #customizable parameters
-      params = options[:params] || {}
+      params = options[:params] || options[:parameters] || {}
       params.merge!(self.class.activity_params_global)
       params.merge!(self.activity_params) if self.activity_params
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
+      options[:parameters] = params
+      options.delete(:params)
 
-      {
-        :key        => key,
-        :owner      => owner,
-        :recipient  => recipient,
-        :params     => params
-      }
+      all_options.each do  |k, v|
+        all_options[k] = PublicActivity.resolve_value(self, v)
+      end.merge! options
+
+      all_options
     end
 
     # Helper method to serialize class name into relevant key

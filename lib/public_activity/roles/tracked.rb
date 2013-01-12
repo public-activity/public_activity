@@ -181,7 +181,7 @@ module PublicActivity
       #   Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common#create_activity}
       #   for a guide on how to manually record activities.
       # [:only]
-      #   Accepts array of symbols, of which correct is any combination of the three:
+      #   Accepts a symbol or an array of symbols, of which any combination of the three is accepted:
       #   * _:create_
       #   * _:update_
       #   * _:destroy_
@@ -192,15 +192,16 @@ module PublicActivity
       #   * _article.create_
       #   * _article.update_
       #   * _article.destroy_
-      #   Since only three options are valid in this array,
+      #   Since only three options are valid,
       #   see _:except_ option for a shorter version
       # [:except]
-      #   Accepts array of symbols with values like in _:only_, above.
+      #   Accepts a symbol or an array of symbols with values like in _:only_, above.
       #   Values provided will be subtracted from all default actions:
       #   (create, update, destroy).
       #
       #   So, passing _create_ would track and automatically create
-      #   activities on _update_ and _destroy_ actions.
+      #   activities on _update_ and _destroy_ actions,
+      #   but not on the _create_ action.
       # [:on]
       #   Accepts a Hash with key being the *action* on which to execute *value* (proc)
       #   Currently supported only for CRUD actions which are enabled in _:only_
@@ -231,12 +232,12 @@ module PublicActivity
           include Update
         end
 
-        if options[:except].is_a? Array
-          options[:only] = all_options - options[:except]
+        if options[:except]
+          options[:only] = all_options - Array(options[:except])
         end
 
-        if options[:only].is_a? Array
-          options[:only].each do |opt|
+        if options[:only]
+          Array(options[:only]).each do |opt|
             if opt.eql?(:create)
               include Creation
             elsif opt.eql?(:destroy)
