@@ -10,6 +10,7 @@ module PublicActivity
   extend ActiveSupport::Autoload
   autoload :Config
   autoload :Tracked,      'public_activity/roles/tracked.rb'
+  autoload :Deactivatable,'public_activity/roles/deactivatable.rb'
   autoload :Creation,     'public_activity/actions/creation.rb'
   autoload :Update,       'public_activity/actions/update.rb'
   autoload :Destruction,  'public_activity/actions/destruction.rb'
@@ -42,8 +43,8 @@ module PublicActivity
   module Model
     extend ActiveSupport::Concern
     included do
-      ::PublicActivity.config
-      include Trackable # associations by tracked
+      include Common
+      include Deactivatable
       include Tracked
       include Activist  # optional associations by recipient|owner
     end
