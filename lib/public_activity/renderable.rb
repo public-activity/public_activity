@@ -63,7 +63,7 @@ module PublicActivity
       if params.has_key? :display
         # if i18n has been requested, let it render and bail
         return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
-        partial_path = params[:display].to_s
+        partial_path = 'public_activity/'+params[:display].to_s
       end
       # if we're going to render a partial, let it throw when none can be found
       params_indifferent = self.parameters.with_indifferent_access
