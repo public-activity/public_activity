@@ -29,18 +29,20 @@ describe 'PublicActivity::Activity Rendering' do
       rendered.must_equal template_output + 'fake'
     end
 
+    it 'uses requested partial'
+
     it 'uses view partials without controller' do
       PublicActivity.set_controller(nil)
       subject.render(self, :two => 2)
       rendered.must_equal template_output
     end
 
-    it 'uses translations with no view partials available' do
+    it 'uses translations only when requested' do
       I18n.config.backend.store_translations(:en,
         {:activity => {:test => '%{one} %{two}'}}
       )
       @controller.view_paths.paths.clear
-      subject.render(self, :two => 2)
+      subject.render(self, two: 2, display: :i18n)
       rendered.must_equal '1 2'
     end
   end

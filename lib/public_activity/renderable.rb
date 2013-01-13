@@ -59,21 +59,24 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      begin
-        params_indifferent = self.parameters.with_indifferent_access
-        params_indifferent.merge!(params)
-        controller = PublicActivity.get_controller
-        context.render :partial => self.template_path(self.key),
-          :layout => params_indifferent.delete(:layout),
-          :locals =>
-            {:a => self, :activity => self,
-             :controller => controller,
-             :current_user => controller.respond_to?(:current_user) ?
-                  controller.current_user : nil ,
-             :p => params_indifferent, :params => params_indifferent}
-      rescue ActionView::MissingTemplate
-        context.render :text => self.text(params)
+      partial_path = nil
+      if params.has_key? :display
+        # if i18n has been requested, let it render and bail
+        return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
+        partial_path = params[:display].to_s
       end
+      # if we're going to render a partial, let it throw when none can be found
+      params_indifferent = self.parameters.with_indifferent_access
+      params_indifferent.merge!(params)
+      controller = PublicActivity.get_controller
+      context.render :partial => (partial_path || self.template_path(self.key)),
+        :layout => params_indifferent.delete(:layout),
+        :locals =>
+          {:a => self, :activity => self,
+           :controller => controller,
+           :current_user => controller.respond_to?(:current_user) ?
+                controller.current_user : nil ,
+           :p => params_indifferent, :params => params_indifferent}
     end
 
     protected
