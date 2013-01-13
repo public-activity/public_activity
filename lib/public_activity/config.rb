@@ -27,6 +27,8 @@ module PublicActivity
     def self.orm(orm = nil)
       @@orm = (orm ? orm.to_sym : false) || @@orm
     end
+    def self.orm=(orm=nil); orm(orm); end
+    def orm(orm=nil); self.class.orm(orm); end
 
     def load_orm
       require "public_activity/orm/#{@@orm.to_s}"
