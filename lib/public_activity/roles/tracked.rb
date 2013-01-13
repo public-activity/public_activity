@@ -1,7 +1,6 @@
 module PublicActivity
   # Main module extending classes we want to keep track of.
   module Tracked
-    include Common
     extend ActiveSupport::Concern
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:

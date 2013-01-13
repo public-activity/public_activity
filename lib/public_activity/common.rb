@@ -22,6 +22,8 @@ module PublicActivity
     extend ActiveSupport::Concern
 
     included do
+      ::PublicActivity.config # it's the first module to be loaded into models
+                              # we need to have pieces provided by orm loaded
       include Trackable
       class_attribute :activity_owner_global, :activity_recipient_global,
                       :activity_params_global, :activity_hooks, :activity_custom_fields_global,
