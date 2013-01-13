@@ -26,8 +26,7 @@ module PublicActivity
                               # we need to have pieces provided by orm loaded
       include Trackable
       class_attribute :activity_owner_global, :activity_recipient_global,
-                      :activity_params_global, :activity_hooks, :activity_custom_fields_global,
-                      :public_activity_enabled_for_model
+                      :activity_params_global, :activity_hooks, :activity_custom_fields_global
       set_public_activity_class_defaults
     end
 
@@ -122,17 +121,7 @@ module PublicActivity
     @@activity_hooks = {}
 
     # @!endgroup
-
     module ClassMethods
-      # Switches public_activity off for this class
-      def public_activity_off
-        self.public_activity_enabled_for_model = false
-      end
-
-      # Switches public_activity on for this class
-      def public_activity_on
-        self.public_activity_enabled_for_model = true
-      end
       #
       # @since 1.0.0
       # @api private
@@ -142,7 +131,6 @@ module PublicActivity
         self.activity_params_global            = {}
         self.activity_hooks                    = {}
         self.activity_custom_fields_global     = {}
-        self.public_activity_enabled_for_model = true
       end
 
       # Extracts a hook from the _:on_ option provided in
@@ -171,7 +159,7 @@ module PublicActivity
     # @api private
     # @since 0.5.0
     def public_activity_enabled?
-      PublicActivity.enabled? && self.class.public_activity_enabled_for_model
+      PublicActivity.enabled? 
     end
     #
     # Shortcut for {Tracked::ClassMethods#get_hook}
