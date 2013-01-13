@@ -89,3 +89,12 @@ class ViewSpec < MiniTest::Spec
   include ActionView::TestCase::Behavior
 end
 MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)
+
+if PublicActivity::Config.orm == :mongoid && ENV['PA_PURGE']
+  # takes under half a second for the whole suite
+  MiniTest::Spec.class_eval do
+    before :each do
+      Mongoid::Config.purge!
+    end
+  end
+end
