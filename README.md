@@ -57,7 +57,9 @@ an initializer file in your Rails application with this line inside:
 
 ```ruby
 # config/initializers/public_activity.rb
-PublicActivity::Config.orm = :mongoid
+PublicActivity::Config.set do
+  orm :mongoid
+end
 ```
 
 **(ActiveRecord only)** Create migration for activities and migrate the database (in your Rails project):
