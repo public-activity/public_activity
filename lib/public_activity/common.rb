@@ -250,9 +250,11 @@ module PublicActivity
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)
-        PublicActivity::Adapter.create_activity(self, options)
         reset_activity_instance_options
+        PublicActivity::Adapter.create_activity(self, options)
       end
+
+      return nil
     end
 
     # Prepares settings used during creation of Activity record.
