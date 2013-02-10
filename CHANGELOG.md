@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+* #create_activity now correctly returns activity object.
+* Fixed :owner not being set correctly when passed to #create_activity (thanks to ![Drew Miller](https://github.com/mewdriller))
+
 ## 1.0 (released 10/02/2013)
 
 * **Now supports Mongoid 3 and Active Record.**
@@ -12,7 +17,7 @@
   and skip the default CRUD tracking.
 * `#render_activity` now accepts Symbols or Strings for :layout parameter.
   ### Example
-  
+
   ```ruby
   # All look for app/views/layouts/_activity.erb
   render_activity @activity, :layout => "activity"

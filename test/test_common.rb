@@ -23,6 +23,17 @@ describe PublicActivity::Common do
     subject.activities.last.nonstandard.must_equal "Custom allowed"
   end
 
+  it '#create_activity returns a new activity object' do
+    subject.save
+    subject.create_activity("some.key").must_be_kind_of PublicActivity::Activity
+  end
+
+  it 'allows passing owner through #create_activity' do
+    subject.save
+    activity = subject.create_activity("some.key", :owner => @owner)
+    activity.owner.must_equal @owner
+  end
+
   it 'allows resolving custom fields' do
     subject.name      = "Resolving is great"
     subject.published = true
