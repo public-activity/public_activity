@@ -36,6 +36,19 @@ module PublicActivity
     #     <% end %>
     #   </ul>
     #
+    # = Layouts
+    # You can supply a layout that will be used for activity partials
+    # with :layout param.
+    # Keep in mind that layouts for partials are also partials.
+    # @example Supply a layout
+    #   # in views:
+    #   #   This will look for a layout in app/views/layouts/_activity_wrapper.erb
+    #   render_activity(@activity, :layout => "activity_wrapper")
+    #
+    #   # app/views/layouts/_activity_wrapper.erb
+    #   <p><%= a.created_at %></p>
+    #   <%= yield %>
+    #
     # = Creating a template
     # To use templates for formatting how the activity should render,
     # create a template based on activity key, for example:
@@ -45,7 +58,7 @@ module PublicActivity
     #
     # Note that if a key consists of more than three parts splitted by commas, your
     # directory structure will have to be deeper, for example:
-    #   activity.article.comments.destroy => /app/views/public_activity/articles/comments/_destroy.html.erb
+    #   activity.article.comments.destroy => app/views/public_activity/articles/comments/_destroy.html.erb
     #
     # == Variables in templates
     # From within a template there are two variables at your disposal:
@@ -69,8 +82,9 @@ module PublicActivity
       params_indifferent = self.parameters.with_indifferent_access
       params_indifferent.merge!(params)
       controller = PublicActivity.get_controller
+      layout = params_indifferent.delete(:layout).to_s
       context.render :partial => (partial_path || self.template_path(self.key)),
-        :layout => params_indifferent.delete(:layout),
+        :layout => layout[0,8] == "layouts/" ? layout : "layouts/#{layout}",
         :locals =>
           {:a => self, :activity => self,
            :controller => controller,
