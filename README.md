@@ -1,21 +1,22 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
-public_activity provides smooth activity tracking for your **ActiveRecord** and **Mongoid 3** models in Rails 3.
-Simply put: it records what has been changed or edited and gives you the ability to present those recorded activities to users - in a similar way to how Github does it.
+_public_activity_ provides smooth activity tracking for your **ActiveRecord** and **Mongoid 3** models in Rails 3.
+Simply put: it records what has been changed or created and gives you the ability to present those 
+recorded activities to users - in a similar way to how GitHub does it.
 
 ## Table of contents
 
 1. [Example](#example)
-    * [Demo](#online-demo)
+  * [Demo](#online-demo)
 3. **[Upgrading](#upgrading)**
 4. [Setup](#setup)
-    1. [Gem installation](#gem-installation)
-    2. [Database setup](#database-setup)
-    3. [Model configuration](#model-configuration)
-    4. [Custom activities](#custom-activities)
-    5. [Displaying activities](#displaying-activities)
-        1. [Activity views](#activity-views)
-        2. [i18n](#i18n)
+  1. [Gem installation](#gem-installation)
+  2. [Database setup](#database-setup)
+  3. [Model configuration](#model-configuration)
+  4. [Custom activities](#custom-activities)
+  5. [Displaying activities](#displaying-activities)
+    1. [Activity views](#activity-views)
+    2. [i18n](#i18n)
 5. [Documentation](#documentation)
 6. **[Help](#help)**
 
@@ -52,8 +53,8 @@ gem 'public_activity'
 
 ### Database setup
 
-By default public_activity uses ActiveRecord. If you want to use Mongoid as your public_activity backend, create
-an initializer file in your Rails application with this line inside:
+By default _public_activity_ uses Active Record. If you want to use Mongoid as your backend, create
+an initializer file in your Rails application with this code inside:
 
 ```ruby
 # config/initializers/public_activity.rb
@@ -71,7 +72,7 @@ end
 
 Include `PublicActivity::Model` and add `tracked` to the model you want to keep track of:
 
-_ActiveRecord:_
+For _ActiveRecord:_
 
 ```ruby
 class Article < ActiveRecord::Base
@@ -80,7 +81,7 @@ class Article < ActiveRecord::Base
 end
 ```
 
-_Mongoid:_
+For _Mongoid:_
 
 ```ruby
 class Article
@@ -90,13 +91,16 @@ class Article
 end
 ```
 
-And now, by default create/update/destroy activities are recorded in activities table. This is all you need to start recording activities for basic CRUD actions.
+And now, by default create/update/destroy activities are recorded in activities table. 
+This is all you need to start recording activities for basic CRUD actions.
 
-If you don't need `#tracked` but still want the comfort of `#create_activity`, you can include only the lightweight `Common` module instead of `Model`.
+_Optional_: If you don't need `#tracked` but still want the comfort of `#create_activity`, 
+you can include only the lightweight `Common` module instead of `Model`.
 
 #### Custom activities
 
-You can trigger custom activities by setting all your required parameters and triggering `create_activity` on the tracked model, like this:
+You can trigger custom activities by setting all your required parameters and triggering `create_activity` 
+on the tracked model, like this:
 
 ```ruby
 @article.create_activity key: 'article.commented_on', owner: current_user
@@ -125,8 +129,12 @@ And in your views:
 
 *Note*: `render_activity` is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
 
-You can also pass options to both `activity#render` and `#render_activity` methods, which are passed deeper to the `render_partial` method.
-A useful example would be to render activities wrapped in layout, which shares common elements of an activity, like a timestamp, owner's avatar etc.
+#### Layouts
+
+You can also pass options to both `activity#render` and `#render_activity` methods, which are passed deeper 
+to the internally used `render_partial` method.
+A useful example would be to render activities wrapped in layout, which shares common elements of an activity, 
+like a timestamp, owner's avatar etc:
 
 ```erb
 <% @activities.each do |activity| %>
@@ -134,7 +142,9 @@ A useful example would be to render activities wrapped in layout, which shares c
 <% end %>
 ```
 
-The activity will be wrapped with the `app/views/layouts/activity` layout, in the above example.
+The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, in the above example.
+
+**Important**: please note that layouts for activities are also partials. Hence the `_` prefix.
 
 #### Activity views
 
@@ -164,6 +174,8 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 
 ## Upgrading
 
+**Read this if you have been using versions older than 0.4.**
+
 There are a couple of major differences between 0.3 and 0.4 version. To upgrade, follow these steps:
 
 1.  Add `include PublicActivity::Model` above `tracked` method call in your tracked models, like this:
@@ -187,12 +199,12 @@ There are a couple of major differences between 0.3 and 0.4 version. To upgrade,
     end
     ```
 
-2.   public_activity's config YAML file is no longer used (by default in `config/pba.yml`). Move your YAML contents to your `config/locales/*.yml` files.
+2.   _public_activity_'s config YAML file is no longer used (by default in `config/pba.yml`). Move your YAML contents to your `config/locales/*.yml` files.
 
      <br/>**IMPORTANT**: Locales are no longer rendered with ERB, this has been removed in favor of real view partials like in actual Rails apps.
      Read [Activity views](#activity-views) section above to learn how to use those templates.<br/>
 
-3.   (**ActiveRecord only**) Generate and run migration which adds new column to `activities` table:
+3.   **(ActiveRecord only)** Generate and run migration which adds new column to `activities` table:
 
      ```bash
      rails g public_activity:migration_upgrade
