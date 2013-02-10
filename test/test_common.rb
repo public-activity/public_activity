@@ -29,7 +29,8 @@ describe PublicActivity::Common do
   end
 
   it 'allows passing owner through #create_activity' do
-    article = article().new.save
+    article = article().new
+    article.save
     activity = article.create_activity("some.key", :owner => @owner)
     activity.owner.must_equal @owner
   end
