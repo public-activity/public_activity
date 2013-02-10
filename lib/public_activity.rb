@@ -51,5 +51,9 @@ module PublicActivity
   end
 end
 
+# Force Active Record ORM to load
+# makes initializer optional for default config
+PublicActivity.config if defined? ActiveRecord
+
 require 'public_activity/utility/store_controller'
 require 'public_activity/utility/view_helpers'
