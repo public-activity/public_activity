@@ -10,7 +10,15 @@
 * `#tracked` can now accept a single Symbol for its `:only` and `:except` options.
 * It is now possible to include `PublicActivity::Common` in your models if you just want to use `#create_activity` method
   and skip the default CRUD tracking.
-
+* `#render_activity` now accepts Symbols or Strings for :layout parameter.
+  ### Example
+  
+  ```ruby
+  # All look for app/views/layouts/_activity.erb
+  render_activity @activity, :layout => "activity"
+  render_activity @activity, :layout => "layouts/activity"
+  render_activity @activity, :layout => :activity
+  ```
 ## 0.5.4
 
 * Fixed support for namespaced classes when transforming into view path.
