@@ -42,10 +42,12 @@ module PublicActivity
     # Keep in mind that layouts for partials are also partials.
     # @example Supply a layout
     #   # in views:
-    #   #   This will look for a layout in app/views/layouts/_activity_wrapper.erb
-    #   render_activity(@activity, :layout => "activity_wrapper")
+    #   #   All examples look for a layout in app/views/layouts/_activity.erb
+    #    render_activity @activity, :layout => "activity"
+    #    render_activity @activity, :layout => "layouts/activity"
+    #    render_activity @activity, :layout => :activity
     #
-    #   # app/views/layouts/_activity_wrapper.erb
+    #   # app/views/layouts/_activity.erb
     #   <p><%= a.created_at %></p>
     #   <%= yield %>
     #
