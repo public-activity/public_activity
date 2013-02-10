@@ -1,7 +1,7 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
 _public_activity_ provides smooth activity tracking for your **ActiveRecord** and **Mongoid 3** models in Rails 3.
-Simply put: it records what has been changed or created and gives you the ability to present those 
+Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
 ## Table of contents
@@ -19,7 +19,6 @@ recorded activities to users - in a similar way to how GitHub does it.
     2. [i18n](#i18n)
 5. [Documentation](#documentation)
 6. **[Help](#help)**
-
 
 ## Example
 
@@ -91,15 +90,15 @@ class Article
 end
 ```
 
-And now, by default create/update/destroy activities are recorded in activities table. 
+And now, by default create/update/destroy activities are recorded in activities table.
 This is all you need to start recording activities for basic CRUD actions.
 
-_Optional_: If you don't need `#tracked` but still want the comfort of `#create_activity`, 
+_Optional_: If you don't need `#tracked` but still want the comfort of `#create_activity`,
 you can include only the lightweight `Common` module instead of `Model`.
 
 #### Custom activities
 
-You can trigger custom activities by setting all your required parameters and triggering `create_activity` 
+You can trigger custom activities by setting all your required parameters and triggering `create_activity`
 on the tracked model, like this:
 
 ```ruby
@@ -131,9 +130,9 @@ And in your views:
 
 #### Layouts
 
-You can also pass options to both `activity#render` and `#render_activity` methods, which are passed deeper 
+You can also pass options to both `activity#render` and `#render_activity` methods, which are passed deeper
 to the internally used `render_partial` method.
-A useful example would be to render activities wrapped in layout, which shares common elements of an activity, 
+A useful example would be to render activities wrapped in layout, which shares common elements of an activity,
 like a timestamp, owner's avatar etc:
 
 ```erb
@@ -179,7 +178,7 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 There are a couple of major differences between 0.3 and 0.4 version. To upgrade, follow these steps:
 
 1.  Add `include PublicActivity::Model` above `tracked` method call in your tracked models, like this:
-    
+
     _ActiveRecord:_
 
     ```ruby

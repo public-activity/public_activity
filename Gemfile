@@ -7,8 +7,6 @@ gem 'yard', '~> 0.8'
 case ENV['PA_ORM']
 when 'active_record'
   gem 'activerecord', '~> 3.0'
-
-
 when 'mongoid'
   gem 'mongoid', '~> 3.0'
 end
