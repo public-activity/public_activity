@@ -2,7 +2,6 @@ ENV['PA_ORM'] ||= 'active_record'
 
 source :rubygems
 
-gem 'yard', '~> 0.8'
 
 case ENV['PA_ORM']
 when 'active_record'
@@ -16,6 +15,8 @@ group :development, :test do
   gem 'mocha', '~> 0.13.0', require: false
   gem 'simplecov', '~> 0.7.0'
   gem 'minitest', '>= 4.3.0'
+  gem 'redcarpet'
+  gem 'yard', '~> 0.8'
 end
 
 gemspec
