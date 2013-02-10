@@ -273,7 +273,7 @@ module PublicActivity
       all_options = args.extract_options!
       options = {
         key: all_options.delete(:key),
-        owner: all_options.delete(:key),
+        owner: all_options.delete(:owner),
         action: all_options.delete(:action),
         recipient: all_options.delete(:recipient),
         parameters: all_options.delete(:parameters) || all_options.delete(:params)
