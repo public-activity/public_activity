@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0 (unreleased)
+## 1.0 (released 10/02/2013)
 
 * **Now supports Mongoid 3 and Active Record.**
 * Added indexes for polymorphic column pairs to speed up queries in ActiveRecord
