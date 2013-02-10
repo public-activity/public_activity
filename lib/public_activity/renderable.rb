@@ -84,9 +84,13 @@ module PublicActivity
       params_indifferent = self.parameters.with_indifferent_access
       params_indifferent.merge!(params)
       controller = PublicActivity.get_controller
-      layout = params_indifferent.delete(:layout).to_s
+      layout = params_indifferent.delete(:layout)
+      if layout
+        layout = layout.to_s
+        layout = layout[0,8] == "layouts/" ? layout : "layouts/#{layout}"
+      end
       context.render :partial => (partial_path || self.template_path(self.key)),
-        :layout => layout[0,8] == "layouts/" ? layout : "layouts/#{layout}",
+        :layout => layout,
         :locals =>
           {:a => self, :activity => self,
            :controller => controller,

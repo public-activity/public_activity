@@ -45,5 +45,17 @@ describe 'PublicActivity::Activity Rendering' do
       subject.render(self, two: 2, display: :i18n)
       rendered.must_equal '1 2'
     end
+
+    it "uses specified layout" do
+      PublicActivity.set_controller(nil)
+      subject.render(self, :layout => "activity")
+      rendered.must_include "Here be the layouts"
+
+      subject.render(self, :layout => "layouts/activity")
+      rendered.must_include "Here be the layouts"
+
+      subject.render(self, :layout => :activity)
+      rendered.must_include "Here be the layouts"
+    end
   end
 end
