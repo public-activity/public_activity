@@ -3,7 +3,7 @@
 ## 1.0.1
 
 * #create_activity now correctly returns activity object.
-* Fixed :owner not being set correctly when passed to #create_activity (thanks to ![Drew Miller](https://github.com/mewdriller))
+* Fixed :owner not being set correctly when passed to #create_activity (thanks to [Drew Miller](https://github.com/mewdriller))
 
 ## 1.0 (released 10/02/2013)
 
