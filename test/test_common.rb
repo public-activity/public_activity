@@ -25,12 +25,12 @@ describe PublicActivity::Common do
 
   it '#create_activity returns a new activity object' do
     subject.save
-    subject.create_activity("some.key").must_be_kind_of PublicActivity::Activity
+    subject.create_activity("some.key").wont_be_nil
   end
 
   it 'allows passing owner through #create_activity' do
-    subject.save
-    activity = subject.create_activity("some.key", :owner => @owner)
+    article = article().new.save
+    activity = article.create_activity("some.key", :owner => @owner)
     activity.owner.must_equal @owner
   end
 
