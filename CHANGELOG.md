@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+* Fixed undefined constant PublicActivity::Activity for Activist associations (thanks to [Стас Сушков](https://github.com/stas))
+
 ## 1.0.1
 
 * #create_activity now correctly returns activity object.
