@@ -12,6 +12,30 @@ describe PublicActivity::Activist do
       klass.reflect_on_association(:activities_as_owner).options[:inverse_of].must_equal :owner
     end
 
-    klass.reflect_on_association(:activities_as_owner).options[:class_name].must_equal "PublicActivity::Activity"
+    klass.reflect_on_association(:activities_as_owner).options[:class_name].must_equal "::PublicActivity::Activity"
+  end
+
+  it 'returns activities from association' do
+    case PublicActivity::Config.orm
+      when :active_record
+        class ActivistUser < ActiveRecord::Base
+          include PublicActivity::Model
+          self.table_name = 'users'
+          activist
+        end
+      when :mongoid
+        class ActivistUser
+          include Mongoid::Document
+          include PublicActivity::Model
+          activist
+
+          field :name, type: String
+      end
+    end
+    owner = ActivistUser.create(:name => "Peter Pan")
+    a = article(owner: owner).new
+    a.save
+
+    owner.activities_as_owner.length.must_equal 1
   end
 end
