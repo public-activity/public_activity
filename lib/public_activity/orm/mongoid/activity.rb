@@ -20,7 +20,7 @@ module PublicActivity
         field :key,         type: String
         field :parameters,  type: Hash
 
-        default_scope desc(:created_at)
+        scope :sorted, lambda { desc(:created_at) }
       end
     end
   end
