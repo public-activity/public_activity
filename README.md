@@ -8,6 +8,7 @@ recorded activities to users - in a similar way to how GitHub does it.
 
 1. [Example](#example)
   * [Demo](#online-demo)
+  * [Screencast](#screencast)
 3. **[Upgrading](#upgrading)**
 4. [Setup](#setup)
   1. [Gem installation](#gem-installation)
@@ -31,6 +32,10 @@ Here is a simple example showing what this gem is about:
 You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
 
 The source code of the demo is hosted here: https://github.com/pokonski/activity_blog
+
+## Screencast
+
+Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-activity) describing how to integrate Public Activity in your Rails Application.
 
 ## Upgrading from pre-0.4.0
 
