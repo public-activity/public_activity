@@ -308,7 +308,7 @@ module PublicActivity
       options[:parameters] = params
       options.delete(:params)
 
-      customs = self.class.activity_custom_fields_global
+      customs = self.class.activity_custom_fields_global.clone
       customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
       customs.merge!(all_options)
       customs.each do  |k, v|
