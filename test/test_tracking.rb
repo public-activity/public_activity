@@ -108,6 +108,13 @@ describe PublicActivity::Tracked do
     a.activities.count.must_equal 1
   end
 
+  it 'should not change global custom fields' do
+    a = article(nonstandard: 'global').new
+    a.activity nonstandard: 'instance'
+    a.save
+    a.class.activity_custom_fields_global.must_equal nonstandard: 'global'
+  end
+
   describe 'disabling functionality' do
     it 'allows for global disable' do
       PublicActivity.enabled = false
