@@ -19,6 +19,8 @@ module PublicActivity
 
         field :key,         type: String
         field :parameters,  type: Hash
+
+        scope :recently, lambda { desc(:created_at) }
       end
     end
   end

@@ -17,6 +17,8 @@ module PublicActivity
 
         # should recipient and owner be accessible?
         attr_accessible :key, :owner, :parameters, :recipient, :trackable
+
+        scope :recently, lambda { order("#{quoted_table_name}.created_at DESC") }
       end
     end
   end
