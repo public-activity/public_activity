@@ -16,7 +16,7 @@ module PublicActivity
         serialize :parameters, Hash
 
         # should recipient and owner be accessible?
-        attr_accessible :key, :owner, :parameters, :recipient, :trackable
+        #attr_accessible :key, :owner, :parameters, :recipient, :trackable
       end
     end
   end

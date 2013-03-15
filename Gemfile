@@ -1,13 +1,13 @@
 ENV['PA_ORM'] ||= 'active_record'
 
-source :rubygems
+source "https://rubygems.org"
 
 
 case ENV['PA_ORM']
 when 'active_record'
-  gem 'activerecord', '~> 3.0'
+  gem 'activerecord', '4.0.0beta1'
 when 'mongoid'
-  gem 'mongoid', '~> 3.0'
+  gem 'mongoid', '~> 3.1.2'
 end
 
 group :development, :test do
