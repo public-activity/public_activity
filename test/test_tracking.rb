@@ -7,7 +7,8 @@ describe PublicActivity::Tracked do
       { :key => 'key',
         :params => {:a => 1},
         :owner => User.create,
-        :recipient => User.create }
+        :recipient => User.create,
+        :creator => User.create }
     end
     before(:each) { subject.activity(options) }
     let(:activity){ subject.save; subject.activities.last }
@@ -23,6 +24,9 @@ describe PublicActivity::Tracked do
 
     specify { subject.activity_recipient.must_be_same_as options[:recipient] }
     specify { activity.recipient.must_equal              options[:recipient] }
+
+    specify { subject.activity_creator.must_be_same_as options[:creator] }
+    specify { activity.creator.must_equal              options[:creator] }
   end
 
   it 'can be tracked and be an activist at the same time' do
@@ -267,10 +271,11 @@ describe PublicActivity::Tracked do
     end
 
     describe 'global options' do
-      subject { article(recipient: :test, owner: :test2, params: {a: 'b'}) }
+      subject { article(creator: :test, recipient: :test2, owner: :test3, params: {a: 'b'}) }
 
-      specify { subject.activity_recipient_global.must_equal :test }
-      specify { subject.activity_owner_global.must_equal :test2    }
+      specify { subject.activity_creator_global.must_equal :test }
+      specify { subject.activity_recipient_global.must_equal :test2 }
+      specify { subject.activity_owner_global.must_equal :test3    }
       specify { subject.activity_params_global.must_equal(a: 'b')  }
     end
   end

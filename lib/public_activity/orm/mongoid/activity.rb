@@ -16,6 +16,7 @@ module PublicActivity
         belongs_to :owner,      polymorphic: true
         # Define ownership to a resource targeted by this activity
         belongs_to :recipient,  polymorphic: true
+        belongs_to :creator,  polymorphic: true
 
         field :key,         type: String
         field :parameters,  type: Hash

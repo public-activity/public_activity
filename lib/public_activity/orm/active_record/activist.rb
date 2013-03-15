@@ -34,6 +34,7 @@ module PublicActivity
           def activist
             has_many :activities_as_owner, :class_name => "::PublicActivity::Activity", :as => :owner
             has_many :activities_as_recipient, :class_name => "::PublicActivity::Activity", :as => :recipient
+            has_many :activities_as_creator, :class_name => "::PublicActivity::Activity", :as => :creator
           end
         end
       end

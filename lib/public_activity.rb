@@ -46,7 +46,7 @@ module PublicActivity
       include Common
       include Deactivatable
       include Tracked
-      include Activist  # optional associations by recipient|owner
+      include Activist  # optional associations by creator|recipient|owner
     end
   end
 end
