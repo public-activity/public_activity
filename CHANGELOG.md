@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+* Fixed a bug which modified globals (thanks to [Weera Wu](https://github.com/wulab))
+
 ## 1.0.2
 
 * Fixed undefined constant PublicActivity::Activity for Activist associations (thanks to [Стас Сушков](https://github.com/stas))
