@@ -3,10 +3,12 @@ require 'test_helper'
 describe PublicActivity::Common do
   before do
     @owner     = User.create(:name => "Peter Pan")
+    @creator     = User.create(:name => "James Howlet")
     @recipient = User.create(:name => "Bruce Wayne")
     @options   = {:params => {:author_name => "Peter",
                   :summary => "Default summary goes here..."},
                   :owner => @owner}
+
   end
   subject { article(@options).new }
 
@@ -58,6 +60,13 @@ describe PublicActivity::Common do
     subject.save
     subject.activities.last.recipient.must_equal @recipient
   end
+
+  it 'accepts instance creator' do
+    subject.activity :creator => @creator
+    subject.save
+    subject.activities.last.creator.must_equal @creator
+  end
+
 
   it 'accepts instance owner' do
     subject.activity :owner => @owner

@@ -25,7 +25,7 @@ module PublicActivity
       ::PublicActivity.config # it's the first module to be loaded into models
                               # we need to have pieces provided by orm loaded
       include Trackable
-      class_attribute :activity_owner_global, :activity_recipient_global,
+      class_attribute :activity_owner_global, :activity_recipient_global, :activity_creator_global,
                       :activity_params_global, :activity_hooks, :activity_custom_fields_global
       set_public_activity_class_defaults
     end
@@ -98,6 +98,12 @@ module PublicActivity
     # @return (see #activity_owner)
     attr_accessor :activity_recipient
     @activity_recipient = nil
+
+    # Set or get creator for activity.
+    #
+    attr_accessor :activity_creator
+    @activity_creator = nil
+
     # Set or get custom i18n key passed to {Activity}, later used in {Activity#text}
     #
     # == Usage:
@@ -128,6 +134,7 @@ module PublicActivity
       def set_public_activity_class_defaults
         self.activity_owner_global             = nil
         self.activity_recipient_global         = nil
+        self.activity_creator_global           = nil
         self.activity_params_global            = {}
         self.activity_hooks                    = {}
         self.activity_custom_fields_global     = {}
@@ -234,6 +241,7 @@ module PublicActivity
     #     set in {Tracked#activity}
     #   @option options [Activist] :owner Owner
     #   @option options [Activist] :recipient Recipient
+    #   @option options [Activist] :creator Creator
     #   @option options [Hash] :params Parameters, see
     #     {PublicActivity.resolve_value}
     # @overload create_activity(options = {})
@@ -276,6 +284,7 @@ module PublicActivity
         owner: all_options.delete(:owner),
         action: all_options.delete(:action),
         recipient: all_options.delete(:recipient),
+        creator: all_options.delete(:creator),
         parameters: all_options.delete(:parameters) || all_options.delete(:params)
       }
       action = (args.first || options[:action]).try(:to_s)
@@ -299,6 +308,14 @@ module PublicActivity
         self.activity_recipient ||
         self.class.activity_recipient_global
       )
+
+      # creator of the activity
+      options[:creator] = PublicActivity.resolve_value(self,
+        options[:creator] ||
+        self.activity_creator ||
+        self.class.activity_creator_global
+      )
+
 
       #customizable parameters
       params = options[:params] || options[:parameters] || {}
@@ -335,6 +352,7 @@ module PublicActivity
       @activity_key = nil
       @activity_owner = nil
       @activity_recipient = nil
+      @activity_creator = nil
       @activity_custom_fields = {}
     end
   end

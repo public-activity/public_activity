@@ -33,6 +33,7 @@ module PublicActivity
       self.activity_owner = rest.delete(:owner) if rest[:owner]
       self.activity_params = rest.delete(:params) if rest[:params]
       self.activity_recipient = rest.delete(:recipient) if rest[:recipient]
+      self.activity_creator = rest.delete(:creator) if rest[:creator]
       self.activity_custom_fields = rest if rest.count > 0
       nil
     end
@@ -164,6 +165,9 @@ module PublicActivity
         end
         if options[:recipient]
           self.activity_recipient_global = options.delete(:recipient)
+        end
+        if options[:creator]
+          self.activity_creator_global = options.delete(:creator)
         end
         if options[:params]
           self.activity_params_global = options.delete(:params)
