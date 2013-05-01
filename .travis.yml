@@ -1,6 +1,5 @@
 language: ruby
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
 env:
@@ -9,12 +8,6 @@ env:
   - NOCOV=true PA_ORM=mongoid PA_PURGE=true
 services:
   - mongodb
-matrix:
-  exclude:
-    - rvm: 1.9.2
-      env: "NOCOV=true PA_ORM=mongoid"
-    - rvm: 1.9.2
-      env: "NOCOV=true PA_ORM=mongoid PA_PURGE=true"
 email:
   recipients:
     - piotrek@okonski.org
