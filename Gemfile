@@ -1,14 +1,4 @@
-ENV['PA_ORM'] ||= 'active_record'
-
 source "https://rubygems.org"
-
-
-case ENV['PA_ORM']
-when 'active_record'
-  gem 'activerecord', '4.0.0beta1'
-when 'mongoid'
-  gem 'mongoid', '~> 3.1.2'
-end
 
 group :development, :test do
   gem 'sqlite3', '~> 1.3.7' if ENV['PA_ORM'] == 'active_record'
@@ -17,6 +7,8 @@ group :development, :test do
   gem 'minitest', '>= 4.3.0'
   gem 'redcarpet'
   gem 'yard', '~> 0.8'
+  gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git' #'~> 3.1.3'
+  gem 'activerecord', '>= 3.0.0.rc' #'>= 3.2.0'
 end
 
 gemspec
