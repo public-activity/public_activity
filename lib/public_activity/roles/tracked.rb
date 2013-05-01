@@ -50,7 +50,7 @@ module PublicActivity
       #   == Examples:
       #
       #    tracked :owner => :author
-      #    tracked :owner => {|o| o.author}
+      #    tracked :owner => proc {|o| o.author}
       #
       #   Keep in mind that owner relation is polymorphic, so you can't just
       #   provide id number of the owner object.
@@ -60,7 +60,7 @@ module PublicActivity
       #   == Examples:
       #
       #    tracked :recipient => :author
-      #    tracked :recipient => {|o| o.author}
+      #    tracked :recipient => proc {|o| o.author}
       #
       #   Keep in mind that recipient relation is polymorphic, so you can't just
       #   provide id number of the owner object.

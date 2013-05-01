@@ -8,15 +8,20 @@ require 'action_view'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
-  autoload :Config
-  autoload :Tracked,      'public_activity/roles/tracked.rb'
-  autoload :Deactivatable,'public_activity/roles/deactivatable.rb'
-  autoload :Creation,     'public_activity/actions/creation.rb'
-  autoload :Update,       'public_activity/actions/update.rb'
-  autoload :Destruction,  'public_activity/actions/destruction.rb'
-  autoload :VERSION
+
+  autoload :Activity,     'public_activity/models/activity'
+  autoload :Activist,     'public_activity/models/activist'
+  autoload :Adapter,      'public_activity/models/adapter'
+  autoload :Trackable,    'public_activity/models/trackable'
   autoload :Common
+  autoload :Config
+  autoload :Creation,     'public_activity/actions/creation.rb'
+  autoload :Deactivatable,'public_activity/roles/deactivatable.rb'
+  autoload :Destruction,  'public_activity/actions/destruction.rb'
   autoload :Renderable
+  autoload :Tracked,      'public_activity/roles/tracked.rb'
+  autoload :Update,       'public_activity/actions/update.rb'
+  autoload :VERSION
 
   # Switches PublicActivity on or off.
   # @param value [Boolean]
@@ -39,6 +44,14 @@ module PublicActivity
     @@config ||= PublicActivity::Config.instance
   end
 
+  # Method used to choose which ORM to load
+  # when PublicActivity::Activity class is being autoloaded
+  def self.inherit_orm(model="Activity")
+    orm = PublicActivity.config.orm
+    require "public_activity/orm/#{orm.to_s}"
+    "PublicActivity::ORM::#{orm.to_s.classify}::#{model}".constantize
+  end
+
   # Module to be included in ActiveRecord models. Adds required functionality.
   module Model
     extend ActiveSupport::Concern
@@ -50,10 +63,6 @@ module PublicActivity
     end
   end
 end
-
-# Force Active Record ORM to load
-# makes initializer optional for default config
-PublicActivity.config if defined? ActiveRecord
 
 require 'public_activity/utility/store_controller'
 require 'public_activity/utility/view_helpers'

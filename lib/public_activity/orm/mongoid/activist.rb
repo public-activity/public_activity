@@ -5,6 +5,9 @@ module PublicActivity
       module Activist
         extend ActiveSupport::Concern
 
+        def self.extended(base)
+          base.extend(ClassMethods)
+        end
         # Association of activities as their owner.
         # @!method activities
         # @return [Array<Activity>] Activities which self is the owner of.
