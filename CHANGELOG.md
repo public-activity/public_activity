@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+* Fixed an issue when AR was loading despite choosing Mongoid in multi-ORM Rails applications (thanks to [Robert Ulejczyk](https://github.com/robuye))
+
 ## 1.0.3
 
 * Fixed a bug which modified globals (thanks to [Weera Wu](https://github.com/wulab))
