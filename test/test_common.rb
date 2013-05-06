@@ -10,6 +10,14 @@ describe PublicActivity::Common do
   end
   subject { article(@options).new }
 
+  it 'prioritizes parameters passed to #create_activity' do
+    subject.save
+    subject.create_activity(:test, params: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
+    subject.create_activity(:test, parameters: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
+    subject.create_activity(:test, params: {author_name: nil}).parameters[:author_name].must_be_nil
+    subject.create_activity(:test, parameters: {author_name: nil}).parameters[:author_name].must_be_nil
+  end
+
   it 'prioritizes owner passed to #create_activity' do
     subject.save
     subject.create_activity(:test, owner: @recipient).owner.must_equal @recipient
