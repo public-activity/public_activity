@@ -6,9 +6,29 @@ describe PublicActivity::Common do
     @recipient = User.create(:name => "Bruce Wayne")
     @options   = {:params => {:author_name => "Peter",
                   :summary => "Default summary goes here..."},
-                  :owner => @owner}
+                  :owner => @owner, :recipient => @recipient}
   end
   subject { article(@options).new }
+
+  it 'prioritizes parameters passed to #create_activity' do
+    subject.save
+    subject.create_activity(:test, params: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
+    subject.create_activity(:test, parameters: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
+    subject.create_activity(:test, params: {author_name: nil}).parameters[:author_name].must_be_nil
+    subject.create_activity(:test, parameters: {author_name: nil}).parameters[:author_name].must_be_nil
+  end
+
+  it 'prioritizes owner passed to #create_activity' do
+    subject.save
+    subject.create_activity(:test, owner: @recipient).owner.must_equal @recipient
+    subject.create_activity(:test, owner: nil).owner.must_be_nil
+  end
+
+  it 'prioritizes recipient passed to #create_activity' do
+    subject.save
+    subject.create_activity(:test, recipient: @owner).recipient.must_equal @owner
+    subject.create_activity(:test, recipient: nil).recipient.must_be_nil
+  end
 
   it 'uses global fields' do
     subject.save
