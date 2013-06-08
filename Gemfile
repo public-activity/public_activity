@@ -1,6 +1,6 @@
 ENV['PA_ORM'] ||= 'active_record'
 
-source :rubygems
+source "https://rubygems.org"
 
 
 case ENV['PA_ORM']
