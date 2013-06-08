@@ -8,6 +8,7 @@ module PublicActivity
       class Activity
         include ::Mongoid::Document
         include ::Mongoid::Timestamps
+        include ::Mongoid::Attributes::Dynamic if (::Mongoid::VERSION =~ /^4/) == 0
         include Renderable
 
         # Define polymorphic association to the parent
