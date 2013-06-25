@@ -8,6 +8,7 @@ describe PublicActivity::Activist do
     klass.new.must_respond_to :activities
     if ENV["PA_ORM"] == "active_record"
       klass.reflect_on_association(:activities_as_owner).options[:as].must_equal :owner
+      klass.reflect_on_association(:activities_as_owner).options[:include].must_equal [:trackable, :owner]
     elsif ENV["PA_ORM"] == "mongoid"
       klass.reflect_on_association(:activities_as_owner).options[:inverse_of].must_equal :owner
     end

@@ -35,8 +35,8 @@ module PublicActivity
           #   User.first.activities
           #
           def activist
-            has_many :activities_as_owner, :class_name => "::PublicActivity::Activity", :as => :owner
-            has_many :activities_as_recipient, :class_name => "::PublicActivity::Activity", :as => :recipient
+            has_many :activities_as_owner, :class_name => "::PublicActivity::Activity", :as => :owner, :include => [:trackable, :owner]
+            has_many :activities_as_recipient, :class_name => "::PublicActivity::Activity", :as => :recipient, :include => [:trackable, :recipient]
           end
         end
       end
