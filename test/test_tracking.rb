@@ -362,7 +362,7 @@ describe PublicActivity::Tracked do
       }
       @article.class.activity_hooks = {:create => pf, :update => pt, :destroy => pt}
 
-      @article.activities.must_be_empty
+      @article.activities.to_a.must_be_empty
       @article.save # create
       @article.name = 'Other Name'
       @article.save # update
