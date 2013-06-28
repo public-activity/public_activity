@@ -26,28 +26,42 @@ describe PublicActivity::Tracked do
   end
 
   it 'can be tracked and be an activist at the same time' do
-    if PublicActivity.config.orm == :mongoid
-      class ActivistAndTrackedArticle
-        include Mongoid::Document
-        include Mongoid::Timestamps
-        include PublicActivity::Model
+    case PublicActivity.config.orm
+      when :mongoid
+        class ActivistAndTrackedArticle
+          include Mongoid::Document
+          include Mongoid::Timestamps
+          include PublicActivity::Model
 
-        belongs_to :user
+          belongs_to :user
 
-        field :name, type: String
-        field :published, type: Boolean
-        tracked
-        activist
-      end
-    else
-      class ActivistAndTrackedArticle < ActiveRecord::Base
-        self.table_name = 'articles'
-        include PublicActivity::Model
-        tracked
-        activist
+          field :name, type: String
+          field :published, type: Boolean
+          tracked
+          activist
+        end
+      when :mongo_mapper
+        class ActivistAndTrackedArticle
+          include MongoMapper::Document
+          include PublicActivity::Model
 
-        belongs_to :user
-      end
+          belongs_to :user
+
+          key :name, String
+          key :published, Boolean
+          tracked
+          activist
+          timestamps!
+        end
+      when :active_record
+        class ActivistAndTrackedArticle < ActiveRecord::Base
+          self.table_name = 'articles'
+          include PublicActivity::Model
+          tracked
+          activist
+
+          belongs_to :user
+        end
     end
 
     art = ActivistAndTrackedArticle.new
@@ -147,20 +161,34 @@ describe PublicActivity::Tracked do
     let(:options) { {} }
 
     it 'allows skipping the tracking on CRUD actions' do
-      if PublicActivity.config.orm == :mongoid
-        art = Class.new do
-          include Mongoid::Document
-          include Mongoid::Timestamps
-          include PublicActivity::Model
+      case PublicActivity.config.orm
+        when :mongoid
+          art = Class.new do
+            include Mongoid::Document
+            include Mongoid::Timestamps
+            include PublicActivity::Model
 
-          belongs_to :user
+            belongs_to :user
 
-          field :name, type: String
-          field :published, type: Boolean
-          tracked :skip_defaults => true
-        end
-      else
-        art = article(:skip_defaults => true)
+            field :name, type: String
+            field :published, type: Boolean
+            tracked :skip_defaults => true
+          end
+        when :mongo_mapper
+          art = Class.new do
+            include MongoMapper::Document
+            include PublicActivity::Model
+
+            belongs_to :user
+
+            key :name, String
+            key :published, Boolean
+            tracked :skip_defaults => true
+
+            timestamps!
+          end
+        when :active_record
+          art = article(:skip_defaults => true)
       end
 
       art.must_include PublicActivity::Common
@@ -190,20 +218,34 @@ describe PublicActivity::Tracked do
     end
 
     it 'accepts :except option' do
-      if PublicActivity.config.orm == :mongoid
-        art = Class.new do
-          include Mongoid::Document
-          include Mongoid::Timestamps
-          include PublicActivity::Model
+      case PublicActivity.config.orm
+        when :mongoid
+          art = Class.new do
+            include Mongoid::Document
+            include Mongoid::Timestamps
+            include PublicActivity::Model
 
-          belongs_to :user
+            belongs_to :user
 
-          field :name, type: String
-          field :published, type: Boolean
-          tracked :except => [:create]
-        end
-      else
-        art = article(:except => [:create])
+            field :name, type: String
+            field :published, type: Boolean
+            tracked :except => [:create]
+          end
+        when :mongo_mapper
+          art = Class.new do
+            include MongoMapper::Document
+            include PublicActivity::Model
+
+            belongs_to :user
+
+            key :name, String
+            key :published, Boolean
+            tracked :except => [:create]
+
+            timestamps!
+          end
+        when :active_record
+          art = article(:except => [:create])
       end
 
       art.wont_include PublicActivity::Creation
@@ -212,21 +254,34 @@ describe PublicActivity::Tracked do
     end
 
     it 'accepts :only option' do
-      if PublicActivity.config.orm == :mongoid
-        art = Class.new do
-          include Mongoid::Document
-          include Mongoid::Timestamps
-          include PublicActivity::Model
+      case PublicActivity.config.orm
+        when :mongoid
+          art = Class.new do
+            include Mongoid::Document
+            include Mongoid::Timestamps
+            include PublicActivity::Model
 
-          belongs_to :user
+            belongs_to :user
 
-          field :name, type: String
-          field :published, type: Boolean
+            field :name, type: String
+            field :published, type: Boolean
 
-          tracked :only => [:create, :update]
-        end
-      else
-        art = article({:only => [:create, :update]})
+            tracked :only => [:create, :update]
+          end
+        when :mongo_mapper
+          art = Class.new do
+            include MongoMapper::Document
+            include PublicActivity::Model
+
+            belongs_to :user
+
+            key :name, String
+            key :published, Boolean
+
+            tracked :only => [:create, :update]
+          end
+        when :active_record
+          art = article({:only => [:create, :update]})
       end
 
       art.must_include PublicActivity::Creation
