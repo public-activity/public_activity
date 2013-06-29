@@ -4,7 +4,7 @@ require 'active_support/core_ext'
 module PublicActivity
   module ORM
     module MongoMapper
-      # The ActiveRecord model containing
+      # The MongoMapper document containing
       # details about recorded activity.
       class Activity
         include ::MongoMapper::Document

@@ -18,7 +18,7 @@ module PublicActivity
 
         # Module extending classes that serve as owners
         module ClassMethods
-          # Adds ActiveRecord associations to model to simplify fetching
+          # Adds MongoMapper associations to model to simplify fetching
           # so you can list activities performed by the owner.
           # It is completely optional. Any model can be an owner to an activity
           # even without being an explicit activist.
@@ -26,7 +26,8 @@ module PublicActivity
           # == Usage:
           # In model:
           #
-          #   class User < ActiveRecord::Base
+          #   class User
+          #     include MongoMapper::Document
           #     include PublicActivity::Model
           #     activist
           #   end
