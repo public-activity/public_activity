@@ -86,8 +86,8 @@ when :mongoid
 when :mongo_mapper
   require 'mongo_mapper'
 
-  MongoMapper.connection = Mongo::Connection.new('localhost', 27017)
-  MongoMapper.database = "pa-test"
+  config = YAML.load(File.read("test/mongo_mapper.yml"))
+  MongoMapper.setup(config, :test)
 
   class User
     include MongoMapper::Document
