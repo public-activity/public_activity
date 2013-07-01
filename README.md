@@ -126,12 +126,12 @@ end
 And in your views:
 
 ```erb
-<% @activities.each do |activity| %>
-  <%= render_activity(activity) %>
-<% end %>
+<%= render_activities(@activities) %>
 ```
 
 *Note*: `render_activity` is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
+
+*Note*: `render_activities` is an alias for `render_activity` and does the same.
 
 #### Layouts
 
@@ -141,9 +141,7 @@ A useful example would be to render activities wrapped in layout, which shares c
 like a timestamp, owner's avatar etc:
 
 ```erb
-<% @activities.each do |activity| %>
-  <%= render_activity(activity, :layout => :activity) %>
-<% end %>
+<%= render_activities(@activities, layout: :activity)
 ```
 
 The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, in the above example.
@@ -162,7 +160,7 @@ If a view file does not exist, then p_a falls back to the old behaviour and trie
 
 #### i18n
 
-Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided.
+Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided. You can render pure i18n strings by passing `{display: :i18n}` to `#render_activity` or `#render`.
 
 Translations should be put in your locale `.yml` files. To render pure strings from I18n Example structure:
 
