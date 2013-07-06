@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
     s.post_install_message = File.read("UPGRADING")
   end
 
-  s.add_dependency 'actionpack', '>= 3.0.0.rc1'
+  s.add_dependency 'actionpack', '>= 3.0.0'
   s.add_dependency 'i18n', '>= 0.5.0'
-  s.add_dependency 'railties', '>= 3.0.0.rc1'
+  s.add_dependency 'railties', '>= 3.0.0'
 end
