@@ -1,0 +1,4 @@
+test:
+  host: 127.0.0.1
+  port: 27017
+  database: public_activity_test

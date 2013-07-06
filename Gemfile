@@ -8,6 +8,8 @@ when 'active_record'
   gem 'activerecord', '~> 3.0'
 when 'mongoid'
   gem 'mongoid', '~> 3.0'
+when 'mongo_mapper'
+  gem 'mongo_mapper', '~> 0.12.0'
 end
 
 group :development, :test do

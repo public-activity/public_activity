@@ -1,7 +1,7 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
-_public_activity_ provides smooth activity tracking for your **ActiveRecord** and **Mongoid 3** models in Rails 3.
-Simply put: it records what has been changed or created and gives you the ability to present those
+_public_activity_ provides smooth activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper* models
+in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
 ## Table of contents
@@ -57,13 +57,24 @@ gem 'public_activity'
 
 ### Database setup
 
-By default _public_activity_ uses Active Record. If you want to use Mongoid as your backend, create
-an initializer file in your Rails application with this code inside:
+By default _public_activity_ uses Active Record. If you want to use Mongoid or MongoMapper as your backend, create
+an initializer file in your Rails application with the corresponding code inside:
+
+For _Mongoid:_
 
 ```ruby
 # config/initializers/public_activity.rb
 PublicActivity::Config.set do
   orm :mongoid
+end
+```
+
+For _MongoMapper:_
+
+```ruby
+# config/initializers/public_activity.rb
+PublicActivity::Config.set do
+  orm :mongo_mapper
 end
 ```
 
@@ -90,6 +101,16 @@ For _Mongoid:_
 ```ruby
 class Article
   include Mongoid::Document
+  include PublicActivity::Model
+  tracked
+end
+```
+
+For _MongoMapper:_
+
+```ruby
+class Article
+  include MongoMapper::Document
   include PublicActivity::Model
   tracked
 end

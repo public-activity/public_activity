@@ -82,6 +82,39 @@ when :mongoid
     end
     Article
   end
+
+when :mongo_mapper
+  require 'mongo_mapper'
+
+  config = YAML.load(File.read("test/mongo_mapper.yml"))
+  MongoMapper.setup(config, :test)
+
+  class User
+    include MongoMapper::Document
+
+    has_many :articles
+
+    key :name, String
+    timestamps!
+  end
+
+  class Article
+    include MongoMapper::Document
+    include PublicActivity::Model
+
+    belongs_to :user
+
+    key :name, String
+    key :published, Boolean
+  end
+
+  def article(options = {})
+    Article.class_eval do
+      set_public_activity_class_defaults
+      tracked options
+    end
+    Article
+  end
 end
 
 class ViewSpec < MiniTest::Spec
