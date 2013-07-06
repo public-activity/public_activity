@@ -6,6 +6,7 @@ env:
   - NOCOV=true
   - NOCOV=true PA_ORM=mongoid
   - NOCOV=true PA_ORM=mongoid PA_PURGE=true
+  - NOCOV=true PA_ORM=mongo_mapper
 services:
   - mongodb
 email:

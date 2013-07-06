@@ -1,7 +1,7 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
-_public_activity_ provides smooth activity tracking for your **ActiveRecord** and **Mongoid 3** models in Rails 3.
-Simply put: it records what has been changed or created and gives you the ability to present those
+_public_activity_ provides smooth activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper* models
+in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
 ## Table of contents
@@ -57,13 +57,24 @@ gem 'public_activity'
 
 ### Database setup
 
-By default _public_activity_ uses Active Record. If you want to use Mongoid as your backend, create
-an initializer file in your Rails application with this code inside:
+By default _public_activity_ uses Active Record. If you want to use Mongoid or MongoMapper as your backend, create
+an initializer file in your Rails application with the corresponding code inside:
+
+For _Mongoid:_
 
 ```ruby
 # config/initializers/public_activity.rb
 PublicActivity::Config.set do
   orm :mongoid
+end
+```
+
+For _MongoMapper:_
+
+```ruby
+# config/initializers/public_activity.rb
+PublicActivity::Config.set do
+  orm :mongo_mapper
 end
 ```
 
@@ -90,6 +101,16 @@ For _Mongoid:_
 ```ruby
 class Article
   include Mongoid::Document
+  include PublicActivity::Model
+  tracked
+end
+```
+
+For _MongoMapper:_
+
+```ruby
+class Article
+  include MongoMapper::Document
   include PublicActivity::Model
   tracked
 end
@@ -126,12 +147,12 @@ end
 And in your views:
 
 ```erb
-<% @activities.each do |activity| %>
-  <%= render_activity(activity) %>
-<% end %>
+<%= render_activities(@activities) %>
 ```
 
 *Note*: `render_activity` is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
+
+*Note*: `render_activities` is an alias for `render_activity` and does the same.
 
 #### Layouts
 
@@ -141,9 +162,7 @@ A useful example would be to render activities wrapped in layout, which shares c
 like a timestamp, owner's avatar etc:
 
 ```erb
-<% @activities.each do |activity| %>
-  <%= render_activity(activity, :layout => :activity) %>
-<% end %>
+<%= render_activities(@activities, layout: :activity)
 ```
 
 The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, in the above example.
@@ -162,7 +181,7 @@ If a view file does not exist, then p_a falls back to the old behaviour and trie
 
 #### i18n
 
-Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided.
+Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided. You can render pure i18n strings by passing `{display: :i18n}` to `#render_activity` or `#render`.
 
 Translations should be put in your locale `.yml` files. To render pure strings from I18n Example structure:
 
