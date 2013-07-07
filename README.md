@@ -9,8 +9,8 @@ recorded activities to users - in a similar way to how GitHub does it.
 1. [Example](#example)
   * [Demo](#online-demo)
   * [Screencast](#screencast)
-3. **[Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)**
-4. [Setup](#setup)
+  * **[Common examples](#common-examples)**
+2. [Setup](#setup)
   1. [Gem installation](#gem-installation)
   2. [Database setup](#database-setup)
   3. [Model configuration](#model-configuration)
@@ -18,8 +18,9 @@ recorded activities to users - in a similar way to how GitHub does it.
   5. [Displaying activities](#displaying-activities)
     1. [Activity views](#activity-views)
     2. [i18n](#i18n)
-5. [Documentation](#documentation)
-6. **[Help](#help)**
+3. [Documentation](#documentation)
+4. **[Help](#help)**
+5. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)
 
 ## Example
 
@@ -195,11 +196,12 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 
 For more customization go [here](http://rubydoc.info/gems/public_activity/index)
 
-## Useful examples
+## Common examples
 
 * [[How to] Set the Activity's owner to current_user by default](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity's-owner-to-current_user-by-default)
 * [[How to] Disable tracking for a class or globally](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Disable-tracking-for-a-class-or-globally)
 * [[How to] Create custom activities](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Create-custom-activities)
+* [[How to] Use custom fields on Activity](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Use-custom-fields-on-Activity)
 
 ## Help
 
