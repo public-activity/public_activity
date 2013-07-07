@@ -212,4 +212,4 @@ https://groups.google.com/forum/?fromgroups#!forum/public-activity
 Please do not ask general questions in the Github Issues.
 
 ## License
-Copyright (c) 2012 Piotrek Okoński, released under the MIT license
+Copyright (c) 2011-2013 Piotrek Okoński, released under the MIT license
