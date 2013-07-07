@@ -2,8 +2,8 @@ ENV['PA_ORM'] ||= 'active_record'
 source "https://rubygems.org"
 gemspec
 
-gem 'actionpack', '>= 3.0.0'
-gem 'railties', '>= 3.0.0'
+gem 'actionpack', '~> 3.0'
+gem 'railties', '~> 3.0'
 
 group :development, :test do
   gem 'sqlite3', '~> 1.3.7'
@@ -15,7 +15,7 @@ group :development, :test do
   
   case ENV['PA_ORM']
   when 'active_record'
-    gem 'activerecord', '>= 3.0'
+    gem 'activerecord', '~> 3.0'
   when 'mongoid'
     gem 'mongoid',      '~> 3.0'
   when 'mongo_mapper'
@@ -23,4 +23,3 @@ group :development, :test do
     gem 'mongo_mapper', '>= 0.12.0'
   end
 end
-

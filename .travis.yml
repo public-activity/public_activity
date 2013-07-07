@@ -2,8 +2,11 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
+include:
+  - gemfile: gemfiles/Gemfile.rails-3.X
+    env: NOCOV=true PA_ORM=active_record
 env:
-  - NOCOV=true
+  - NOCOV=true PA_ORM=active_record
   - NOCOV=true PA_ORM=mongoid
   - NOCOV=true PA_ORM=mongoid PA_PURGE=true
   - NOCOV=true PA_ORM=mongo_mapper
