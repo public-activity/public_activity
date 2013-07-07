@@ -4,9 +4,11 @@ rvm:
   - 2.0.0
 matrix:
   include:
-    - gemfile: gemfiles/Gemfile.rails-3.X
+    - rvm: 1.9.3
+      gemfile: gemfiles/Gemfile.rails-3.X
       env: NOCOV=true PA_ORM=active_record
-    - gemfile: gemfiles/Gemfile.rails-4.0
+    - rvm: 1.9.3
+      gemfile: gemfiles/Gemfile.rails-4.0
       env: NOCOV=true PA_ORM=active_record
 env:
   - NOCOV=true
