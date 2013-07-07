@@ -1,6 +1,6 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
-_public_activity_ provides smooth activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper* models
+_public_activity_ provides smooth activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
 in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
@@ -9,7 +9,7 @@ recorded activities to users - in a similar way to how GitHub does it.
 1. [Example](#example)
   * [Demo](#online-demo)
   * [Screencast](#screencast)
-3. **[Upgrading](#upgrading)**
+3. **[Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)**
 4. [Setup](#setup)
   1. [Gem installation](#gem-installation)
   2. [Database setup](#database-setup)
@@ -36,10 +36,6 @@ The source code of the demo is hosted here: https://github.com/pokonski/activity
 ## Screencast
 
 Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-activity) describing how to integrate Public Activity in your Rails Application.
-
-## Upgrading from pre-0.4.0
-
-If you are using versions earlier than 0.4.0 please click [here](#upgrading) or scroll to the "Upgrading" section at the bottom of this README.
 
 ## Setup
 
@@ -194,45 +190,6 @@ activity:
 ```
 
 This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
-
-## Upgrading
-
-**Read this if you have been using versions older than 0.4.**
-
-There are a couple of major differences between 0.3 and 0.4 version. To upgrade, follow these steps:
-
-1.  Add `include PublicActivity::Model` above `tracked` method call in your tracked models, like this:
-
-    _ActiveRecord:_
-
-    ```ruby
-    class Article < ActiveRecord::Base
-      include PublicActivity::Model
-      tracked
-    end
-    ```
-
-    _Mongoid:_
-
-    ```ruby
-    class Article
-      include Mongoid::Document
-      include PublicActivity::Model
-      tracked
-    end
-    ```
-
-2.   _public_activity_'s config YAML file is no longer used (by default in `config/pba.yml`). Move your YAML contents to your `config/locales/*.yml` files.
-
-     <br/>**IMPORTANT**: Locales are no longer rendered with ERB, this has been removed in favor of real view partials like in actual Rails apps.
-     Read [Activity views](#activity-views) section above to learn how to use those templates.<br/>
-
-3.   **(ActiveRecord only)** Generate and run migration which adds new column to `activities` table:
-
-     ```bash
-     rails g public_activity:migration_upgrade
-     rake db:migrate
-     ```
 
 ## Documentation
 

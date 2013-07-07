@@ -1,8 +1,0 @@
-##################################################
-#  NOTE FOR UPGRADING FROM PRE-0.4.0 VERSION     #
-##################################################
-
-public_activity 0.4.0 brings major changes compared to 0.3.X versions,
-please read https://github.com/pokonski/public_activity#upgrading 
-to learn about all the changes you need to apply to properly
-upgrade your applications.
