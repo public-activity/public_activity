@@ -12,14 +12,5 @@ group :development, :test do
   gem 'minitest', '< 5.0.0'
   gem 'redcarpet'
   gem 'yard', '~> 0.8'
-  
-  case ENV['PA_ORM']
-  when 'active_record'
-    gem 'activerecord', '~> 3.0'
-  when 'mongoid'
-    gem 'mongoid',      '~> 3.0'
-  when 'mongo_mapper'
-    gem 'bson_ext'
-    gem 'mongo_mapper', '>= 0.12.0'
-  end
+  gem 'activerecord', '~> 3.0'
 end
