@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+* Added support for MongoMapper ORM (thanks to [Julio Olivera](https://github.com/julioolvr)) [PR](https://github.com/pokonski/public_activity/pull/101)
+* Added support for stable **Rails 4.0** while keeping compatibility with Rails 3.X
+* `render_activity` can now render collections of activities instead of just a single one. Also aliased as `render_activities`
+
 ## 1.1.0
 
 * Fixed an issue when AR was loading despite choosing Mongoid in multi-ORM Rails applications (thanks to [Robert Ulejczyk](https://github.com/robuye))
