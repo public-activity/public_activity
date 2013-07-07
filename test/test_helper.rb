@@ -16,8 +16,6 @@ require 'minitest/pride' if ENV['WITH_PRIDE'] or ENV['PRIDE']
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
-PublicActivity.config # touch config to load ORM, needed in some separate tests
-
 case PublicActivity::Config.orm
 when :active_record
   require 'active_record'
@@ -30,7 +28,6 @@ when :active_record
 
   def article(options = {})
     klass = Class.new(ActiveRecord::Base) do
-      self.abstract_class = true
       self.table_name = 'articles'
       include PublicActivity::Model
       tracked options
@@ -45,10 +42,6 @@ when :active_record
   end
 
   class User < ActiveRecord::Base; end
-
-  PublicActivity::Activity.class_eval do
-      attr_accessible :nonstandard
-  end
 
 when :mongoid
   require 'mongoid'
@@ -122,12 +115,3 @@ class ViewSpec < MiniTest::Spec
   include ActionView::TestCase::Behavior
 end
 MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)
-
-if PublicActivity::Config.orm == :mongoid && ENV['PA_PURGE']
-  # takes under half a second for the whole suite
-  MiniTest::Spec.class_eval do
-    before :each do
-      Mongoid::Config.purge!
-    end
-  end
-end
