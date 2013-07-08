@@ -1,5 +1,7 @@
 module PublicActivity
   module ORM
+    # Support for ActiveRecord for PublicActivity. Used by default and supported
+    # officialy.
     module ActiveRecord
       # Provides ActiveRecord specific, database-related routines for use by
       # PublicActivity.
