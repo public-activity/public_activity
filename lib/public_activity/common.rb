@@ -96,7 +96,7 @@ module PublicActivity
     # @return (see #activity_owner)
     attr_accessor :activity_recipient
     @activity_recipient = nil
-    # Set or get custom i18n key passed to {Activity}, later used in {Activity#text}
+    # Set or get custom i18n key passed to {Activity}, later used in {Renderable#text}
     #
     # == Usage:
     #
@@ -134,7 +134,7 @@ module PublicActivity
       # Extracts a hook from the _:on_ option provided in
       # {Tracked::ClassMethods#tracked}. Returns nil when no hook exists for
       # given action
-      # {Tracked#get_hook}
+      # {Common#get_hook}
       #
       # @see Tracked#get_hook
       # @param key [String, Symbol] action to retrieve a hook for
@@ -160,11 +160,11 @@ module PublicActivity
       PublicActivity.enabled?
     end
     #
-    # Shortcut for {Tracked::ClassMethods#get_hook}
-    # @param (see Tracked::ClassMethods#get_hook)
-    # @return (see Tracked::ClassMethods#get_hook)
-    # @since (see Tracked::ClassMethods#get_hook)
-    # @api (see Tracked::ClassMethods#get_hook)
+    # Shortcut for {ClassMethods#get_hook}
+    # @param (see ClassMethods#get_hook)
+    # @return (see ClassMethods#get_hook)
+    # @since (see ClassMethods#get_hook)
+    # @api (see ClassMethods#get_hook)
     def get_hook(key)
       self.class.get_hook(key)
     end

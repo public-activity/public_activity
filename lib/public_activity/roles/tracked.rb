@@ -9,13 +9,13 @@ module PublicActivity
     # == Options
     #
     # [:key]
-    #   See {#activity_key}
+    #   See {Common#activity_key}
     # [:owner]
-    #   See {#activity_owner}
+    #   See {Common#activity_owner}
     # [:params]
-    #   See {#activity_params}
+    #   See {Common#activity_params}
     # [:recipient]
-    #   Set the recipient for this activity. Useful for private notifications, which should only be visible to a certain user. See {#activity_recipient}.
+    #   Set the recipient for this activity. Useful for private notifications, which should only be visible to a certain user. See {Common#activity_recipient}.
     # @example
     #
     #   @article = Article.new
@@ -66,7 +66,7 @@ module PublicActivity
       #   provide id number of the owner object.
       # [:params]
       #   Accepts a Hash with custom parameters you want to pass to i18n.translate
-      #   method. It is later used in {Activity#text} method.
+      #   method. It is later used in {Renderable#text} method.
       #   == Example:
       #    class Article < ActiveRecord::Base
       #      include PublicActivity::Model
@@ -128,7 +128,7 @@ module PublicActivity
       #   In the example above, given a model Article with boolean column _published_.
       #   The activities with key _article.update_ will only be created
       #   if the published status is set to true on that article.
-      # @param options [Hash] options
+      # @param opts [Hash] options
       # @return [nil] options
       def tracked(opts = {})
         options = opts.clone
