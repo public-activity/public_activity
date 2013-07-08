@@ -1,4 +1,5 @@
 module PublicActivity
+  # Enables per-class disabling of PublicActivity functionality.
   module Deactivatable
     extend ActiveSupport::Concern
 
@@ -17,6 +18,8 @@ module PublicActivity
       PublicActivity.enabled? && self.class.public_activity_enabled_for_model
     end
 
+    # Provides global methods to disable or enable PublicActivity on a per-class
+    # basis.
     module ClassMethods
       # Switches public_activity off for this class
       def public_activity_off

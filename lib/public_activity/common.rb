@@ -119,6 +119,8 @@ module PublicActivity
     @@activity_hooks = {}
 
     # @!endgroup
+
+    # Provides some global methods for every model class.
     module ClassMethods
       #
       # @since 1.0.0

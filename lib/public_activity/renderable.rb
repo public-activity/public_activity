@@ -1,4 +1,6 @@
 module PublicActivity
+  # Provides logic for rendering activities. Handles both i18n strings
+  # support and smart partials rendering (different templates per activity key).
   module Renderable
     # Virtual attribute returning text description of the activity
     # using the activity's key to translate using i18n.

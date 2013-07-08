@@ -5,16 +5,12 @@ module PublicActivity
       module Activist
         extend ActiveSupport::Concern
 
+        # Loads the {ClassMethods#activist} method for declaring the class
+        # as an activist.
         def self.extended(base)
           base.extend(ClassMethods)
         end
-        # Association of activities as their owner.
-        # @!method activities
-        # @return [Array<Activity>] Activities which self is the owner of.
 
-        # Association of activities as their recipient.
-        # @!method private_activities
-        # @return [Array<Activity>] Activities which self is the recipient of.
 
         # Module extending classes that serve as owners
         module ClassMethods
@@ -35,7 +31,14 @@ module PublicActivity
           #   User.first.activities
           #
           def activist
+            # Association of activities as their owner.
+            # @!method activities_as_owner
+            # @return [Array<Activity>] Activities which self is the owner of.
             has_many :activities_as_owner, :class_name => "::PublicActivity::Activity", :as => :owner
+
+            # Association of activities as their recipient.
+            # @!method activities_as_recipient
+            # @return [Array<Activity>] Activities which self is the recipient of.
             has_many :activities_as_recipient, :class_name => "::PublicActivity::Activity", :as => :recipient
           end
         end
