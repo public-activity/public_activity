@@ -5,3 +5,4 @@
 /*.sublime-workspace
 /tmp
 /Gemfile.lock
+/gemfiles/*.lock

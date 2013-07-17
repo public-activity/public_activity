@@ -12,8 +12,8 @@ Gem::Specification.new do |s|
   s.summary = "Easy activity tracking for ActiveRecord models"
   s.description = "Easy activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
 
-  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE', 'UPGRADING']
-  s.test_files = `git ls-files spec`.split("\n")
+  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE']
+  s.test_files = `git ls-files test`.split("\n")
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 1.9.2'

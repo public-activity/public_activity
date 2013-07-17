@@ -2,7 +2,7 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test)
 
-if not ENV['NOCOV']
+unless ENV['NOCOV']
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
@@ -31,18 +31,25 @@ when :active_record
       self.table_name = 'articles'
       include PublicActivity::Model
       tracked options
-
       belongs_to :user
 
       def self.name
         "Article"
       end
+
+      if ::ActiveRecord::VERSION::MAJOR < 4
+        attr_accessible :name, :published, :user
+      end
     end
     klass
   end
-
   class User < ActiveRecord::Base; end
 
+  if ::ActiveRecord::VERSION::MAJOR < 4
+    PublicActivity::Activity.class_eval do
+      attr_accessible :nonstandard
+    end
+  end
 when :mongoid
   require 'mongoid'
 
