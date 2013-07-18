@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'i18n', '>= 0.5.0'
 
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
-  s.add_development_dependency 'mocha', '~> 0.13.0', require: false
+  s.add_development_dependency 'mocha', '~> 0.13.0'
   s.add_development_dependency 'simplecov', '~> 0.7.0'
   s.add_development_dependency 'minitest', '< 5.0.0'
   s.add_development_dependency 'redcarpet'
