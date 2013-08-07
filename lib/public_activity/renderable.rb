@@ -82,23 +82,25 @@ module PublicActivity
         return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
         partial_path = 'public_activity/'+params[:display].to_s
       end
-      # if we're going to render a partial, let it throw when none can be found
-      params_indifferent = self.parameters.with_indifferent_access
-      params_indifferent.merge!(params)
+
       controller = PublicActivity.get_controller
-      layout = params_indifferent.delete(:layout)
-      if layout
+      if layout = params.delete(:layout)
         layout = layout.to_s
         layout = layout[0,8] == "layouts/" ? layout : "layouts/#{layout}"
       end
+
+      locals = params.delete(:locals) || Hash.new
+
+      params_indifferent = self.parameters.with_indifferent_access
+      params_indifferent.merge!(params)
+
       context.render :partial => (partial_path || self.template_path(self.key)),
         :layout => layout,
-        :locals =>
-          {:a => self, :activity => self,
+        :locals => locals.merge(:a => self, :activity => self,
            :controller => controller,
            :current_user => controller.respond_to?(:current_user) ?
                 controller.current_user : nil ,
-           :p => params_indifferent, :params => params_indifferent}
+           :p => params_indifferent, :params => params_indifferent)
     end
 
     protected

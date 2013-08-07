@@ -26,7 +26,7 @@ describe 'PublicActivity::Activity Rendering' do
     it 'uses view partials when available' do
       PublicActivity.set_controller(Struct.new(:current_user).new('fake'))
       subject.render(self, :two => 2)
-      rendered.must_equal template_output + 'fake'
+      rendered.must_equal template_output + "fake\n"
     end
 
     it 'uses requested partial'
@@ -34,7 +34,13 @@ describe 'PublicActivity::Activity Rendering' do
     it 'uses view partials without controller' do
       PublicActivity.set_controller(nil)
       subject.render(self, :two => 2)
-      rendered.must_equal template_output
+      rendered.must_equal template_output + "\n"
+    end
+
+    it 'provides local variables' do
+      PublicActivity.set_controller(nil)
+      subject.render(self, locals: {two: 2})
+      rendered.chomp.must_equal "2"
     end
 
     it 'uses translations only when requested' do
