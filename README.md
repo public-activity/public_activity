@@ -159,7 +159,7 @@ A useful example would be to render activities wrapped in layout, which shares c
 like a timestamp, owner's avatar etc:
 
 ```erb
-<%= render_activities(@activities, layout: :activity)
+<%= render_activities(@activities, layout: :activity) %>
 ```
 
 The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, in the above example.
