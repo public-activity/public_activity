@@ -9,7 +9,7 @@ module PublicActivity
       elsif activities.respond_to?(:map)
         # depend on ORMs to fetch as needed
         # maybe we can support Postgres streaming with this?
-        activities.map {|activity| activity.render self, options }.join.html_safe
+        activities.map {|activity| activity.render self, options.dup }.join.html_safe
       end
     end
     alias_method :render_activities, :render_activity
