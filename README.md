@@ -4,6 +4,11 @@ _public_activity_ provides easy activity tracking for your **ActiveRecord**, **M
 in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
+## Rails 4
+
+**As of 1.4.0 version, public_activity now supports both Rails 3.X and 4.0.**
+
+
 ## Table of contents
 
 1. [Example](#example)
