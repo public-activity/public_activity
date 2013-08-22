@@ -1,6 +1,6 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
-_public_activity_ provides smooth activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
+_public_activity_ provides easy activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
 in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
@@ -178,7 +178,7 @@ Sometimes, it's desirable to pass additional local variables to partials. It can
 
 #### Activity views
 
-Since version `0.4.0` you can use views to render activities. `public_activity` looks for views in `app/views/public_activity`, and this is now the *default* behaviour.
+`public_activity` looks for views in `app/views/public_activity`.
 
 For example, if you have an activity with `:key` set to `"activity.user.changed_avatar"`, the gem will look for a partial in `app/views/public_activity/user/_changed_avatar.(erb|haml|slim|something_else)`.
 
@@ -204,7 +204,7 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 
 ## Documentation
 
-For more customization go [here](http://rubydoc.info/gems/public_activity/index)
+For more documentation go [here](http://rubydoc.info/gems/public_activity/index)
 
 ## Common examples
 
