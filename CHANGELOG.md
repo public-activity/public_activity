@@ -5,6 +5,8 @@
 * Added support for MongoMapper ORM (thanks to [Julio Olivera](https://github.com/julioolvr)) [PR](https://github.com/pokonski/public_activity/pull/101)
 * Added support for stable **Rails 4.0** while keeping compatibility with Rails 3.X
 * `render_activity` can now render collections of activities instead of just a single one. Also aliased as `render_activities`
+* Fix issue in rendering multiple activities when options were incomplete for every subsequent activity after the first one
+* `render_activity` now accetps `:locals` option. Works the same way as `:locals` for Rails `render` method.
 
 ## 1.1.0
 
