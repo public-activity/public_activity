@@ -52,6 +52,13 @@ describe 'PublicActivity::Activity Rendering' do
       rendered.must_equal '1 2'
     end
 
+    it "pass all params to view context" do
+      view_context = mock('ViewContext')
+      PublicActivity.set_controller(nil)
+      view_context.expects(:render).with() {|params| params[:formats] == ['json']}
+      subject.render(view_context, :formats => ['json'])
+    end
+
     it "uses specified layout" do
       PublicActivity.set_controller(nil)
       subject.render(self, :layout => "activity")

@@ -94,13 +94,13 @@ module PublicActivity
       params_indifferent = self.parameters.with_indifferent_access
       params_indifferent.merge!(params)
 
-      context.render :partial => (partial_path || self.template_path(self.key)),
+      context.render params.merge(:partial => (partial_path || self.template_path(self.key)),
         :layout => layout,
         :locals => locals.merge(:a => self, :activity => self,
            :controller => controller,
            :current_user => controller.respond_to?(:current_user) ?
                 controller.current_user : nil ,
-           :p => params_indifferent, :params => params_indifferent)
+           :p => params_indifferent, :params => params_indifferent))
     end
 
     protected
