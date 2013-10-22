@@ -6,7 +6,7 @@ matrix:
   include:
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.rails-3.X
-      env: NOCOV=true PA_ORM=active_record  
+      env: NOCOV=true PA_ORM=active_record
     - rvm: 1.9.3
       gemfile: gemfiles/Gemfile.rails-3.X
       env: NOCOV=true PA_ORM=active_record

@@ -5,6 +5,7 @@ module PublicActivity
       # details about recorded activity.
       class Activity < ::ActiveRecord::Base
         include Renderable
+        self.table_name = PublicActivity.config.table_name
 
         # Define polymorphic association to the parent
         belongs_to :trackable, :polymorphic => true
