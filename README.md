@@ -23,9 +23,10 @@ recorded activities to users - in a similar way to how GitHub does it.
   5. [Displaying activities](#displaying-activities)
     1. [Activity views](#activity-views)
     2. [i18n](#i18n)
-3. [Documentation](#documentation)
-4. **[Help](#help)**
-5. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)
+3. [Testing](#testing)
+4. [Documentation](#documentation)
+5. **[Help](#help)**
+6. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)
 
 ## Example
 
@@ -206,6 +207,28 @@ activity:
 ```
 
 This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
+
+## Testing
+
+For RSpec you can first disable `public_activity` and add the `test_helper` in 
+the `spec_helper.rb` with
+
+```ruby
+#spec_helper.rb
+require 'public_activity/testing'
+
+PublicActivity.enabled = false
+```
+
+In your spec's you can then blockwise decide wether to turn `public_activity` on
+or off.
+
+```ruby
+#some_of_your_spec.rb
+PublicActivity.with_log do
+  #Your test code goes here...
+end
+```
 
 ## Documentation
 
