@@ -14,10 +14,11 @@ module PublicActivity
   #     # your test code here
   #   end
   def self.with_log
+    current = PublicActivity.enabled
     PublicActivity.enabled = true
     yield
   ensure
-    PublicActivity.enabled = false
+    PublicActivity.enabled = current
   end
 
   # Execute the code block with PublicActiviy deactive
@@ -27,9 +28,10 @@ module PublicActivity
   #     # your test code here
   #   end
   def self.without_log
+    current = PublicActivity.enabled
     PublicActivity.enabled = false
     yield
   ensure
-    PublicActivity.enabled = true
+    PublicActivity.enabled = current
   end
 end
