@@ -228,6 +228,10 @@ or off.
 PublicActivity.with_log do
   #Your test code goes here...
 end
+
+PublicActivity.without_log do
+  #Your test code goes here...
+end
 ```
 
 ## Documentation
