@@ -29,10 +29,10 @@ module PublicActivity
     # @return [nil]
     def activity(options = {})
       rest = options.clone
-      self.activity_key = rest.delete(:key) if rest[:key]
-      self.activity_owner = rest.delete(:owner) if rest[:owner]
-      self.activity_params = rest.delete(:params) if rest[:params]
-      self.activity_recipient = rest.delete(:recipient) if rest[:recipient]
+      self.activity_key           = rest.delete(:key) if rest[:key]
+      self.activity_owner         = rest.delete(:owner) if rest[:owner]
+      self.activity_params        = rest.delete(:params) if rest[:params]
+      self.activity_recipient     = rest.delete(:recipient) if rest[:recipient]
       self.activity_custom_fields = rest if rest.count > 0
       nil
     end

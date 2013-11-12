@@ -94,7 +94,7 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
-  describe '#extract_key' do
+  describe '#prepare_key' do
     describe 'for class#activity_key method' do
       before do
         @article = article(:owner => :user).new(:user => @owner)
@@ -103,17 +103,17 @@ describe PublicActivity::Common do
       it 'assigns key to value of activity_key if set' do
         def @article.activity_key; "my_custom_key" end
 
-        @article.extract_key(:create, {}).must_equal "my_custom_key"
+        @article.prepare_key(:create, {}).must_equal "my_custom_key"
       end
 
       it 'assigns key based on class name as fallback' do
         def @article.activity_key; nil end
 
-        @article.extract_key(:create).must_equal "article.create"
+        @article.prepare_key(:create).must_equal "article.create"
       end
 
       it 'assigns key value from options hash' do
-        @article.extract_key(:create, :key => :my_custom_key).must_equal "my_custom_key"
+        @article.prepare_key(:create, :key => :my_custom_key).must_equal "my_custom_key"
       end
     end
 
@@ -126,7 +126,7 @@ describe PublicActivity::Common do
       end
 
       it 'assigns generates key from class name' do
-        @camel_case.extract_key(:create, {}).must_equal "camel_case.create"
+        @camel_case.prepare_key(:create, {}).must_equal "camel_case.create"
       end
     end
 
@@ -141,7 +141,7 @@ describe PublicActivity::Common do
       end
 
       it 'assigns key value from options hash' do
-        @namespaced_camel_case.extract_key(:create, {}).must_equal "my_namespace_camel_case.create"
+        @namespaced_camel_case.prepare_key(:create, {}).must_equal "my_namespace_camel_case.create"
       end
     end
   end

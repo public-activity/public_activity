@@ -269,60 +269,75 @@ module PublicActivity
     # @overload prepare_settings(options = {})
     #   @see #create_activity
     def prepare_settings(*args)
-      # key
-      all_options = args.extract_options!
-      options = {
-        key: all_options.delete(:key),
-        action: all_options.delete(:action),
-        parameters: all_options.delete(:parameters) || all_options.delete(:params)
+      raw_options = args.extract_options!
+      action      = [args.first, raw_options.delete(:action)].compact.first
+      key         = prepare_key(action, raw_options)
+
+      raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
+
+      prepare_custom_fields(raw_options.except(:params)).merge(
+        {
+          key:        key,
+          owner:      prepare_relation(:owner,     raw_options),
+          recipient:  prepare_relation(:recipient, raw_options),
+          parameters: prepare_parameters(raw_options),
+        }
+      )
+    end
+
+    # Prepares absolutely required options for activity
+    # @private
+    def prepare_options(raw)
+      {
+        key:        raw.delete(:key),
+        action:     raw.delete(:action),
+        parameters: raw.delete(:parameters) || raw.delete(:params)
       }
-      action = (args.first || options[:action]).try(:to_s)
+    end
 
-      options[:key] = extract_key(action, options)
+    # Prepares and resolves custom fields
+    # users can pass to `tracked` method
+    # @private
+    def prepare_custom_fields(options)
+      customs = self.class.activity_custom_fields_global.clone
+      customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
+      customs.merge!(options)
+      customs.each do  |k, v|
+        customs[k] = PublicActivity.resolve_value(self, v)
+      end
+    end
 
-      raise NoKeyProvided, "No key provided for #{self.class.name}" unless options[:key]
-
-      options.delete(:action)
-
-      # user responsible for the activity
-      options[:owner] = PublicActivity.resolve_value(self,
-        (all_options.has_key?(:owner) ? all_options[:owner] : (
-          self.activity_owner || self.class.activity_owner_global
-          )
-        )
-      )
-
-      # recipient of the activity
-      options[:recipient] = PublicActivity.resolve_value(self,
-        (all_options.has_key?(:recipient) ? all_options[:recipient] : (
-          self.activity_recipient || self.class.activity_recipient_global
-          )
-        )
-      )
-
-      #customizable parameters
+    # Prepares i18n parameters that will
+    # be serialized into the Activity#parameters column
+    # @private
+    def prepare_parameters(options)
       params = {}
       params.merge!(self.class.activity_params_global)
       params.merge!(self.activity_params) if self.activity_params
-      params.merge!(options[:params] || options[:parameters] || {})
+      params.merge!([options.delete(:parameters), options.delete(:params), {}].compact.first)
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
-      options[:parameters] = params
-      options.delete(:params)
+    end
 
-      customs = self.class.activity_custom_fields_global.clone
-      customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
-      customs.merge!(all_options)
-      customs.each do  |k, v|
-        customs[k] = PublicActivity.resolve_value(self, v)
-      end.merge options
+    # Prepares relation to be saved
+    # to Activity. Can be :recipient or :owner
+    # @private
+    def prepare_relation(name, options)
+      PublicActivity.resolve_value(self,
+        (options.has_key?(name) ? options[name] : (
+          self.send("activity_#{name}") || self.class.send("activity_#{name}_global")
+          )
+        )
+      )
     end
 
     # Helper method to serialize class name into relevant key
     # @return [String] the resulted key
     # @param [Symbol] or [String] the name of the operation to be done on class
     # @param [Hash] options to be used on key generation, defaults to {}
-    def extract_key(action, options = {})
-      (options[:key] || self.activity_key ||
+    def prepare_key(action, options = {})
+      (
+        options[:key] ||
+        self.activity_key ||
         ((self.class.name.underscore.gsub('/', '_') + "." + action.to_s) if action)
       ).try(:to_s)
     end
