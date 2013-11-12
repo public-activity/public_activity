@@ -104,26 +104,51 @@ module PublicActivity
         partial_path = File.join(partial_root, params[:display].to_s)
       end
 
-      controller = PublicActivity.get_controller
-      if layout = params.delete(:layout)
-        layout = layout.to_s
-        unless layout.starts_with?(layout_root) || layout.starts_with?("/")
-          layout = File.join(layout_root, layout)
-        end
-      end
+      layout = prepare_layout(layout_root, params.delete(:layout))
+      locals = prepare_locals(params)
 
+      context.render(
+        params.merge({
+          :partial => prepare_partial(partial_root, partial_path),
+          :layout => layout,
+          :locals => locals
+        })
+      )
+    end
+
+    def prepare_partial(root, path)
+      path || self.template_path(self.key, root)
+    end
+
+    def prepare_locals(params)
       locals = params.delete(:locals) || Hash.new
 
-      params_indifferent = self.parameters.with_indifferent_access
-      params_indifferent.merge!(params)
+      controller  = PublicActivity.get_controller
+      prepared_params = prepare_parameters(params)
+      locals.merge(
+        {
+          :a              => self,
+          :activity       => self,
+          :controller     => controller,
+          :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
+          :p              => prepared_params,
+          :params         => prepared_params
+        }
+      )
+    end
 
-      context.render params.merge(:partial => (partial_path || self.template_path(self.key, partial_root)),
-        :layout => layout,
-        :locals => locals.merge(:a => self, :activity => self,
-           :controller => controller,
-           :current_user => controller.respond_to?(:current_user) ?
-                controller.current_user : nil ,
-           :p => params_indifferent, :params => params_indifferent))
+    def prepare_layout(root, layout)
+      if layout
+        path = layout.to_s
+        unless path.starts_with?(root) || path.starts_with?("/")
+          return File.join(root, path)
+        end
+      end
+      layout
+    end
+
+    def prepare_parameters(params)
+      @prepared_params ||= self.parameters.with_indifferent_access.merge(params)
     end
 
     protected

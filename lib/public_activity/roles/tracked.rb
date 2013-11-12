@@ -164,7 +164,6 @@ module PublicActivity
         modules.each do |key, value|
           include value
         end
-
       end
 
       def available_options
