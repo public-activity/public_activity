@@ -14,7 +14,6 @@ require 'public_activity'
 require 'public_activity/testing'
 
 require 'minitest/autorun'
-require 'minitest/pride' if ENV['WITH_PRIDE'] or ENV['PRIDE']
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
