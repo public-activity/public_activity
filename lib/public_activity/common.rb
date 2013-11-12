@@ -285,16 +285,6 @@ module PublicActivity
       )
     end
 
-    # Prepares absolutely required options for activity
-    # @private
-    def prepare_options(raw)
-      {
-        key:        raw.delete(:key),
-        action:     raw.delete(:action),
-        parameters: raw.delete(:parameters) || raw.delete(:params)
-      }
-    end
-
     # Prepares and resolves custom fields
     # users can pass to `tracked` method
     # @private

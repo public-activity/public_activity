@@ -133,50 +133,62 @@ module PublicActivity
       def tracked(opts = {})
         options = opts.clone
 
-        all_options = [:create, :update, :destroy]
+        include_default_actions(options)
 
-        if !options.has_key?(:skip_defaults) && !options[:only] && !options[:except]
-          include Creation
-          include Destruction
-          include Update
-        end
-        options.delete(:skip_defaults)
-
-        if options[:except]
-          options[:only] = all_options - Array(options.delete(:except))
-        end
-
-        if options[:only]
-          Array(options[:only]).each do |opt|
-            if opt.eql?(:create)
-              include Creation
-            elsif opt.eql?(:destroy)
-              include Destruction
-            elsif opt.eql?(:update)
-              include Update
-            end
-          end
-          options.delete(:only)
-        end
-
-        if options[:owner]
-          self.activity_owner_global = options.delete(:owner)
-        end
-        if options[:recipient]
-          self.activity_recipient_global = options.delete(:recipient)
-        end
-        if options[:params]
-          self.activity_params_global = options.delete(:params)
-        end
-        if options.has_key?(:on) and options[:on].is_a? Hash
-          self.activity_hooks = options.delete(:on).select {|_, v| v.is_a? Proc}.symbolize_keys
-        end
-
-        options.each do |k, v|
-          self.activity_custom_fields_global[k] = v
-        end
+        assign_globals       options
+        assign_hooks         options
+        assign_custom_fields options
 
         nil
+      end
+
+      def include_default_actions(options)
+        defaults = {
+          create:  Creation,
+          destroy: Destruction,
+          update:  Update
+        }
+
+        if options[:skip_defaults] == true
+          return
+        end
+
+        modules = if options[:except]
+          defaults.except(*options[:except])
+        elsif options[:only]
+          defaults.slice(*options[:only])
+        else
+          defaults
+        end
+
+        modules.each do |key, value|
+          include value
+        end
+
+      end
+
+      def available_options
+        [:skip_defaults, :only, :except, :on, :owner, :recipient, :params].freeze
+      end
+
+      def assign_globals(options)
+        [:owner, :recipient, :params].each do |key|
+          if options[key]
+            self.send("activity_#{key}_global=".to_sym, options.delete(key))
+          end
+        end
+      end
+
+      def assign_hooks(options)
+        if options[:on].is_a?(Hash)
+          self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
+        end
+      end
+
+      def assign_custom_fields(options)
+        options.except(*available_options).each do |k, v|
+          self.activity_custom_fields_global[k] = v
+        end
       end
     end
   end
