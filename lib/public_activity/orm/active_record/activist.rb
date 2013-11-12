@@ -31,14 +31,7 @@ module PublicActivity
           #   User.first.activities
           #
           def activist
-            # Association of activities as their owner.
-            # @!method activities_as_owner
-            # @return [Array<Activity>] Activities which self is the owner of.
             has_many :activities_as_owner, :class_name => "::PublicActivity::Activity", :as => :owner
-
-            # Association of activities as their recipient.
-            # @!method activities_as_recipient
-            # @return [Array<Activity>] Activities which self is the recipient of.
             has_many :activities_as_recipient, :class_name => "::PublicActivity::Activity", :as => :recipient
           end
         end
