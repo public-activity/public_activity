@@ -3,7 +3,7 @@ require 'rails/generators/named_base'
 module PublicActivity
   # A generator module with Activity table schema.
   module Generators
-    # A base module 
+    # A base module
     module Base
       # Get path for migration template
       def source_root

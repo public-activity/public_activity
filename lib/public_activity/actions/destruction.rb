@@ -6,10 +6,12 @@ module PublicActivity
     included do
       before_destroy :activity_on_destroy
     end
+
     private
-      # Records an activity upon destruction of the tracked model
-      def activity_on_destroy
-        create_activity(:destroy)
-      end
+
+    # Records an activity upon destruction of the tracked model
+    def activity_on_destroy
+      create_activity(:destroy)
+    end
   end
 end
