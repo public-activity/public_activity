@@ -94,24 +94,23 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      partial_path  = nil
       partial_root  = params.delete(:root)         || 'public_activity'
+      partial_path  = nil
       layout_root   = params.delete(:layout_root)  || 'layouts'
 
       if params.has_key? :display
-        # if i18n has been requested, let it render and bail
-        return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
-        partial_path = File.join(partial_root, params[:display].to_s)
+        if params[:display].to_sym == :"i18n"
+          return context.render :text => self.text(params)
+        else
+          partial_path = File.join(partial_root, params[:display].to_s)
+        end
       end
-
-      layout = prepare_layout(layout_root, params.delete(:layout))
-      locals = prepare_locals(params)
 
       context.render(
         params.merge({
           :partial => prepare_partial(partial_root, partial_path),
-          :layout => layout,
-          :locals => locals
+          :layout  => prepare_layout(layout_root, params.delete(:layout)),
+          :locals  => prepare_locals(params)
         })
       )
     end
