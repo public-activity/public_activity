@@ -70,5 +70,18 @@ describe 'PublicActivity::Activity Rendering' do
       subject.render(self, :layout => :activity)
       rendered.must_include "Here be the layouts"
     end
+
+    it "accepts a custom layout root" do
+      subject.render(self, :layout => :layout, :layout_root => "custom")
+      rendered.must_include "Here be the custom layouts"
+    end
+    it "accepts an absolute layout path" do
+      subject.render(self, :layout => '/custom/layout')
+      rendered.must_include "Here be the custom layouts"
+    end
+    it "accepts a template root" do
+      subject.render(self, :root => "custom")
+      rendered.must_include "Custom Template Root"
+    end
   end
 end

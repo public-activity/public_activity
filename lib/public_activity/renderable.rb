@@ -53,6 +53,17 @@ module PublicActivity
     #   <p><%= a.created_at %></p>
     #   <%= yield %>
     #
+    # == Custom Layout Location
+    # You can customize the layout directory by supplying :layout_root
+    # or by using an absolute path.
+    #
+    # @example Declare custom layout location
+    #
+    #   # Both examples look for a layout in "app/views/custom/_layout.erb"
+    #
+    #    render_activity @activity, :layout_root => "custom"
+    #    render_activity @activity, :layout      => "/custom/layout"
+    #
     # = Creating a template
     # To use templates for formatting how the activity should render,
     # create a template based on activity key, for example:
@@ -63,6 +74,13 @@ module PublicActivity
     # Note that if a key consists of more than three parts splitted by commas, your
     # directory structure will have to be deeper, for example:
     #   activity.article.comments.destroy => app/views/public_activity/articles/comments/_destroy.html.erb
+    #
+    # == Custom Directory
+    # You can override the default `public_directory` template root with the :root parameter
+    #
+    # @example Custom template root
+    #    # look for templates inside of /app/views/custom instead of /app/views/public_directory
+    #    render_activity @activity, :root => "custom"
     #
     # == Variables in templates
     # From within a template there are two variables at your disposal:
@@ -76,17 +94,22 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      partial_path = nil
+      partial_path  = nil
+      partial_root  = params.delete(:root)         || 'public_activity'
+      layout_root   = params.delete(:layout_root)  || 'layouts'
+
       if params.has_key? :display
         # if i18n has been requested, let it render and bail
         return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
-        partial_path = 'public_activity/'+params[:display].to_s
+        partial_path = File.join(partial_root,params[:display].to_s)
       end
 
       controller = PublicActivity.get_controller
       if layout = params.delete(:layout)
         layout = layout.to_s
-        layout = layout[0,8] == "layouts/" ? layout : "layouts/#{layout}"
+        unless layout.starts_with?(layout_root) || layout.starts_with?("/")
+          layout = File.join(layout_root,layout)
+        end
       end
 
       locals = params.delete(:locals) || Hash.new
@@ -94,7 +117,7 @@ module PublicActivity
       params_indifferent = self.parameters.with_indifferent_access
       params_indifferent.merge!(params)
 
-      context.render params.merge(:partial => (partial_path || self.template_path(self.key)),
+      context.render params.merge(:partial => (partial_path || self.template_path(self.key,partial_root)),
         :layout => layout,
         :locals => locals.merge(:a => self, :activity => self,
            :controller => controller,
@@ -108,10 +131,10 @@ module PublicActivity
     # TODO: verify that attribute `key` is splitted by commas
     #       and that the word before first comma is equal to
     #       "activity"
-    def template_path(key)
+    def template_path(key,partial_root)
       path = key.split(".")
       path.delete_at(0) if path[0] == "activity"
-      path.unshift "public_activity"
+      path.unshift partial_root
       path.join("/")
     end
   end
