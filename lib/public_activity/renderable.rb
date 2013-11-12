@@ -101,14 +101,14 @@ module PublicActivity
       if params.has_key? :display
         # if i18n has been requested, let it render and bail
         return context.render :text => self.text(params) if params[:display].to_sym == :"i18n"
-        partial_path = File.join(partial_root,params[:display].to_s)
+        partial_path = File.join(partial_root, params[:display].to_s)
       end
 
       controller = PublicActivity.get_controller
       if layout = params.delete(:layout)
         layout = layout.to_s
         unless layout.starts_with?(layout_root) || layout.starts_with?("/")
-          layout = File.join(layout_root,layout)
+          layout = File.join(layout_root, layout)
         end
       end
 
@@ -117,7 +117,7 @@ module PublicActivity
       params_indifferent = self.parameters.with_indifferent_access
       params_indifferent.merge!(params)
 
-      context.render params.merge(:partial => (partial_path || self.template_path(self.key,partial_root)),
+      context.render params.merge(:partial => (partial_path || self.template_path(self.key, partial_root)),
         :layout => layout,
         :locals => locals.merge(:a => self, :activity => self,
            :controller => controller,
@@ -127,11 +127,9 @@ module PublicActivity
     end
 
     protected
+
     # Builds the path to template based on activity key
-    # TODO: verify that attribute `key` is splitted by commas
-    #       and that the word before first comma is equal to
-    #       "activity"
-    def template_path(key,partial_root)
+    def template_path(key, partial_root)
       path = key.split(".")
       path.delete_at(0) if path[0] == "activity"
       path.unshift partial_root

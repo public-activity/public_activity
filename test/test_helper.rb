@@ -11,6 +11,8 @@ end
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
+require 'public_activity/testing'
+
 require 'minitest/autorun'
 require 'minitest/pride' if ENV['WITH_PRIDE'] or ENV['PRIDE']
 
