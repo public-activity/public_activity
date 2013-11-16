@@ -2,7 +2,7 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test)
 
-unless ENV['NOCOV']
+if ENV['COV']
   require 'simplecov'
   SimpleCov.start do
     add_filter "/test/"
