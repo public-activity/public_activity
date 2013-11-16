@@ -1,6 +1,8 @@
 require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test)
+require 'coveralls'
+Coveralls.wear!
 
 if ENV['COV']
   require 'simplecov'
