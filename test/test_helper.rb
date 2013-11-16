@@ -10,6 +10,7 @@ if ENV['COV']
     SimpleCov::Formatter::HTMLFormatter,
     Coveralls::SimpleCov::Formatter
   ]
+  Coveralls.wear_merged!
   SimpleCov.start do
     add_filter "/test/"
   end
