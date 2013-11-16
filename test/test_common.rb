@@ -65,26 +65,6 @@ describe PublicActivity::Common do
     subject.activities.last.nonstandard.must_equal "true"
   end
 
-  it 'inherits instance parameters' do
-    subject.activity :parameters => {:author_name => "Michael"}
-    subject.save
-    activity = subject.activities.last
-
-    activity.parameters[:author_name].must_equal "Michael"
-  end
-
-  it 'accepts instance recipient' do
-    subject.activity :recipient => @recipient
-    subject.save
-    subject.activities.last.recipient.must_equal @recipient
-  end
-
-  it 'accepts instance owner' do
-    subject.activity :owner => @owner
-    subject.save
-    subject.activities.last.owner.must_equal @owner
-  end
-
   it 'accepts owner as a symbol' do
     klass = article(:owner => :user)
     @article = klass.new(:user => @owner)
@@ -98,18 +78,6 @@ describe PublicActivity::Common do
     describe 'for class#activity_key method' do
       before do
         @article = article(:owner => :user).new(:user => @owner)
-      end
-
-      it 'assigns key to value of activity_key if set' do
-        def @article.activity_key; "my_custom_key" end
-
-        @article.prepare_key(:create, {}).must_equal "my_custom_key"
-      end
-
-      it 'assigns key based on class name as fallback' do
-        def @article.activity_key; nil end
-
-        @article.prepare_key(:create).must_equal "article.create"
       end
 
       it 'assigns key value from options hash' do

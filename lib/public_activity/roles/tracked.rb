@@ -2,39 +2,10 @@ module PublicActivity
   # Main module extending classes we want to keep track of.
   module Tracked
     extend ActiveSupport::Concern
-    # A shortcut method for setting custom key, owner and parameters of {Activity}
-    # in one line. Accepts a hash with 3 keys:
-    # :key, :owner, :parameters. You can specify all of them or just the ones you want to overwrite.
-    #
-    # == Options
-    #
-    # [:key]
-    #   See {Common#activity_key}
-    # [:owner]
-    #   See {Common#activity_owner}
-    # [:parameters]
-    #   See {Common#activity_parameters}
-    # [:recipient]
-    #   Set the recipient for this activity. Useful for private notifications, which should only be visible to a certain user. See {Common#activity_recipient}.
-    # @example
-    #
-    #   @article = Article.new
-    #   @article.title = "New article"
-    #   @article.activity :key => "my.custom.article.key", :owner => @article.author, :parameters => {:title => @article.title}
-    #   @article.save
-    #   @article.activities.last.key #=> "my.custom.article.key"
-    #   @article.activities.last.parameters #=> {:title => "New article"}
-    #
-    # @param options [Hash] instance options to set on the tracked model
-    # @return [nil]
-    def activity(options = {})
-      rest = options.clone
-      self.activity_key           = rest.delete(:key) if rest[:key]
-      self.activity_owner         = rest.delete(:owner) if rest[:owner]
-      self.activity_parameters    = rest.delete(:parameters) if rest[:parameters]
-      self.activity_recipient     = rest.delete(:recipient) if rest[:recipient]
-      self.activity_custom_fields = rest if rest.count > 0
-      nil
+
+    # @deprecated Use {PublicActivity::Common#create_activity} instead.
+    def activity(*args)
+      raise DeprecatedError, "instance level for setting activity variables is removed in 2.0 version. Use #create_activity instead."
     end
 
     # Module with basic +tracked+ method that enables tracking models.

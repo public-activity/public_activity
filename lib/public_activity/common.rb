@@ -55,66 +55,6 @@ module PublicActivity
     #   * :update
     #   * :destroy
 
-    # @!endgroup
-
-    # @!group Instance options
-
-    # Set or get parameters that will be passed to {Activity} when saving
-    #
-    # == Usage:
-    #
-    #   @article.activity_parameters = {:article_title => @article.title}
-    #   @article.save
-    #
-    # This way you can pass strings that should remain constant, even when model attributes
-    # change after creating this {Activity}.
-    # @return [Hash<Symbol, Object>]
-    attr_accessor :activity_parameters
-    @activity_parameters = {}
-    # Set or get owner object responsible for the {Activity}.
-    #
-    # == Usage:
-    #
-    #   # where current_user is an object of logged in user
-    #   @article.activity_owner = current_user
-    #   # OR: take @article.author association
-    #   @article.activity_owner = :author
-    #   # OR: provide a Proc with custom code
-    #   @article.activity_owner = proc {|controller, model| model.author }
-    #   @article.save
-    #   @article.activities.last.owner #=> Returns owner object
-    # @return [Model] Polymorphic model
-    # @see #activity_owner_global
-    attr_accessor :activity_owner
-    @activity_owner = nil
-
-    # Set or get recipient for activity.
-    #
-    # Association is polymorphic, thus allowing assignment of
-    # all types of models. This can be used for example in the case of sending
-    # private notifications for only a single user.
-    # @return (see #activity_owner)
-    attr_accessor :activity_recipient
-    @activity_recipient = nil
-    # Set or get custom i18n key passed to {Activity}, later used in {Renderable#text}
-    #
-    # == Usage:
-    #
-    #   @article = Article.new
-    #   @article.activity_key = "my.custom.article.key"
-    #   @article.save
-    #   @article.activities.last.key #=> "my.custom.article.key"
-    #
-    # @return [String]
-    attr_accessor :activity_key
-    @activity_key = nil
-
-    # Set or get custom fields for later processing
-    #
-    # @return [Hash]
-    attr_accessor :activity_custom_fields
-    @activity_custom_fields = {}
-
     # @!visibility private
     @@activity_hooks = {}
 
@@ -128,7 +68,7 @@ module PublicActivity
       def set_public_activity_class_defaults
         self.activity_owner_global             = nil
         self.activity_recipient_global         = nil
-        self.activity_parameters_global            = {}
+        self.activity_parameters_global        = {}
         self.activity_hooks                    = {}
         self.activity_custom_fields_global     = {}
       end
@@ -250,7 +190,6 @@ module PublicActivity
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)
-        reset_activity_instance_options
         return PublicActivity::Adapter.create_activity(self, options)
       end
 
@@ -290,7 +229,6 @@ module PublicActivity
     # @private
     def prepare_custom_fields(options)
       customs = self.class.activity_custom_fields_global.clone
-      customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
       customs.merge!(options)
       customs.each do  |k, v|
         customs[k] = PublicActivity.resolve_value(self, v)
@@ -303,8 +241,7 @@ module PublicActivity
     def prepare_parameters(parameters)
       params = {}
       params.merge!(self.class.activity_parameters_global)
-        .merge!(self.activity_parameters || {})
-          .merge!(parameters || {})
+        .merge!(parameters || {})
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
     end
 
@@ -313,10 +250,7 @@ module PublicActivity
     # @private
     def prepare_relation(name, options)
       PublicActivity.resolve_value(self,
-        (options.has_key?(name) ? options[name] : (
-          self.send("activity_#{name}") || self.class.send("activity_#{name}_global")
-          )
-        )
+        (options.has_key?(name) ? options[name] : self.class.send("activity_#{name}_global"))
       )
     end
 
@@ -327,21 +261,8 @@ module PublicActivity
     def prepare_key(action, options = {})
       (
         options[:key] ||
-        self.activity_key ||
         ((self.class.name.underscore.gsub('/', '_') + "." + action.to_s) if action)
       ).try(:to_s)
-    end
-
-    # Resets all instance options on the object
-    # triggered by a successful #create_activity, should not be
-    # called from any other place, or from application code.
-    # @private
-    def reset_activity_instance_options
-      @activity_parameters = {}
-      @activity_key = nil
-      @activity_owner = nil
-      @activity_recipient = nil
-      @activity_custom_fields = {}
     end
   end
 end

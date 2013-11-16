@@ -1,30 +1,6 @@
 require 'test_helper'
 
 describe PublicActivity::Tracked do
-  describe 'defining instance options' do
-    subject { article.new }
-    let :options do
-      { :key => 'key',
-        :parameters => {:a => 1},
-        :owner => User.create,
-        :recipient => User.create }
-    end
-    before(:each) { subject.activity(options) }
-    let(:activity){ subject.save; subject.activities.last }
-
-    specify { subject.activity_key.must_be_same_as    options[:key] }
-    specify { activity.key.must_equal                 options[:key] }
-
-    specify { subject.activity_owner.must_be_same_as  options[:owner] }
-    specify { activity.owner.must_equal               options[:owner] }
-
-    specify { subject.activity_parameters.must_be_same_as options[:parameters] }
-    specify { activity.parameters.must_equal          options[:parameters] }
-
-    specify { subject.activity_recipient.must_be_same_as options[:recipient] }
-    specify { activity.recipient.must_equal              options[:recipient] }
-  end
-
   it 'can be tracked and be an activist at the same time' do
     case PublicActivity.config.orm
       when :mongoid
@@ -87,34 +63,6 @@ describe PublicActivity::Tracked do
         a.activities.last.nonstandard.must_equal 'Proc resolved'
       end
     end
-
-    describe 'instance' do
-      it 'should resolve symbols' do
-        a = article.new(name: 'Symbol resolved')
-        a.activity nonstandard: :name
-        a.save
-        a.activities.last.nonstandard.must_equal 'Symbol resolved'
-      end
-
-      it 'should resolve procs' do
-        a = article.new(name: 'Proc resolved')
-        a.activity nonstandard: proc {|_, model| model.name}
-        a.save
-        a.activities.last.nonstandard.must_equal 'Proc resolved'
-      end
-    end
-  end
-
-  it 'should reset instance options on successful create_activity' do
-    a = article.new
-    a.activity key: 'test', parameters: {test: 1}
-    a.save
-    a.activities.count.must_equal 1
-    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
-    a.activity_parameters.must_be_empty
-    a.activity key: 'asd'
-    a.create_activity
-    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
   end
 
   it 'should not accept global key option' do
@@ -127,8 +75,8 @@ describe PublicActivity::Tracked do
 
   it 'should not change global custom fields' do
     a = article(nonstandard: 'global').new
-    a.activity nonstandard: 'instance'
     a.save
+    a.create_activity key: 'asd', nonstandard: 'instance'
     a.class.activity_custom_fields_global.must_equal nonstandard: 'global'
   end
 
