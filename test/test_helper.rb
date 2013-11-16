@@ -10,7 +10,7 @@ if ENV['COV']
   end
 elsif ENV["TRAVIS"] # in Travis-CI
   require 'coveralls'
-  Coveralls.wear_merged!
+  Coveralls.wear!
 end
 
 $:.unshift File.expand_path('../../lib/', __FILE__)
