@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 gemspec
 
-gem 'coveralls', group: :test
+gem 'coveralls', require: false, group: :test

@@ -6,19 +6,19 @@ matrix:
   include:
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.rails-3.X
-      env: COV=1 PA_ORM=active_record
+      env: PA_ORM=active_record
     - rvm: 1.9.3
       gemfile: gemfiles/Gemfile.rails-3.X
-      env: COV=1 PA_ORM=active_record
+      env: PA_ORM=active_record
     - rvm: 1.9.3
       gemfile: gemfiles/Gemfile.rails-4.0
-      env: COV=1 PA_ORM=active_record
+      env: PA_ORM=active_record
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.rails-4.0
-      env: COV=1 PA_ORM=active_record
+      env: PA_ORM=active_record
 env:
-  - COV=1 PA_ORM=mongoid
-  - COV=1 PA_ORM=mongo_mapper
+  - PA_ORM=mongoid
+  - PA_ORM=mongo_mapper
 services:
   - mongodb
 email:

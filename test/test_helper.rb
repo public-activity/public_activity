@@ -5,16 +5,14 @@ Bundler.setup(:default, :test)
 
 if ENV['COV']
   require 'simplecov'
-  require 'coveralls'
-  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
-  Coveralls.wear_merged!
   SimpleCov.start do
     add_filter "/test/"
   end
+elsif ENV["TRAVIS"] # in Travis-CI
+  require 'coveralls'
+  Coveralls.wear_merged!
 end
+
 $:.unshift File.expand_path('../../lib/', __FILE__)
 require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
