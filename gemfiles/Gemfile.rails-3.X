@@ -13,4 +13,5 @@ group :development, :test do
   gem 'redcarpet'
   gem 'yard', '~> 0.8'
   gem 'activerecord', '~> 3.0'
+  gem 'coveralls', require: false
 end
