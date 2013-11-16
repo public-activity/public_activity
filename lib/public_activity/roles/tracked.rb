@@ -4,7 +4,7 @@ module PublicActivity
     extend ActiveSupport::Concern
     # A shortcut method for setting custom key, owner and parameters of {Activity}
     # in one line. Accepts a hash with 3 keys:
-    # :key, :owner, :params. You can specify all of them or just the ones you want to overwrite.
+    # :key, :owner, :parameters. You can specify all of them or just the ones you want to overwrite.
     #
     # == Options
     #
@@ -12,15 +12,15 @@ module PublicActivity
     #   See {Common#activity_key}
     # [:owner]
     #   See {Common#activity_owner}
-    # [:params]
-    #   See {Common#activity_params}
+    # [:parameters]
+    #   See {Common#activity_parameters}
     # [:recipient]
     #   Set the recipient for this activity. Useful for private notifications, which should only be visible to a certain user. See {Common#activity_recipient}.
     # @example
     #
     #   @article = Article.new
     #   @article.title = "New article"
-    #   @article.activity :key => "my.custom.article.key", :owner => @article.author, :params => {:title => @article.title}
+    #   @article.activity :key => "my.custom.article.key", :owner => @article.author, :parameters => {:title => @article.title}
     #   @article.save
     #   @article.activities.last.key #=> "my.custom.article.key"
     #   @article.activities.last.parameters #=> {:title => "New article"}
@@ -31,7 +31,7 @@ module PublicActivity
       rest = options.clone
       self.activity_key           = rest.delete(:key) if rest[:key]
       self.activity_owner         = rest.delete(:owner) if rest[:owner]
-      self.activity_params        = rest.delete(:params) if rest[:params]
+      self.activity_parameters    = rest.delete(:parameters) if rest[:parameters]
       self.activity_recipient     = rest.delete(:recipient) if rest[:recipient]
       self.activity_custom_fields = rest if rest.count > 0
       nil
@@ -64,13 +64,13 @@ module PublicActivity
       #
       #   Keep in mind that recipient relation is polymorphic, so you can't just
       #   provide id number of the owner object.
-      # [:params]
+      # [:parameters]
       #   Accepts a Hash with custom parameters you want to pass to i18n.translate
       #   method. It is later used in {Renderable#text} method.
       #   == Example:
       #    class Article < ActiveRecord::Base
       #      include PublicActivity::Model
-      #      tracked :params => {
+      #      tracked :parameters => {
       #          :title => :title,
       #          :author_name => "Michael",
       #          :category_name => proc {|controller, model_instance| model_instance.category.name},
@@ -78,7 +78,7 @@ module PublicActivity
       #      }
       #    end
       #
-      #   Values in the :params hash can either be an *exact* *value*, a *Proc/Lambda* executed before saving the activity or a *Symbol*
+      #   Values in the :parameters hash can either be an *exact* *value*, a *Proc/Lambda* executed before saving the activity or a *Symbol*
       #   which is a an attribute or a method name executed on the tracked model's instance.
       #
       #   Everything specified here has a lower priority than parameters
@@ -167,11 +167,11 @@ module PublicActivity
       end
 
       def available_options
-        [:skip_defaults, :only, :except, :on, :owner, :recipient, :params].freeze
+        [:skip_defaults, :only, :except, :on, :owner, :recipient, :parameters].freeze
       end
 
       def assign_globals(options)
-        [:owner, :recipient, :params].each do |key|
+        [:owner, :recipient, :parameters].each do |key|
           if options[key]
             self.send("activity_#{key}_global=".to_sym, options.delete(key))
           end

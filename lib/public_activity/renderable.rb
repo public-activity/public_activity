@@ -85,7 +85,7 @@ module PublicActivity
     # == Variables in templates
     # From within a template there are two variables at your disposal:
     # * activity (aliased as *a* for a shortcut)
-    # * params   (aliased as *p*) [converted into a HashWithIndifferentAccess]
+    # * parameters   (aliased as *p*) [converted into a HashWithIndifferentAccess]
     #
     # @example Template for key: _activity.article.create_ (erb)
     #   <p>
@@ -122,16 +122,16 @@ module PublicActivity
     def prepare_locals(params)
       locals = params.delete(:locals) || Hash.new
 
-      controller  = PublicActivity.get_controller
-      prepared_params = prepare_parameters(params)
+      controller          = PublicActivity.get_controller
+      prepared_parameters = prepare_parameters(params)
       locals.merge(
         {
           :a              => self,
           :activity       => self,
           :controller     => controller,
           :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
-          :p              => prepared_params,
-          :params         => prepared_params
+          :p              => prepared_parameters,
+          :parameters     => prepared_parameters
         }
       )
     end

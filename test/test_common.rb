@@ -4,7 +4,7 @@ describe PublicActivity::Common do
   before do
     @owner     = User.create(:name => "Peter Pan")
     @recipient = User.create(:name => "Bruce Wayne")
-    @options   = {:params => {:author_name => "Peter",
+    @options   = {:parameters => {:author_name => "Peter",
                   :summary => "Default summary goes here..."},
                   :owner => @owner, :recipient => @recipient}
   end
@@ -12,9 +12,9 @@ describe PublicActivity::Common do
 
   it 'prioritizes parameters passed to #create_activity' do
     subject.save
-    subject.create_activity(:test, params: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
     subject.create_activity(:test, parameters: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
-    subject.create_activity(:test, params: {author_name: nil}).parameters[:author_name].must_be_nil
+    subject.create_activity(:test, parameters: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'
+    subject.create_activity(:test, parameters: {author_name: nil}).parameters[:author_name].must_be_nil
     subject.create_activity(:test, parameters: {author_name: nil}).parameters[:author_name].must_be_nil
   end
 
@@ -33,7 +33,7 @@ describe PublicActivity::Common do
   it 'uses global fields' do
     subject.save
     activity = subject.activities.last
-    activity.parameters.must_equal @options[:params]
+    activity.parameters.must_equal @options[:parameters]
     activity.owner.must_equal @owner
   end
 
@@ -66,7 +66,7 @@ describe PublicActivity::Common do
   end
 
   it 'inherits instance parameters' do
-    subject.activity :params => {:author_name => "Michael"}
+    subject.activity :parameters => {:author_name => "Michael"}
     subject.save
     activity = subject.activities.last
 

@@ -5,7 +5,7 @@ describe PublicActivity::Tracked do
     subject { article.new }
     let :options do
       { :key => 'key',
-        :params => {:a => 1},
+        :parameters => {:a => 1},
         :owner => User.create,
         :recipient => User.create }
     end
@@ -18,8 +18,8 @@ describe PublicActivity::Tracked do
     specify { subject.activity_owner.must_be_same_as  options[:owner] }
     specify { activity.owner.must_equal               options[:owner] }
 
-    specify { subject.activity_params.must_be_same_as options[:params] }
-    specify { activity.parameters.must_equal          options[:params] }
+    specify { subject.activity_parameters.must_be_same_as options[:parameters] }
+    specify { activity.parameters.must_equal          options[:parameters] }
 
     specify { subject.activity_recipient.must_be_same_as options[:recipient] }
     specify { activity.recipient.must_equal              options[:recipient] }
@@ -107,11 +107,11 @@ describe PublicActivity::Tracked do
 
   it 'should reset instance options on successful create_activity' do
     a = article.new
-    a.activity key: 'test', params: {test: 1}
+    a.activity key: 'test', parameters: {test: 1}
     a.save
     a.activities.count.must_equal 1
     ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
-    a.activity_params.must_be_empty
+    a.activity_parameters.must_be_empty
     a.activity key: 'asd'
     a.create_activity
     ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
@@ -298,10 +298,10 @@ describe PublicActivity::Tracked do
       subject.activity_owner_global.must_equal owner
     end
 
-    it 'accepts :params option' do
+    it 'accepts :parameters option' do
       params = {:a => 1}
-      subject.tracked(:params => params)
-      subject.activity_params_global.must_equal params
+      subject.tracked(:parameters => params)
+      subject.activity_parameters_global.must_equal params
     end
 
     it 'accepts :on option' do
@@ -325,11 +325,11 @@ describe PublicActivity::Tracked do
     end
 
     describe 'global options' do
-      subject { article(recipient: :test, owner: :test2, params: {a: 'b'}) }
+      subject { article(recipient: :test, owner: :test2, parameters: {a: 'b'}) }
 
       specify { subject.activity_recipient_global.must_equal :test }
       specify { subject.activity_owner_global.must_equal :test2    }
-      specify { subject.activity_params_global.must_equal(a: 'b')  }
+      specify { subject.activity_parameters_global.must_equal(a: 'b')  }
     end
   end
 

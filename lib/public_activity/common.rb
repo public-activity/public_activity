@@ -24,7 +24,7 @@ module PublicActivity
     included do
       include Trackable
       class_attribute :activity_owner_global, :activity_recipient_global,
-                      :activity_params_global, :activity_hooks, :activity_custom_fields_global
+                      :activity_parameters_global, :activity_hooks, :activity_custom_fields_global
       set_public_activity_class_defaults
     end
 
@@ -40,9 +40,9 @@ module PublicActivity
     #   @see #activity_recipient
     #   @return [Model]
 
-    # @!attribute activity_params_global
+    # @!attribute activity_parameters_global
     #   Global version of activity parameters
-    #   @see #activity_params
+    #   @see #activity_parameters
     #   @return [Hash<Symbol, Object>]
 
     # @!attribute activity_hooks
@@ -63,14 +63,14 @@ module PublicActivity
     #
     # == Usage:
     #
-    #   @article.activity_params = {:article_title => @article.title}
+    #   @article.activity_parameters = {:article_title => @article.title}
     #   @article.save
     #
     # This way you can pass strings that should remain constant, even when model attributes
     # change after creating this {Activity}.
     # @return [Hash<Symbol, Object>]
-    attr_accessor :activity_params
-    @activity_params = {}
+    attr_accessor :activity_parameters
+    @activity_parameters = {}
     # Set or get owner object responsible for the {Activity}.
     #
     # == Usage:
@@ -128,7 +128,7 @@ module PublicActivity
       def set_public_activity_class_defaults
         self.activity_owner_global             = nil
         self.activity_recipient_global         = nil
-        self.activity_params_global            = {}
+        self.activity_parameters_global            = {}
         self.activity_hooks                    = {}
         self.activity_custom_fields_global     = {}
       end
@@ -195,7 +195,7 @@ module PublicActivity
     #
     #   current_user.create_activity(:avatar_changed)
     #
-    # It will still gather data from any procs or symbols you passed as params
+    # It will still gather data from any procs or symbols you passed as parameters
     # to {Tracked::ClassMethods#tracked}. It will ask the hooks you defined
     # whether to really save this activity.
     #
@@ -234,7 +234,7 @@ module PublicActivity
     #     set in {Tracked#activity}
     #   @option options [Activist] :owner Owner
     #   @option options [Activist] :recipient Recipient
-    #   @option options [Hash] :params Parameters, see
+    #   @option options [Hash] :parameters Parameters, see
     #     {PublicActivity.resolve_value}
     # @overload create_activity(options = {})
     #   @param [Hash] options Options with quality higher than instance options
@@ -243,7 +243,7 @@ module PublicActivity
     #   @option options [String] :key Full key
     #   @option options [Activist] :owner Owner
     #   @option options [Activist] :recipient Recipient
-    #   @option options [Hash] :params Parameters, see
+    #   @option options [Hash] :parameters Parameters, see
     #     {PublicActivity.resolve_value}
     def create_activity(*args)
       return unless self.public_activity_enabled?
@@ -258,7 +258,7 @@ module PublicActivity
     end
 
     # Prepares settings used during creation of Activity record.
-    # params passed directly to tracked model have priority over
+    # parameters passed directly to tracked model have priority over
     # settings specified in tracked() method
     #
     # @see #create_activity
@@ -275,12 +275,12 @@ module PublicActivity
 
       raise NoKeyProvided, "No key provided for #{self.class.name}" unless key
 
-      prepare_custom_fields(raw_options.except(:params)).merge(
+      prepare_custom_fields(raw_options.except(:parameters, :params)).merge(
         {
           key:        key,
           owner:      prepare_relation(:owner,     raw_options),
           recipient:  prepare_relation(:recipient, raw_options),
-          parameters: prepare_parameters(raw_options),
+          parameters: prepare_parameters(raw_options.delete(:parameters)),
         }
       )
     end
@@ -300,11 +300,11 @@ module PublicActivity
     # Prepares i18n parameters that will
     # be serialized into the Activity#parameters column
     # @private
-    def prepare_parameters(options)
+    def prepare_parameters(parameters)
       params = {}
-      params.merge!(self.class.activity_params_global)
-      params.merge!(self.activity_params) if self.activity_params
-      params.merge!([options.delete(:parameters), options.delete(:params), {}].compact.first)
+      params.merge!(self.class.activity_parameters_global)
+        .merge!(self.activity_parameters || {})
+          .merge!(parameters || {})
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
     end
 
@@ -337,7 +337,7 @@ module PublicActivity
     # called from any other place, or from application code.
     # @private
     def reset_activity_instance_options
-      @activity_params = {}
+      @activity_parameters = {}
       @activity_key = nil
       @activity_owner = nil
       @activity_recipient = nil
