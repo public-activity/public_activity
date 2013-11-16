@@ -1,6 +1,12 @@
 require 'test_helper'
 
 describe PublicActivity::Tracked do
+  describe ".activity" do
+    it "must raise depraction exception" do
+      ->{article.new.activity}.must_raise PublicActivity::DeprecatedError
+    end
+  end
+
   it 'can be tracked and be an activist at the same time' do
     case PublicActivity.config.orm
       when :mongoid

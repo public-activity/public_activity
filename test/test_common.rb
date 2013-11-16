@@ -10,6 +10,12 @@ describe PublicActivity::Common do
   end
   subject { article(@options).new }
 
+  describe '#public_activity_enabled?' do
+    it "returns the enabled state of the gem" do
+      article(just_common: true).new.public_activity_enabled?.must_equal PublicActivity.enabled?
+    end
+  end
+
   it 'prioritizes parameters passed to #create_activity' do
     subject.save
     subject.create_activity(:test, parameters: {author_name: 'Pan'}).parameters[:author_name].must_equal 'Pan'

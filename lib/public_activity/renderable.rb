@@ -98,12 +98,8 @@ module PublicActivity
       partial_path  = nil
       layout_root   = params.delete(:layout_root)  || 'layouts'
 
-      if params.has_key? :display
-        if params[:display].to_sym == :"i18n"
-          return context.render :text => self.text(params)
-        else
-          partial_path = File.join(partial_root, params[:display].to_s)
-        end
+      if params[:display] && params[:display].to_sym == :"i18n"
+        return context.render :text => self.text(params)
       end
 
       context.render(

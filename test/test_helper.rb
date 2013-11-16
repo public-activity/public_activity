@@ -15,7 +15,8 @@ require 'public_activity/testing'
 require 'pry'
 require 'minitest/autorun'
 
-PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
+ENV['PA_ORM'] ||= "active_record"
+PublicActivity::Config.orm = ENV['PA_ORM']
 
 case PublicActivity::Config.orm
 when :active_record
@@ -30,8 +31,13 @@ when :active_record
   def article(options = {})
     klass = Class.new(ActiveRecord::Base) do
       self.table_name = 'articles'
-      include PublicActivity::Model
-      tracked options
+      if options.delete(:just_common)
+        include PublicActivity::Common
+      else
+        include PublicActivity::Model
+        tracked options
+      end
+
       belongs_to :user
 
       def self.name
