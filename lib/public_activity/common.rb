@@ -111,7 +111,7 @@ module PublicActivity
     # @since 0.4.0
     # @api private
     def call_hook_safe(key)
-      hook = self.get_hook(key)
+      hook = self.class.get_hook(key)
       if hook
         # provides hook with model and controller
         hook.call(self, PublicActivity.get_controller)
