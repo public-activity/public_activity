@@ -52,6 +52,11 @@ describe 'PublicActivity::Activity Rendering' do
       rendered.must_equal '1 2'
     end
 
+    it 'allows custom partials to be used' do
+      subject.render(self, two: 2, display: 'other')
+      rendered.must_equal 'hipster-template rendered'
+    end
+
     it "pass all params to view context" do
       view_context = mock('ViewContext')
       PublicActivity.set_controller(nil)
