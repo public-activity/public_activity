@@ -126,11 +126,9 @@ module PublicActivity
       prepared_parameters = prepare_parameters(params)
       locals.merge(
         {
-          :a              => self,
           :activity       => self,
           :controller     => controller,
           :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
-          :p              => prepared_parameters,
           :parameters     => prepared_parameters
         }
       )

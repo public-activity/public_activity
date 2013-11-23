@@ -16,11 +16,11 @@ describe 'PublicActivity::Activity Rendering' do
 
   describe '#render' do
     subject do
-      s = PublicActivity::Activity.new(:key => 'activity.test', :parameters => {:one => 1})
-      s.save && s
+      PublicActivity::Activity
+      .new(:key => 'test', :parameters => {:one => 1}).tap { |s| s.save }
     end
 
-    let(:template_output) { "<strong>1, 2</strong>\n<em>activity.test, #{subject.id}</em>\n" }
+    let(:template_output) { "<strong>1, 2</strong>\n<em>test, #{subject.id}</em>\n" }
     before { @controller.view_paths << File.expand_path('../views', __FILE__) }
 
     it 'uses view partials when available' do

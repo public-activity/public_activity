@@ -2,7 +2,7 @@
 <% # output local_variable if defined %>
 <%= two %>
 <% else %>
-<strong><%= p[:one] %>, <%= parameters['two'] %></strong>
-<em><%= a.key %>, <%= activity.id %></em>
+<strong><%= parameters[:one] %>, <%= parameters['two'] %></strong>
+<em><%= activity.key %>, <%= activity.id %></em>
 <%= current_user %>
 <% end %>
