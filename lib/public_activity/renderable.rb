@@ -98,13 +98,10 @@ module PublicActivity
         return context.render :text => self.text(params)
       end
 
-      context.render(
-        params.merge({
-          :partial =>   partial_path(*params.values_at(:partial, :partial_root)),
-          :layout  =>    layout_path(*params.values_at(:layout, :layout_root)),
-          :locals  => prepare_locals(params)
-        })
-      )
+      context.render params.merge\
+        partial:   partial_path(*params.values_at(:partial, :partial_root)),
+        layout:     layout_path(*params.values_at(:layout, :layout_root)),
+        locals:  prepare_locals(params)
     end
 
     def partial_path(path = nil, root = nil)
@@ -124,14 +121,11 @@ module PublicActivity
 
       controller          = PublicActivity.get_controller
       prepared_parameters = prepare_parameters(params)
-      locals.merge(
-        {
-          :activity       => self,
-          :controller     => controller,
-          :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
-          :parameters     => prepared_parameters
-        }
-      )
+      locals.merge\
+        activity:     self,
+        controller:   controller,
+        current_user: controller.respond_to?(:current_user) ? controller.current_user : nil,
+        parameters:   prepared_parameters
     end
 
     def prepare_parameters(params)
