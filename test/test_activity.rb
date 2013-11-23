@@ -1,14 +1,15 @@
 require 'test_helper'
 
+I18n.config.backend.store_translations(:en,
+  {:activity => {:test => '%{one} %{two}'}}
+)
+
 describe 'PublicActivity::Activity Rendering' do
   describe '#text' do
     subject { PublicActivity::Activity.new(:key => 'activity.test', :parameters => {:one => 1}) }
 
     specify '#text uses translations' do
       subject.save
-      I18n.config.backend.store_translations(:en,
-        {:activity => {:test => '%{one} %{two}'}}
-      )
       subject.text(:two => 2).must_equal('1 2')
       subject.parameters.must_equal({:one => 1})
     end
@@ -42,11 +43,8 @@ describe 'PublicActivity::Activity Rendering' do
     end
 
     it 'uses translations only when requested' do
-      I18n.config.backend.store_translations(:en,
-        {:activity => {:test => '%{one} %{two}'}}
-      )
       @controller.view_paths.paths.clear
-      subject.render(self, two: 2, display: :i18n)
+      subject.render(self, two: 2, i18n: true)
       rendered.must_equal '1 2'
     end
 

@@ -94,9 +94,7 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      if params[:display] && params[:display].to_sym == :"i18n"
-        return context.render :text => self.text(params)
-      end
+      params[:i18n] and return context.render :text => self.text(params)
 
       context.render params.merge\
         partial:   partial_path(*params.values_at(:partial, :partial_root)),
