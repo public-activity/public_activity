@@ -94,25 +94,24 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      partial_root  = params.delete(:root)         || 'public_activity'
-      partial_path  = nil
-      layout_root   = params.delete(:layout_root)  || 'layouts'
+      params[:i18n] and return context.render :text => self.text(params)
 
-      if params[:display] && params[:display].to_sym == :"i18n"
-        return context.render :text => self.text(params)
-      end
-
-      context.render(
-        params.merge({
-          :partial => prepare_partial(partial_root, partial_path),
-          :layout  => prepare_layout(layout_root, params.delete(:layout)),
-          :locals  => prepare_locals(params)
-        })
-      )
+      context.render params.merge\
+        partial:   partial_path(*params.values_at(:partial, :partial_root)),
+        layout:     layout_path(*params.values_at(:layout, :layout_root)),
+        locals:  prepare_locals(params)
     end
 
-    def prepare_partial(root, path)
-      path || self.template_path(self.key, root)
+    def partial_path(path = nil, root = nil)
+      root ||= 'public_activity'
+      path ||= self.key.to_s.gsub('.', '/')
+      select_path path, root
+    end
+
+    def layout_path(path = nil, root = nil)
+      path.nil? and return
+      root ||= 'layouts'
+      select_path path, root
     end
 
     def prepare_locals(params)
@@ -120,40 +119,20 @@ module PublicActivity
 
       controller          = PublicActivity.get_controller
       prepared_parameters = prepare_parameters(params)
-      locals.merge(
-        {
-          :a              => self,
-          :activity       => self,
-          :controller     => controller,
-          :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
-          :p              => prepared_parameters,
-          :parameters     => prepared_parameters
-        }
-      )
-    end
-
-    def prepare_layout(root, layout)
-      if layout
-        path = layout.to_s
-        unless path.starts_with?(root) || path.starts_with?("/")
-          return File.join(root, path)
-        end
-      end
-      layout
+      locals.merge\
+        activity:     self,
+        controller:   controller,
+        current_user: controller.respond_to?(:current_user) ? controller.current_user : nil,
+        parameters:   prepared_parameters
     end
 
     def prepare_parameters(params)
       @prepared_params ||= self.parameters.with_indifferent_access.merge(params)
     end
 
-    protected
-
-    # Builds the path to template based on activity key
-    def template_path(key, partial_root)
-      path = key.split(".")
-      path.delete_at(0) if path[0] == "activity"
-      path.unshift partial_root
-      path.join("/")
+    private
+    def select_path path, root
+      [root, path].map(&:to_s).join('/')
     end
   end
 end

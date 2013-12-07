@@ -4,14 +4,7 @@ module PublicActivity
     extend ActiveSupport::Concern
 
     included do
-      after_create :activity_on_create
-    end
-
-    private
-
-    # Creates activity upon creation of the tracked model
-    def activity_on_create
-      create_activity(:create)
+      after_create { create_activity :create }
     end
   end
 end

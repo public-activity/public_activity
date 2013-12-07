@@ -1,6 +1,6 @@
 require "rubygems"
 require "bundler"
-Bundler.setup(:default, :test)
+Bundler.setup(:default, :test, :development)
 
 
 if ENV['COV']

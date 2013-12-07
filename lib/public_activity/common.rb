@@ -93,22 +93,14 @@ module PublicActivity
       end
     end
     #
-    # Returns true if PublicActivity is enabled
-    # globally and for this class.
+    # Returns true if PublicActivity is enabled globally.
+    # @note This method gets overwritten in {Deactivatable#public_activity_enabled?}
     # @return [Boolean]
-    # @api private
+    # @api public
     # @since 0.5.0
+    # @see {Deactivatable#public_activity_enabled?}
     def public_activity_enabled?
       PublicActivity.enabled?
-    end
-    #
-    # Shortcut for {ClassMethods#get_hook}
-    # @param (see ClassMethods#get_hook)
-    # @return (see ClassMethods#get_hook)
-    # @since (see ClassMethods#get_hook)
-    # @api (see ClassMethods#get_hook)
-    def get_hook(key)
-      self.class.get_hook(key)
     end
 
     # Calls hook safely.
@@ -119,7 +111,7 @@ module PublicActivity
     # @since 0.4.0
     # @api private
     def call_hook_safe(key)
-      hook = self.get_hook(key)
+      hook = self.class.get_hook(key)
       if hook
         # provides hook with model and controller
         hook.call(self, PublicActivity.get_controller)
@@ -128,48 +120,62 @@ module PublicActivity
       end
     end
 
-    # Directly creates activity record in the database, based on supplied options.
+    # Records activity in the database, based on supplied options and configuration in
+    # {Tracked}.
     #
-    # It's meant for creating custom activities while *preserving* *all*
-    # *configuration* defined before. If you fire up the simplest of options:
+    # If {Tracked} is used and configured for this model, `create_activity`
+    # will also gather data as defined in {Tracked}. If any parameters passed here
+    # conflict with options defined in {Tracked}, they get precedence over options
+    # defined in {Tracked::ClassMethods#tracked}.
     #
-    #   current_user.create_activity(:avatar_changed)
+    # Whether or not {Tracked} is used, you can provide objects, symbols and procs
+    # as values for all parameters of activity. See {PublicActivity.resolve_value} for available
+    # value types.
     #
-    # It will still gather data from any procs or symbols you passed as parameters
-    # to {Tracked::ClassMethods#tracked}. It will ask the hooks you defined
-    # whether to really save this activity.
+    # If {Tracked} is used and hooks are provided, they will be called upon to decide
+    # if this method should really record an activity. To discard defined hooks and create
+    # the activity unconditionally, use {PublicActivity::Activity} directly.
     #
-    # But you can also overwrite instance and global settings with your options:
+    # # Examples
+    #     current_user.create_activity(:avatar_changed)
+    #     @article.create_activity(action: :commented_on, :owner => current_user)
+    #     @post.create_activity(key: 'blog_post.published', parameters: {words_count: 50})
     #
-    #   @article.activity :owner => proc {|controller| controller.current_user }
-    #   @article.create_activity(:commented_on, :owner => @user)
+    # # Activity Key
+    # The key will be generated from either:
     #
-    # And it's smart! It won't execute your proc, since you've chosen to
-    # overwrite instance parameter _:owner_ with @user.
+    #  * the first parameter you pass that is not a hash (`action`)
+    #  * the _:action_ option in the options hash (`action`)
+    #  * the _:key_ option in the options hash ( **full key** )
     #
-    # [:key]
-    #   The key will be generated from either:
-    #   * the first parameter you pass that is not a hash (*action*)
-    #   * the _:action_ option in the options hash (*action*)
-    #   * the _:key_ option in the options hash (it has to be a full key,
-    #     including model name)
-    #   When you pass an *action* (first two options above), they will be
-    #   added to parameterized model name:
+    #  -------------------
+    #  When you pass an *action* (first two options above), they will be
+    #  added to parameterized model name:
     #
-    #   Given Article model and instance: @article,
+    # Example:
     #
-    #     @article.create_activity :commented_on
-    #     @article.activities.last.key # => "article.commented_on"
+    #     @article.create_activity :commented_on               #=> #<Activity key: 'article.commented_on' ...>
+    #     @article.create_activity action: :commented_on       #=> #<Activity key: 'article.commented_on' ...>
+    #     # note the prefix when passing in `key`
+    #     @article.create_activity key: 'article.commented_on' #=> #<Activity key: 'article.commented_on' ...>
+    # # Options
+    # Besides `:action` and `:key` covered above, you can pass options
+    # such as `:owner`, `:parameters`, `:recipient`. In addition, if you've configured any
+    # *custom fields*, you can pass them in here too.
     #
-    # For other parameters, see {Tracked#activity}, and "Instance options"
-    # accessors at {Tracked}, information on hooks is available at
-    # {Tracked::ClassMethods#tracked}.
-    # @see #prepare_settings
-    # @return [Model, nil] If created successfully, new activity
+    # ## Example
+    #
+    #     @article.create_activity :commented_on, weather_outside: :sunny
+    #
+    # @note This method won't create the activity if hooks reject creation.
+    # @note Options passed in to this method will take precedence over defaults
+    #       configured in {Tracked}.
+    #
+    # @return [PublicActivity::Activity, nil] If created successfully, returns new activity
     # @since 0.4.0
     # @api public
     # @overload create_activity(action, options = {})
-    #   @param [Symbol,String] action Name of the action
+    #   @param [Symbol,String] action Name of the action, will be prefixed
     #   @param [Hash] options Options with quality higher than instance options
     #     set in {Tracked#activity}
     #   @option options [Activist] :owner Owner
@@ -179,8 +185,8 @@ module PublicActivity
     # @overload create_activity(options = {})
     #   @param [Hash] options Options with quality higher than instance options
     #     set in {Tracked#activity}
-    #   @option options [Symbol,String] :action Name of the action
-    #   @option options [String] :key Full key
+    #   @option options [Symbol,String] :action Name of the action, will be prefixed
+    #   @option options [String] :key Full key, won't be prefixed
     #   @option options [Activist] :owner Owner
     #   @option options [Activist] :recipient Recipient
     #   @option options [Hash] :parameters Parameters, see
@@ -226,7 +232,7 @@ module PublicActivity
 
     # Prepares and resolves custom fields
     # users can pass to `tracked` method
-    # @private
+    # @api private
     def prepare_custom_fields(options)
       customs = self.class.activity_custom_fields_global.clone
       customs.merge!(options)
@@ -237,7 +243,7 @@ module PublicActivity
 
     # Prepares i18n parameters that will
     # be serialized into the Activity#parameters column
-    # @private
+    # @api private
     def prepare_parameters(parameters)
       params = {}
       params.merge!(self.class.activity_parameters_global)
@@ -247,7 +253,7 @@ module PublicActivity
 
     # Prepares relation to be saved
     # to Activity. Can be :recipient or :owner
-    # @private
+    # @api private
     def prepare_relation(name, options)
       PublicActivity.resolve_value(self,
         (options.has_key?(name) ? options[name] : self.class.send("activity_#{name}_global"))
@@ -256,8 +262,9 @@ module PublicActivity
 
     # Helper method to serialize class name into relevant key
     # @return [String] the resulted key
-    # @param [Symbol] or [String] the name of the operation to be done on class
+    # @param [Symbol | String] action the name of the operation to be done on class
     # @param [Hash] options to be used on key generation, defaults to {}
+    # @api private
     def prepare_key(action, options = {})
       (
         options[:key] ||
