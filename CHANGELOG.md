@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0 (unreleased)
+
+This change brings a lot of API changes and improvements.
+
+* More better documentation!
+* Added ability to customize root path for directory in which partials/layouts are kept (defaults set to `app/views/public_activity` and `app/views/layouts` respectively) and can be customized like this:
+
+  ```ruby
+  render_activity(@activity, layout_root: 'app/views/custom_path', partial_path: 'app/views/left_nav/public_activity')
+  ```
+
+* Every `:params` option is now called `:parameters` (for example in `create_activity` or `tracked` methods). Also local variable in activityp artials is renemaed to `parameters`.
+* Configuration of instance variables for tracked models is now removed. From now on use `create_activity` instead of `activity`.
+* `a` and `p` shortcut variables are removed in activity partials. Use `activity` and `parameters` instead.
+
+
 ## 1.4.1
 
 * Fixed issue with Rails 4 when using ProtectedAttributes gem (see #128)
