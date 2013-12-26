@@ -1,13 +1,13 @@
-# PublicActivity 
+# PublicActivity
 ## [![Build Status](https://secure.travis-ci.org/pokonski/public_activity.png)](http://travis-ci.org/pokonski/public_activity) [![Coverage Status](https://coveralls.io/repos/pokonski/public_activity/badge.png)](https://coveralls.io/r/pokonski/access-granted) [![Code Climate](https://codeclimate.com/github/pokonski/public_activity.png)](https://codeclimate.com/github/pokonski/public_activity) [![Gem Version](https://badge.fury.io/rb/public_activity.png)](http://badge.fury.io/rb/public_activity) [![Dependency Status](https://gemnasium.com/pokonski/public_activity.png)](https://gemnasium.com/pokonski/public_activity)
 
 `public_activity` provides easy activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
-in Rails 3. Simply put: it records what has been changed or created and gives you the ability to present those
+in Rails 3 and 4. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
-## Rails 4
+## Version notice
 
-**As of 1.4.0 version, public_activity now supports both Rails 3.X and 4.0.**
+This documentation is for the unreleased 2.0 version. For the stable `1.4.X` readme see: https://github.com/pokonski/public_activity/blob/1-4-stable/README.md
 
 
 ## Table of contents
