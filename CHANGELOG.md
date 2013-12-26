@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.1
+
+* Fixed issue with Rails 4 when using ProtectedAttributes gem (see #128)
+* General code clean-ups.
+
 ## 1.4.0
 
 * Added support for MongoMapper ORM (thanks to [Julio Olivera](https://github.com/julioolvr)) [PR](https://github.com/pokonski/public_activity/pull/101)
