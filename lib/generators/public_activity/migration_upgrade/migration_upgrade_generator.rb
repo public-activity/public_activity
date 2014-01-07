@@ -7,7 +7,7 @@ module PublicActivity
     class MigrationUpgradeGenerator < ActiveRecord::Generators::Base
       extend Base
 
-      argument :name, :type => :string, :default => 'upgrade_activities'
+      argument :name, :type => :string, :default => "upgrade_#{PublicActivity.config.table_name}"
       # Create migration in project's folder
       def generate_files
         migration_template 'upgrade.rb', "db/migrate/#{name}"
