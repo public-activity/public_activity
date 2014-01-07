@@ -7,10 +7,10 @@ module PublicActivity
     class ActivityGenerator < ActiveRecord::Generators::Base
       extend Base
 
-      argument :name, :type => :string, :default => "#{PublicActivity.config.table_name}"
+      argument :name, :type => :string, :default => "#{PublicActivity.config.table_name.singularize}"
       # Create model in project's folder
       def generate_files
-        copy_file 'activity.rb', "app/models/#{name}.rb"
+        template 'activity.rb', "app/models/#{name}.rb"
       end
     end
   end
