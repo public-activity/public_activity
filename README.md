@@ -256,3 +256,6 @@ Please do not ask general questions in the Github Issues.
 
 ## License
 Copyright (c) 2011-2013 Piotrek Okoński, released under the MIT license
+
+[![Analytics](https://ga-beacon.appspot.com/UA-46907565-1/public-activity/index)](https://github.com/igrigorik/ga-beacon)
+
