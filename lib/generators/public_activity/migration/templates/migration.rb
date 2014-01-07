@@ -1,5 +1,5 @@
 # Migration responsible for creating a table with activities
-class CreateActivities < ActiveRecord::Migration
+class Create<%= PublicActivity.config.table_name.camelize %> < ActiveRecord::Migration
   # Create table
   def self.up
     create_table :<%= PublicActivity.config.table_name %> do |t|
