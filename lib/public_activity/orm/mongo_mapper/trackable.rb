@@ -3,7 +3,7 @@ module PublicActivity
     module MongoMapper
       module Trackable
         def self.extended(base)
-          base.many :activities, :class_name => "::PublicActivity::Activity", order: :created_at.asc, :as => :trackable
+          base.many PublicActivity.config.table_name.to_sym, :class_name => "::PublicActivity::Activity", order: :created_at.asc, :as => :trackable
         end
       end
     end
