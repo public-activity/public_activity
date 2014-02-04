@@ -11,7 +11,7 @@ This change brings a lot of API changes and improvements.
   render_activity(@activity, layout_root: 'app/views/custom_path', partial_path: 'app/views/left_nav/public_activity')
   ```
 
-* Every `:params` option is now called `:parameters` (for example in `create_activity` or `tracked` methods). Also local variable in activityp artials is renemaed to `parameters`.
+* Every `:params` option is now called `:parameters` (for example in `create_activity` or `tracked` methods). Also local variable in activity partials is renamed to `parameters`.
 * Configuration of instance variables for tracked models is now removed. From now on use `create_activity` instead of `activity`.
 * `a` and `p` shortcut variables are removed in activity partials. Use `activity` and `parameters` instead.
 
