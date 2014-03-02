@@ -61,7 +61,7 @@ gem 'public_activity'
 
 ### Database setup
 
-By default _public_activity_ uses Active Record. If you want to use Mongoid or MongoMapper as your backend, create
+By default `public_activity` uses Active Record. If you want to use Mongoid or MongoMapper as your backend, create
 an initializer file in your Rails application with the corresponding code inside:
 
 For _Mongoid:_
