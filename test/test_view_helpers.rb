@@ -17,6 +17,10 @@ describe 'ViewHelpers Rendering' do
     render_activities([activity])
   end
 
+  it 'returns false when given an empty list' do
+    render_activities([]).must_equal nil
+  end
+
   it 'flushes content_for between partials renderes' do
     @view_flow = mock('view_flow')
     @view_flow.expects(:set).twice.with('name', ActiveSupport::SafeBuffer.new)
