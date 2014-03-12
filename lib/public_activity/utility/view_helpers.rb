@@ -7,6 +7,7 @@ module PublicActivity
       if activities.is_a? PublicActivity::Activity
         activities.render self, options
       elsif activities.respond_to?(:map)
+        return nil if activities.empty?
         # depend on ORMs to fetch as needed
         # maybe we can support Postgres streaming with this?
         activities.map {|activity| activity.render self, options.dup }.join.html_safe
