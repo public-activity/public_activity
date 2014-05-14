@@ -9,6 +9,8 @@ module PublicActivity
       class Activity
         include ::MongoMapper::Document
         include Renderable
+        
+        set_collection_name PublicActivity.config.table_name
 
         class SymbolHash < Hash
           def self.from_mongo(value)
