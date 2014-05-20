@@ -28,9 +28,17 @@ module PublicActivity
     #
     # If partial view exists that matches the *key* attribute
     # renders that partial with local variables set to contain both
-    # Activity and activity_parameters (hash with indifferent access)
+    # Activity and activity_parameters (hash with indifferent access).
     #
-    # Otherwise, it outputs the I18n translation to the context
+    # If the partial view does not exist and you wish to fallback to rendering
+    # through the I18n translation, you can do so by passing in a :fallback
+    # parameter whose value equals :text.
+    #
+    # If you do not want to define a partial view, and instead want to have
+    # all missing views fallback to a default, you can define the :fallback
+    # value equal to the partial you wish to use when the partial defined
+    # by the activity *key* does not exist.
+    #
     # @example Render a list of all activities from a view (erb)
     #   <ul>
     #     <% for activity in PublicActivity::Activity.all %>
@@ -38,7 +46,23 @@ module PublicActivity
     #     <% end %>
     #   </ul>
     #
-    # = Layouts
+    # @example Fallback to the I18n text translation if the view is missing 
+    #   <ul>
+    #     <% for activity in PublicActivity::Activity.all %>
+    #      <li><%= render_activity(activity, fallback: :text) %></li>
+    #     <% end %>
+    #   </ul>
+    #
+    # @example Fallback to a default view if the view for the current activity key is missing. The string is the partial name you wish to use.
+    #   <ul>
+    #     <% for activity in PublicActivity::Activity.all %>
+    #      <li><%= render_activity(activity, fallback: 'default') %></li>
+    #     <% end %>
+    #   </ul>
+    #
+    #
+    # # Layouts
+    # 
     # You can supply a layout that will be used for activity partials
     # with :layout param.
     # Keep in mind that layouts for partials are also partials.
@@ -53,7 +77,8 @@ module PublicActivity
     #   <p><%= a.created_at %></p>
     #   <%= yield %>
     #
-    # == Custom Layout Location
+    # ## Custom Layout Location
+    # 
     # You can customize the layout directory by supplying :layout_root
     # or by using an absolute path.
     #
@@ -64,7 +89,8 @@ module PublicActivity
     #    render_activity @activity, :layout_root => "custom"
     #    render_activity @activity, :layout      => "/custom/layout"
     #
-    # = Creating a template
+    # # Creating a template
+    #
     # To use templates for formatting how the activity should render,
     # create a template based on activity key, for example:
     #
@@ -75,14 +101,16 @@ module PublicActivity
     # directory structure will have to be deeper, for example:
     #   activity.article.comments.destroy => app/views/public_activity/articles/comments/_destroy.html.erb
     #
-    # == Custom Directory
+    # ## Custom Directory
+    #
     # You can override the default `public_directory` template root with the :root parameter
     #
     # @example Custom template root
     #    # look for templates inside of /app/views/custom instead of /app/views/public_directory
     #    render_activity @activity, :root => "custom"
     #
-    # == Variables in templates
+    # ## Variables in templates
+    #
     # From within a template there are two variables at your disposal:
     # * activity (aliased as *a* for a shortcut)
     # * parameters   (aliased as *p*) [converted into a HashWithIndifferentAccess]
