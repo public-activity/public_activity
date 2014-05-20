@@ -190,7 +190,11 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 *Hint*: the `"activity."` prefix in `:key` is completely optional and kept for backwards compatibility, you can skip it in new projects.
 
-If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using `I18n#translate` method (see the section below).
+If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
+
+```erb
+<%= render_activity(@activity, fallback: :text %>
+```
 
 #### i18n
 

@@ -96,10 +96,15 @@ module PublicActivity
     def render(context, params = {})
       params[:i18n] and return context.render :text => self.text(params)
 
-      context.render params.merge\
-        partial:   partial_path(*params.values_at(:partial, :partial_root)),
-        layout:     layout_path(*params.values_at(:layout, :layout_root)),
-        locals:  prepare_locals(params)
+      begin 
+        context.render params.merge\
+          partial: partial_path(*params.values_at(:partial, :partial_root)),
+          layout:  layout_path(*params.values_at(:layout, :layout_root)),
+          locals:  prepare_locals(params)
+      rescue ActionView::MissingTemplate => e
+        params[:fallback] == :text and return context.render :text => self.text(params)
+        raise e
+      end
     end
 
     def partial_path(path = nil, root = nil)
