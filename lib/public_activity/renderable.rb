@@ -96,14 +96,21 @@ module PublicActivity
     def render(context, params = {})
       params[:i18n] and return context.render :text => self.text(params)
 
+      partial = partial_path(*params.values_at(:partial, :partial_root))
+      layout  = layout_path(*params.values_at(:layout, :layout_root))
+      locals  = prepare_locals(params)
+
       begin 
-        context.render params.merge\
-          partial: partial_path(*params.values_at(:partial, :partial_root)),
-          layout:  layout_path(*params.values_at(:layout, :layout_root)),
-          locals:  prepare_locals(params)
+        context.render params.merge(partial: partial, layout: layout, locals: locals)
       rescue ActionView::MissingTemplate => e
-        params[:fallback] == :text and return context.render :text => self.text(params)
-        raise e
+        if params[:fallback] == :text
+          context.render :text => self.text(params)
+        elsif params[:fallback].present?
+          partial = partial_path(*params.values_at(:fallback, :partial_root))
+          context.render params.merge(partial: partial, layout: layout, locals: locals)
+        else
+          raise e
+        end
       end
     end
 

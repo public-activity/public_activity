@@ -190,7 +190,15 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 *Hint*: the `"activity."` prefix in `:key` is completely optional and kept for backwards compatibility, you can skip it in new projects.
 
-If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
+If you would like to fallback to a partial, you can utilize the `fallback` parameter to specify the path of a partial to use when one is missing:
+
+```erb
+<%= render_activity(@activity, fallback: 'default' %>
+```
+
+When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.(erb|haml|slim|something_else)`.
+
+If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation in this situation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
 
 ```erb
 <%= render_activity(@activity, fallback: :text %>
