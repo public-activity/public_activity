@@ -36,6 +36,18 @@ describe 'PublicActivity::Activity Rendering' do
       rendered.must_equal template_output + "\n"
     end
 
+    it 'should fallback to the text view when the partial is missing' do
+      PublicActivity.set_controller(nil)
+      subject.render(self, two: 2, partial_root: 'missing', fallback: :text)
+      rendered.must_equal '1 2'
+    end
+
+    it 'should fallback to a default view when the fallback indicates a path' do
+      PublicActivity.set_controller(nil)
+      subject.render(self, two: 2, partial_root: 'missing', fallback: 'default')
+      rendered.must_equal "default text here\n"
+    end
+
     it 'provides local variables' do
       PublicActivity.set_controller(nil)
       subject.render(self, locals: {two: 2})

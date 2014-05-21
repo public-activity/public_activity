@@ -177,7 +177,7 @@ The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, 
 Sometimes, it's desirable to pass additional local variables to partials. It can be done this way:
 
 ```erb
-<%= render_activity(@activity, locals: {friends: current_user.friends} %>
+<%= render_activity(@activity, locals: {friends: current_user.friends}) %>
 ```
 
 *Note*: Before 1.4.0, one could pass variables directly to the options hash for `#render_activity` and access it from activity parameters. This functionality is retained in 1.4.0 and later, but the `:locals` method is **preferred**, since it prevents bugs from shadowing variables from activity parameters in the database.
@@ -190,7 +190,19 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 *Hint*: the `"activity."` prefix in `:key` is completely optional and kept for backwards compatibility, you can skip it in new projects.
 
-If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using `I18n#translate` method (see the section below).
+If you would like to fallback to a partial, you can utilize the `fallback` parameter to specify the path of a partial to use when one is missing:
+
+```erb
+<%= render_activity(@activity, fallback: 'default') %>
+```
+
+When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.(erb|haml|slim|something_else)`.
+
+If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation in this situation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
+
+```erb
+<%= render_activity(@activity, fallback: :text) %>
+```
 
 #### i18n
 
