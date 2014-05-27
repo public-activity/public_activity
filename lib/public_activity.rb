@@ -19,6 +19,7 @@ module PublicActivity
   autoload :Creation,     'public_activity/actions/creation.rb'
   autoload :Deactivatable,'public_activity/roles/deactivatable.rb'
   autoload :Destruction,  'public_activity/actions/destruction.rb'
+  autoload :Model
   autoload :Renderable
   autoload :Tracked,      'public_activity/roles/tracked.rb'
   autoload :Update,       'public_activity/actions/update.rb'
@@ -51,17 +52,6 @@ module PublicActivity
     orm = PublicActivity.config.orm
     require "public_activity/orm/#{orm.to_s}"
     "PublicActivity::ORM::#{orm.to_s.classify}::#{model}".constantize
-  end
-
-  # Module to be included in ActiveRecord models. Adds required functionality.
-  module Model
-    extend ActiveSupport::Concern
-    included do
-      include Common
-      include Deactivatable
-      include Tracked
-      include Activist  # optional associations by recipient|owner
-    end
   end
 end
 
