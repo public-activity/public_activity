@@ -43,7 +43,20 @@ module PublicActivity
   # Returns PublicActivity's configuration object.
   # @since 0.5.0
   def self.config
-    @@config ||= PublicActivity::Config.instance
+    @config ||= PublicActivity::Config.new
+  end
+
+  # Lets you set global configuration options.
+  #
+  # All available options and their defaults are in the example below:
+  # @example Initializer for Rails
+  #   PublicActivity.configure do |config|
+  #     config.orm         = :active_record
+  #     config.enabled     = false
+  #     config.table_name  = "activities"
+  #   end
+  def self.configure(&block)
+    yield(config) if block_given?
   end
 
   # Method used to choose which ORM to load

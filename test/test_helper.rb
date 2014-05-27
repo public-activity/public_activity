@@ -21,9 +21,11 @@ require 'pry'
 require 'minitest/autorun'
 
 ENV['PA_ORM'] ||= "active_record"
-PublicActivity::Config.orm = ENV['PA_ORM']
+PublicActivity.configure do |config|
+  config.orm = ENV['PA_ORM']
+end
 
-case PublicActivity::Config.orm
+case PublicActivity.config.orm
 when :active_record
   require 'active_record'
   require 'active_record/connection_adapters/sqlite3_adapter'

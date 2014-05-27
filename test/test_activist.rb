@@ -23,7 +23,7 @@ describe PublicActivity::Activist do
   end
 
   it 'returns activities from association' do
-    case PublicActivity::Config.orm
+    case PublicActivity.config.orm
       when :active_record
         class ActivistUser < ActiveRecord::Base
           include PublicActivity::Model
