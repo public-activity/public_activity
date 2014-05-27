@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "Testing active_record 3.X:"
 rm -f Gemfile.lock;
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X bundle > /dev/null;

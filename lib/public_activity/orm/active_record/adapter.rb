@@ -8,7 +8,7 @@ module PublicActivity
       class Adapter
         # Creates the activity on `trackable` with `options`
         def self.create_activity(trackable, options)
-          trackable.activities.create options
+          trackable.send(PublicActivity.config.table_name).create options
         end
       end
     end

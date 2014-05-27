@@ -22,10 +22,10 @@ module PublicActivity
         #   User.first.activities_as_recipient
         #
         def activist
-          has_many :activities_as_owner,
+          has_many "#{PublicActivity.config.table_name}_as_owner".to_sym,
             :class_name => "::PublicActivity::Activity",
             :as => :owner
-          has_many :activities_as_recipient,
+          has_many "#{PublicActivity.config.table_name}_as_recipient".to_sym,
             :class_name => "::PublicActivity::Activity",
             :as => :recipient
         end

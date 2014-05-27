@@ -1,3 +1,3 @@
 # Activity model for customisation & custom methods
-class Activity < PublicActivity::Activity
+class <%= PublicActivity.config.table_name.camelize.singularize %> < PublicActivity::Activity
 end
