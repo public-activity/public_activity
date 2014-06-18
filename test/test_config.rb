@@ -20,5 +20,16 @@ describe PublicActivity do
         config.table_name = "activities"
       end
     end
+
+    it "allows configuring the name of the AR model" do
+      PublicActivity.configure do |config|
+        config.model_name = "ZomgActivitos"
+      end
+      PublicActivity.config.model_name.must_equal "ZomgActivitos"
+
+      PublicActivity.configure do |config|
+        config.model_name = "::PublicActivity::Activity"
+      end
+    end
   end
 end
