@@ -255,10 +255,141 @@ For more documentation go [here](http://rubydoc.info/gems/public_activity/index)
 
 ## Common examples
 
-* [[How to] Set the Activity's owner to current_user by default](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity's-owner-to-current_user-by-default)
-* [[How to] Disable tracking for a class or globally](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Disable-tracking-for-a-class-or-globally)
-* [[How to] Create custom activities](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Create-custom-activities)
-* [[How to] Use custom fields on Activity](https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Use-custom-fields-on-Activity)
+### Set the Activity's owner to current_user by default
+
+You can set up a default value for `:owner` by doing this:
+
+1. Include `PublicActivity::StoreController` in your `ApplicationController` like this:
+
+  ```ruby
+  class ApplicationController < ActionController::Base
+    include PublicActivity::StoreController
+  end
+  ```
+
+2. Use Proc in `:owner` attribute for `tracked` class method in your desired model. For example:
+
+  ```ruby
+  class Article < ActiveRecord::Base
+    tracked owner: Proc.new{ |controller, model| controller.current_user }
+  end
+  ```
+
+
+*Note:* `current_user` applies to Devise, if you are using a different authentication gem or your own code, change the `current_user` to a method you use.
+
+### Disable tracking for a class or globally
+
+If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.enabled=` attribute like below:
+
+```ruby
+# Disable p_a globally
+PublicActivity.enabled = false
+
+# Perform some operations that would normally be tracked by p_a:
+Article.create(title: 'New article')
+
+# Switch it back on
+PublicActivity.enabled = true
+```
+
+You can also disable public_activity for a specific class:
+
+```ruby
+# Disable p_a for Article class
+Article.public_activity_off
+
+# p_a will not do anything here:
+@article = Article.create(title: 'New article')
+
+# But will be enabled for other classes:
+# (creation of the comment will be recorded if you are tracking the Comment class)
+@article.comments.create(body: 'some comment!')
+
+# Enable it again for Article:
+Article.public_activity_on
+```
+
+### Create custom activities
+
+Besides standard, automatic activities created on CRUD actions on your model (deactivatable), you can post your own activities that can be triggered without modifying the tracked model. There are a few ways to do this, as PublicActivity gives three tiers of options to be set.
+
+#### Instant options
+Because every activity **needs a key** (otherwise: `NoKeyProvided` is raised), the shortest and minimal way to post an activity is:
+
+```ruby
+@user.create_activity :mood_changed
+# the key of the action will be user.mood_changed
+@user.create_activity action: :mood_changed # this is exactly the same as above
+```
+
+Besides assigning your key (which is obvious from the code), it will take global options from User class (given in `#tracked` method during class definition) and overwrite them with instance options (set on `@user` by `#activity` method). You can read more about options and how PublicActivity inherits them for you [here](Options-in-Detail).
+
+**Note** the action parameter builds the key like this: `"#{model_name}.#{action}"`. You can read further on options for `#create_activity` [here](http://rubydoc.info/gems/public_activity/PublicActivity/Common:create_activity).
+
+To provide more options, you can do:
+
+```ruby
+@user.create_activity action: 'poke', params: {reason: 'bored'}, recipient: @friend, owner: @user
+
+```
+
+In this example, we have provided all the things we could for a standard Activity.
+
+#### Instance options
+It is sometimes unavoidable to assign options in a more sophisticated way, where oneliners are not possible. For this case, we provide instance options, which are reset every time activity is created.
+
+```ruby
+@user.activity key: 'user.mood_changed' # sets instance options
+@user.create_activity # ok, key is set, passes validation => activity is saved
+# here instance options are not set again
+@user.create_activity # ERROR: NoKeyProvided
+```
+
+### Use custom fields on Activity
+
+Besides the few fields that every Activity has (`key`, `owner`, `recipient`, `trackable`, `parameters`), you can also set custom fields. This could be very beneficial, as `parameters` are a serialized hash, which cannot be queried easily from the database. That being said, use custom fields when you know that you will set them very often and search by them (don't forget database indexes :) ).
+
+#### Setup
+**Skip this step if you are using ActiveRecord in Rails 4 or Mongoid**
+
+The first step is similar in every ORM available (except mongoid):
+
+```ruby
+PublicActivity::Activity.class_eval do
+  attr_accessible :custom_field
+end
+```
+
+place this code under `config/initializers/public_activity.rb`, you have to create it first.
+
+To be able to assign to that field, we need to move it to the mass assignment sanitizer's whitelist.
+
+#### Migration
+If you're using ActiveRecord, you will also need to provide a migration to add the actual field to the `Activity`. Taken from [our tests][tests-migration]:
+
+```ruby
+class AddCustomFieldToActivities < ActiveRecord::Migration
+  def change
+    change_table :activities do |t|
+      t.string :custom_field
+    end
+  end
+end
+```
+
+### Assigning custom fields
+
+Assigning is done by the same methods that you use for normal parameters: `#tracked`, `#create_activity`. You can just pass the name of your custom variable and assign its value. Even better, you can pass it to `#tracked` to tell us how to harvest your data for custom fields so we can do that for you.
+
+```ruby
+class Article < ActiveRecord::Base
+  include PublicActivity::Model
+  tracked custom_field: proc {|controller, model| controller.some_helper }
+end
+```
+
+[tests-migration]: https://github.com/pokonski/public_activity/blob/master/test/migrations/004_add_nonstandard_to_activities.rb
 
 ## Help
 
@@ -269,4 +400,5 @@ https://groups.google.com/forum/?fromgroups#!forum/public-activity
 Please do not ask general questions in the Github Issues.
 
 ## License
+
 Copyright (c) 2011-2014 Piotrek Okoński, released under the MIT license
