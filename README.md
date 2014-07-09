@@ -13,7 +13,7 @@ This documentation is for the unreleased 2.0 version. For the stable `1.4.X` rea
 
 ## Table of contents
 
-1. [About](#example)
+1. [About](#about)
   * [Screencast](#screencast)
   * [Demo](#online-demo)
 2. [Setup](#setup)
