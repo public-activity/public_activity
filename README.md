@@ -2,7 +2,9 @@
 ## [![Gittip](http://img.shields.io/gittip/pokonski.svg)](https://www.gittip.com/pokonski/) [![Build Status](http://img.shields.io/travis/pokonski/public_activity/master.svg)](http://travis-ci.org/pokonski/public_activity) [![Coverage Status](http://img.shields.io/coveralls/pokonski/public_activity.svg)](https://coveralls.io/r/pokonski/public_activity) [![Code Climate](http://img.shields.io/codeclimate/github/pokonski/public_activity.svg)](https://codeclimate.com/github/pokonski/public_activity) [![Gem Version](http://img.shields.io/gem/v/public_activity.svg)](http://badge.fury.io/rb/public_activity) [![Inline docs](http://inch-ci.org/github/pokonski/public_activity.png)](http://inch-ci.org/github/pokonski/public_activity)
 
 `public_activity` provides easy activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
-in Rails 3 and 4. Simply put: it can record what happens in your application and gives you the ability to present those recorded activities to users - in a similar way to how GitHub does it.
+in Rails 3 and 4.
+
+Simply put: it can record what happens in your application and gives you the ability to present those recorded activities to users - in a similar way to how GitHub does it.
 
 ## Version notice
 
@@ -11,10 +13,9 @@ This documentation is for the unreleased 2.0 version. For the stable `1.4.X` rea
 
 ## Table of contents
 
-1. [Example](#example)
-  * [Demo](#online-demo)
+1. [About](#example)
   * [Screencast](#screencast)
-  * **[Common examples](#common-examples)**
+  * [Demo](#online-demo)
 2. [Setup](#setup)
   1. [Gem installation](#gem-installation)
   2. [Database setup](#database-setup)
@@ -25,14 +26,19 @@ This documentation is for the unreleased 2.0 version. For the stable `1.4.X` rea
     2. [i18n](#i18n)
 3. [Testing](#testing)
 4. [Documentation](#documentation)
-5. **[Help](#help)**
-6. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-2.0.0-versions)
+5. **[Common examples](#common-examples)**
+6. [Help](#help)
+7. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-2.0.0-versions)
 
-## Example
+## About
 
 Here is a simple example showing what this gem is about:
 
 ![Example usage](http://i.imgur.com/q0TVx.png)
+
+### Screencast
+
+Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-activity) describing how to integrate Public Activity.
 
 ### Online demo
 
@@ -40,9 +46,6 @@ You can see an actual application using this gem here: http://public-activity-ex
 
 The source code of the demo is hosted here: https://github.com/pokonski/activity_blog
 
-## Screencast
-
-Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-activity) describing how to integrate Public Activity in your Rails Application.
 
 ## Setup
 
