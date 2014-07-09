@@ -45,7 +45,7 @@ module PublicActivity
       #          :title => :title,
       #          :author_name => "Michael",
       #          :category_name => proc {|controller, model_instance| model_instance.category.name},
-      #          :summary => proc {|controller, model_instance| truncate(model.text, :length => 30)}
+      #          :summary => proc {|controller, model_instance| truncate(model_instance.text, :length => 30)}
       #      }
       #    end
       #
