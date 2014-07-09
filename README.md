@@ -26,7 +26,7 @@ This documentation is for the unreleased 2.0 version. For the stable `1.4.X` rea
 3. [Testing](#testing)
 4. [Documentation](#documentation)
 5. **[Help](#help)**
-6. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)
+6. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-2.0.0-versions)
 
 ## Example
 
@@ -67,8 +67,8 @@ For _Mongoid:_
 
 ```ruby
 # config/initializers/public_activity.rb
-PublicActivity::Config.set do
-  orm :mongoid
+PublicActivity.configure do |config|
+  config.orm = :mongoid
 end
 ```
 
@@ -76,8 +76,8 @@ For _MongoMapper:_
 
 ```ruby
 # config/initializers/public_activity.rb
-PublicActivity::Config.set do
-  orm :mongo_mapper
+PublicActivity.configure do |config|
+  config.orm = :mongo_mapper
 end
 ```
 
