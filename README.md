@@ -330,27 +330,19 @@ Besides assigning your key (which is obvious from the code), it will take global
 To provide more options, you can do:
 
 ```ruby
-@user.create_activity action: 'poke', params: {reason: 'bored'}, recipient: @friend, owner: @user
+@user.create_activity action: 'poke', params: {reason: 'bored'}, recipient: @friend, owner: current_user
 
 ```
 
 In this example, we have provided all the things we could for a standard Activity.
 
-#### Instance options
-It is sometimes unavoidable to assign options in a more sophisticated way, where oneliners are not possible. For this case, we provide instance options, which are reset every time activity is created.
-
-```ruby
-@user.activity key: 'user.mood_changed' # sets instance options
-@user.create_activity # ok, key is set, passes validation => activity is saved
-# here instance options are not set again
-@user.create_activity # ERROR: NoKeyProvided
-```
 
 ### Use custom fields on Activity
 
 Besides the few fields that every Activity has (`key`, `owner`, `recipient`, `trackable`, `parameters`), you can also set custom fields. This could be very beneficial, as `parameters` are a serialized hash, which cannot be queried easily from the database. That being said, use custom fields when you know that you will set them very often and search by them (don't forget database indexes :) ).
 
 #### Setup
+
 **Skip this step if you are using ActiveRecord in Rails 4 or Mongoid**
 
 The first step is similar in every ORM available (except mongoid):
@@ -366,6 +358,7 @@ place this code under `config/initializers/public_activity.rb`, you have to crea
 To be able to assign to that field, we need to move it to the mass assignment sanitizer's whitelist.
 
 #### Migration
+
 If you're using ActiveRecord, you will also need to provide a migration to add the actual field to the `Activity`. Taken from [our tests][tests-migration]:
 
 ```ruby
