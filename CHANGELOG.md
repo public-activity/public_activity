@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+
+* Fix bug with migrations not having an extension in ActiveRecord >= 4.0.0
+
 ## 1.4.1
 
 * Fixed issue with Rails 4 when using ProtectedAttributes gem (see #128)

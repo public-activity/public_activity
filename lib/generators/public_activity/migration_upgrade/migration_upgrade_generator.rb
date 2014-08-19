@@ -10,7 +10,7 @@ module PublicActivity
       argument :name, :type => :string, :default => 'upgrade_activities'
       # Create migration in project's folder
       def generate_files
-        migration_template 'upgrade.rb', "db/migrate/#{name}"
+        migration_template 'upgrade.rb', "db/migrate/#{name}.rb"
       end
     end
   end
