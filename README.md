@@ -341,6 +341,19 @@ In this example, we have provided all the things we could for a standard Activit
 
 Besides the few fields that every Activity has (`key`, `owner`, `recipient`, `trackable`, `parameters`), you can also set custom fields. This could be very beneficial, as `parameters` are a serialized hash, which cannot be queried easily from the database. That being said, use custom fields when you know that you will set them very often and search by them (don't forget database indexes :) ).
 
+### Set `owner` and `recipient` based on associations
+
+
+```ruby
+class Comment < ActiveRecord::Base
+  include PublicActivity::Model
+  tracked owner: :commenter, recipient: :commentee
+
+  belongs_to :commenter, :class_name => "User"
+  belongs_to :commentee, :class_name => "User"
+end
+```
+
 #### Setup
 
 **Skip this step if you are using ActiveRecord in Rails 4 or Mongoid**
