@@ -330,7 +330,7 @@ Besides assigning your key (which is obvious from the code), it will take global
 To provide more options, you can do:
 
 ```ruby
-@user.create_activity action: 'poke', params: {reason: 'bored'}, recipient: @friend, owner: current_user
+@user.create_activity action: 'poke', parameters: {reason: 'bored'}, recipient: @friend, owner: current_user
 
 ```
 
