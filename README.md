@@ -235,7 +235,7 @@ require 'public_activity/testing'
 PublicActivity.enabled = false
 ```
 
-In your specs you can then blockwise decide wether to turn `public_activity` on
+In your specs you can then blockwise decide whether to turn `public_activity` on
 or off.
 
 ```ruby
