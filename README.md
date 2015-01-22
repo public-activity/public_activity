@@ -296,7 +296,6 @@ If you need to disable tracking temporarily, for example in tests or `db/seeds.r
 
 ```ruby
 # Disable p_a temporarily
-PublicActivity.enabled = false
 PublicActivity.without_tracking do
   # Perform some operations that would normally be tracked by p_a:
   Article.create(title: 'New article')
