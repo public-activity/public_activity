@@ -241,7 +241,7 @@ module PublicActivity
       end
     end
 
-    # Prepares i18n parameters that will
+    # Prepares the parameters that will
     # be serialized into the Activity#parameters column
     # @api private
     def prepare_parameters(parameters)

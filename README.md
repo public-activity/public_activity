@@ -201,27 +201,27 @@ If you would like to fallback to a partial, you can utilize the `fallback` param
 
 When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.(erb|haml|slim|something_else)`.
 
-If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation in this situation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
+If a view file does not exist then ActionView::MisingTemplate will be raised.
+You can provide a fallback template to use, like this:
 
 ```erb
-<%= render_activity(@activity, fallback: :text) %>
+<%= render_activity(@activity, fallback: 'default') %>
 ```
+
+Which will look for `app/views/public_activity/your-model/your-activity-key`
+and then `app/views/public_activity/your-model/default`.
 
 #### i18n
 
-Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided. You can render pure i18n strings by passing `{display: :i18n}` to `#render_activity` or `#render`.
+In the 2.0 version, we've removed the i18n rendering feature.
 
-Translations should be put in your locale `.yml` files. To render pure strings from I18n Example structure:
+If you want to keep using it, implement it like this:
 
-```yaml
-activity:
-  article:
-    create: 'Article has been created'
-    update: 'Someone has edited the article'
-    destroy: 'Some user removed an article!'
+```rb
+def render_text(activity)
+  I18n.t(activity.key, acitvity.parameters)
+end
 ```
-
-This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
 
 ## Testing
 
