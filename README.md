@@ -244,8 +244,7 @@ This should make your specs faster.
 
 If you want to test recording activities, remember that you can nest those
 blocks!
-Even with the disabled-by-default PublicActivity behavior, you can do this in
-tests:
+Even when you disable tracking in tests (like above), you can still do this:
 
 ```ruby
 # file_spec.rb
