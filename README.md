@@ -228,18 +228,23 @@ end
 
 ## Testing
 
-For RSpec you can first disable `public_activity` and add the `test_helper` in
-the `spec_helper.rb` with
+For RSpec we advise this behavior by default:
 
 ```ruby
-#spec_helper.rb
-require 'public_activity/testing'
+# spec_helper.rb
 
-PublicActivity.enabled = false
+RSpec.configure do |config|
+  config.around(:suite) do |example|
+    PublicActivity.without_tracking { example.run }
+  end
+end
 ```
 
-In your specs you can then blockwise decide whether to turn `public_activity` on
-or off.
+This should make your specs faster.
+
+If you want to test recording activities, remember you can nest those blocks!
+Even with the disabled-by-default PublicActivity behavior, you can do this in
+tests:
 
 ```ruby
 # file_spec.rb
@@ -251,6 +256,10 @@ PublicActivity.without_tracking do
   # your test code goes here
 end
 ```
+
+This approach will make it threadsafe, failsafe and anything-safe. Should be
+compatible with parallelizing tests and prevent leaking settings between
+test cases.
 
 ## Documentation
 
@@ -281,26 +290,29 @@ You can set up a default value for `:owner` by doing this:
 
 *Note:* `current_user` applies to Devise, if you are using a different authentication gem or your own code, change the `current_user` to a method you use.
 
-### Disable tracking for a class or globally
+### Disable tracking for a class or temporarily
 
-If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.enabled=` attribute like below:
+If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.without_tracking` like below:
 
 ```ruby
-# Disable p_a globally
+# Disable p_a temporarily
 PublicActivity.enabled = false
-
-# Perform some operations that would normally be tracked by p_a:
-Article.create(title: 'New article')
-
-# Switch it back on
-PublicActivity.enabled = true
+PublicActivity.without_tracking do
+  # Perform some operations that would normally be tracked by p_a:
+  Article.create(title: 'New article')
+end
 ```
 
 You can also disable public_activity for a specific class:
 
 ```ruby
 # Disable p_a for Article class
-Article.public_activity_off
+model Article < ActiveRecord::Base
+  include PublicActivity::Model
+  # if you use Common module, without Model,
+  # include Deactivatable too
+  public_activity_off
+end
 
 # p_a will not do anything here:
 @article = Article.create(title: 'New article')
@@ -309,8 +321,9 @@ Article.public_activity_off
 # (creation of the comment will be recorded if you are tracking the Comment class)
 @article.comments.create(body: 'some comment!')
 
-# Enable it again for Article:
-Article.public_activity_on
+PublicActivity.with_tracking do
+  @article.create_activity 'test' # will be recorded
+end
 ```
 
 ### Create custom activities
