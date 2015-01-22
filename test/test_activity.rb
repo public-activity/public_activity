@@ -1,20 +1,6 @@
 require 'test_helper'
 
-I18n.config.backend.store_translations(:en,
-  {:activity => {:test => '%{one} %{two}'}}
-)
-
 describe 'PublicActivity::Activity Rendering' do
-  describe '#text' do
-    subject { PublicActivity::Activity.new(:key => 'activity.test', :parameters => {:one => 1}) }
-
-    specify '#text uses translations' do
-      subject.save
-      subject.text(:two => 2).must_equal('1 2')
-      subject.parameters.must_equal({:one => 1})
-    end
-  end
-
   describe '#render' do
     subject do
       PublicActivity::Activity
@@ -36,12 +22,6 @@ describe 'PublicActivity::Activity Rendering' do
       rendered.must_equal template_output + "\n"
     end
 
-    it 'should fallback to the text view when the partial is missing' do
-      PublicActivity.set_controller(nil)
-      subject.render(self, two: 2, partial_root: 'missing', fallback: :text)
-      rendered.must_equal '1 2'
-    end
-
     it 'should fallback to a default view when the fallback indicates a path' do
       PublicActivity.set_controller(nil)
       subject.render(self, two: 2, partial_root: 'missing', fallback: 'default')
@@ -52,12 +32,6 @@ describe 'PublicActivity::Activity Rendering' do
       PublicActivity.set_controller(nil)
       subject.render(self, locals: {two: 2})
       rendered.chomp.must_equal "2"
-    end
-
-    it 'uses translations only when requested' do
-      @controller.view_paths.paths.clear
-      subject.render(self, two: 2, i18n: true)
-      rendered.must_equal '1 2'
     end
 
     it "pass all params to view context" do
