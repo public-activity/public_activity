@@ -307,7 +307,7 @@ You can also disable public_activity for a specific class:
 
 ```ruby
 # Disable p_a for Article class
-model Article < ActiveRecord::Base
+class Article < ActiveRecord::Base
   include PublicActivity::Model
   # if you use Common module, without Model,
   # include Deactivatable too
