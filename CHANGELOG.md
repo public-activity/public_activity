@@ -28,6 +28,10 @@ module PublicActivityHelper
 end
 ```
 
+* PublicActivity.with_tracking, PublicActivity.without_tracking to specify
+  tracking behavior, now completely threadsafe, while PublicActivity.enabled=
+  is now deprecated as it is not safe and global switch is redundant.
+
 ## 1.4.2
 
 * Fix bug with migrations not having an extension in ActiveRecord >= 4.0.0
