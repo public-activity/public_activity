@@ -295,34 +295,25 @@ You can set up a default value for `:owner` by doing this:
 If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.without_tracking` like below:
 
 ```ruby
-# Disable p_a temporarily
 PublicActivity.without_tracking do
-  # Perform some operations that would normally be tracked by p_a:
-  Article.create(title: 'New article')
+  Article.create(title: 'New article') # not recorded
 end
 ```
 
 You can also disable public_activity for a specific class:
 
 ```ruby
-# Disable p_a for Article class
 class Article < ActiveRecord::Base
   include PublicActivity::Model
-  # if you use Common module, without Model,
-  # include Deactivatable too
+  # if you use Common instead, add this too
+  # include PublicActivity::Deactivatable
   public_activity_off
 end
 
-# p_a will not do anything here:
-@article = Article.create(title: 'New article')
+@article = Article.create(title: 'New article') # not recorded
 
 # But will be enabled for other classes:
-# (creation of the comment will be recorded if you are tracking the Comment class)
-@article.comments.create(body: 'some comment!')
-
-PublicActivity.with_tracking do
-  @article.create_activity 'test' # will be recorded
-end
+@article.comments.create(body: 'some comment!') # recorded
 ```
 
 ### Create custom activities
