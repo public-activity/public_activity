@@ -10,9 +10,9 @@ module PublicActivity
         include ::Mongoid::Timestamps
         include ::Mongoid::Attributes::Dynamic if (::Mongoid::VERSION =~ /^4/) == 0
         include Renderable
-        
+
         store_in collection: PublicActivity.config.table_name
-        
+
         # Define polymorphic association to the parent
         belongs_to :trackable,  polymorphic: true
         # Define ownership to a resource responsible for this activity

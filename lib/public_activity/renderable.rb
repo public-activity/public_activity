@@ -35,7 +35,7 @@ module PublicActivity
     #     <% end %>
     #   </ul>
     #
-    # @example Fallback to the I18n text translation if the view is missing 
+    # @example Fallback to the I18n text translation if the view is missing
     #   <ul>
     #     <% for activity in PublicActivity::Activity.all %>
     #      <li><%= render_activity(activity, fallback: :text) %></li>
@@ -51,7 +51,7 @@ module PublicActivity
     #
     #
     # # Layouts
-    # 
+    #
     # You can supply a layout that will be used for activity partials
     # with :layout param.
     # Keep in mind that layouts for partials are also partials.
@@ -67,7 +67,7 @@ module PublicActivity
     #   <%= yield %>
     #
     # ## Custom Layout Location
-    # 
+    #
     # You can customize the layout directory by supplying :layout_root
     # or by using an absolute path.
     #

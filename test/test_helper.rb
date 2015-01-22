@@ -2,7 +2,6 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test, :development)
 
-
 if ENV['COV']
   require 'simplecov'
   SimpleCov.start do
