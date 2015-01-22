@@ -15,7 +15,7 @@ module PublicActivity
     # @since 0.5.0
     # overrides the method from Common
     def public_activity_enabled?
-      PublicActivity.enabled? && self.class.public_activity_enabled_for_model
+      PublicActivity.config.enabled && self.class.public_activity_enabled_for_model
     end
 
     # Provides global methods to disable or enable PublicActivity on a per-class

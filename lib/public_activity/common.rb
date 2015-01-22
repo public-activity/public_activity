@@ -100,7 +100,7 @@ module PublicActivity
     # @since 0.5.0
     # @see {Deactivatable#public_activity_enabled?}
     def public_activity_enabled?
-      PublicActivity.enabled?
+      PublicActivity.config.enabled
     end
 
     # Calls hook safely.
