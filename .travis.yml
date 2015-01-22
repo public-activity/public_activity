@@ -7,6 +7,7 @@ gemfile:
   - gemfiles/Gemfile.rails-3.X
   - gemfiles/Gemfile.rails-4.0
 env:
+  - PA_ORM=active_record
   - PA_ORM=mongoid
   - PA_ORM=mongo_mapper
 services:
