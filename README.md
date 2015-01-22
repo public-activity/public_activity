@@ -218,8 +218,11 @@ In the 2.0 version, we've removed the i18n rendering feature.
 If you want to keep using it, implement it like this:
 
 ```rb
-def render_text(activity)
-  I18n.t(activity.key, acitvity.parameters)
+# app/helpers/public_activity.rb
+module PublicActivityHelper
+  def render_text(activity)
+    I18n.t(activity.key, acitvity.parameters)
+  end
 end
 ```
 
