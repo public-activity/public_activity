@@ -8,7 +8,6 @@ require 'action_view'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
-  class DeprecatedError < Exception; end
 
   autoload :Activity,     'public_activity/models/activity'
   autoload :Activist,     'public_activity/models/activist'

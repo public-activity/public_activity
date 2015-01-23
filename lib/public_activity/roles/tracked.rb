@@ -3,11 +3,6 @@ module PublicActivity
   module Tracked
     extend ActiveSupport::Concern
 
-    # @deprecated Use {PublicActivity::Common#create_activity} instead.
-    def activity(*args)
-      raise DeprecatedError, "instance level for setting activity variables is removed in 2.0 version. Use #create_activity instead."
-    end
-
     # Module with basic +tracked+ method that enables tracking models.
     module ClassMethods
       # Adds required callbacks for creating and updating
