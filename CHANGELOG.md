@@ -31,6 +31,9 @@ end
 * PublicActivity.with_tracking, PublicActivity.without_tracking to specify
   tracking behavior, now completely threadsafe, while PublicActivity.enabled=
   is now deprecated as it is not safe and global switch is redundant.
+* Removed `single_content_for` helper which nobody used.
+* StoreController implementation is easier on the memory.
+* Removed the deprecated `#activity` method.
 
 ## 1.4.2
 
