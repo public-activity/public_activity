@@ -28,41 +28,8 @@ module PublicActivity
       set_public_activity_class_defaults
     end
 
-    # @!group Global options
-
-    # @!attribute activity_owner_global
-    #   Global version of activity owner
-    #   @see #activity_owner
-    #   @return [Model]
-
-    # @!attribute activity_recipient_global
-    #   Global version of activity recipient
-    #   @see #activity_recipient
-    #   @return [Model]
-
-    # @!attribute activity_parameters_global
-    #   Global version of activity parameters
-    #   @see #activity_parameters
-    #   @return [Hash<Symbol, Object>]
-
-    # @!attribute activity_hooks
-    #   @return [Hash<Symbol, Proc>]
-    #   Hooks/functions that will be used to decide *if* the activity should get
-    #   created.
-    #
-    #   The supported keys are:
-    #   * :create
-    #   * :update
-    #   * :destroy
-
-    # @!visibility private
-    @@activity_hooks = {}
-
-    # @!endgroup
-
     # Provides some global methods for every model class.
     module ClassMethods
-      #
       # @since 1.0.0
       # @api private
       def set_public_activity_class_defaults
@@ -92,7 +59,7 @@ module PublicActivity
         end
       end
     end
-    #
+
     # Returns true if PublicActivity is enabled globally.
     # @note This method gets overwritten in {Deactivatable#public_activity_enabled?}
     # @return [Boolean]
