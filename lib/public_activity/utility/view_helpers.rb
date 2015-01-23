@@ -13,5 +13,5 @@ module PublicActivity
     alias_method :render_activities, :render_activity
   end
 
-  ActionView::Base.include ViewHelpers
+  ActionView::Base.class_exec { include ViewHelpers }
 end
