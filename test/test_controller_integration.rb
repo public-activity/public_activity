@@ -5,35 +5,36 @@ class StoringController < ActionView::TestCase::TestController
   include ActionController::Testing::ClassMethods
 end
 
-describe PublicActivity::StoreController do
-  it 'stores controller' do
+class TestStoreController < Minitest::Unit::TestCase
+  def test_storing_controller
     controller = StoringController.new
     PublicActivity.set_controller(controller)
-    controller.must_be_same_as Thread.current[:public_activity_controller]
-    controller.must_be_same_as PublicActivity.get_controller
+    assert_equal Thread.current[:public_activity_controller], controller
+    assert_equal PublicActivity.get_controller, controller
   end
 
-  it 'stores controller with a filter in controller' do
+  def test_store_controller_filter
     controller = StoringController.new
 
-    controller._process_action_callbacks
-      .select {|c| c.kind == :before }
-      .map(&:filter)
-      .must_include :store_controller_for_public_activity
+    assert_includes controller._process_action_callbacks
+                    .select {|c| c.kind == :before }
+                    .map(&:filter),
+                    :store_controller_for_public_activity
 
     controller.instance_eval { store_controller_for_public_activity }
-    controller.must_be_same_as Thread.current[:public_activity_controller]
+    assert_equal Thread.current[:public_activity_controller], controller
   end
 
-  it 'stores controller in a threadsafe way' do
+  def test_thread_safety
     PublicActivity.set_controller(1)
-    PublicActivity.get_controller.must_equal 1
+    assert_equal 1, PublicActivity.get_controller
 
     a = Thread.new {
       PublicActivity.set_controller(2)
-      PublicActivity.get_controller.must_equal 2
+      assert_equal 2, PublicActivity.get_controller
     }
 
-    PublicActivity.get_controller.must_equal 1
+    a.join
+    assert_equal 1, PublicActivity.get_controller
   end
 end

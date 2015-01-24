@@ -10,6 +10,10 @@ env:
   - PA_ORM=active_record
   - PA_ORM=mongoid
   - PA_ORM=mongo_mapper
+matrix:
+  exclude:
+    - rvm: 2.2.0
+      gemfile: gemfiles/Gemfile.rails-3.X
 services:
   - mongodb
 email:

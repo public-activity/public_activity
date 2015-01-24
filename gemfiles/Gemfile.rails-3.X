@@ -14,5 +14,4 @@ group :development, :test do
   gem 'yard', '~> 0.8'
   gem 'activerecord', '~> 3.0'
   gem 'coveralls', require: false
-  gem 'test-unit'
 end
