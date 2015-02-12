@@ -1,55 +1,49 @@
 require 'test_helper'
 
 class TestTracking < Minitest::Unit::TestCase
+  case PublicActivity.config.orm
+  when :mongoid
+    class ActivistAndTrackedArticle
+      include Mongoid::Document
+      include Mongoid::Timestamps
+      include PublicActivity::Model
+
+      belongs_to :user
+
+      field :name, type: String
+      field :published, type: Boolean
+      tracked
+      activist
+    end
+  when :mongo_mapper
+    class ActivistAndTrackedArticle
+      include MongoMapper::Document
+      include PublicActivity::Model
+
+      belongs_to :user
+
+      key :name, String
+      key :published, Boolean
+      tracked
+      activist
+      timestamps!
+    end
+  when :active_record
+    class ActivistAndTrackedArticle < ActiveRecord::Base
+      self.table_name = 'articles'
+      include PublicActivity::Model
+      tracked
+      activist
+
+      if ::ActiveRecord::VERSION::MAJOR < 4
+        attr_accessible :name, :published, :user
+      end
+      belongs_to :user
+    end
+  end
+
   def test_tracked_activist
-    klass = case PublicActivity.config.orm
-            when :mongoid
-              Class.new do
-                include Mongoid::Document
-                include Mongoid::Timestamps
-                include PublicActivity::Model
-
-                belongs_to :user
-
-                def self.name; "ActivistAndTrackedArticle" end
-
-                field :name, type: String
-                field :published, type: Boolean
-                tracked
-                activist
-              end
-            when :mongo_mapper
-              Class.new do
-                include MongoMapper::Document
-                include PublicActivity::Model
-
-                belongs_to :user
-
-                def self.name; "ActivistAndTrackedArticle" end
-
-                key :name, String
-                key :published, Boolean
-                tracked
-                activist
-                timestamps!
-              end
-            when :active_record
-              Class.new(ActiveRecord::Base) do
-                self.table_name = 'articles'
-                include PublicActivity::Model
-                tracked
-                activist
-
-                def self.name; "ActivistAndTrackedArticle" end
-
-                if ::ActiveRecord::VERSION::MAJOR < 4
-                  attr_accessible :name, :published, :user
-                end
-                belongs_to :user
-              end
-            end
-
-    art = klass.new
+    art = ActivistAndTrackedArticle.new
     art.save
     assert_equal art.id, art.activities.last.trackable_id
     assert_nil art.activities.last.owner_id

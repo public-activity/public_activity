@@ -25,38 +25,33 @@ class TestActivist < Minitest::Unit::TestCase
       end
   end
 
+  case PublicActivity.config.orm
+  when :active_record
+    class ActivistUser < ActiveRecord::Base
+      include PublicActivity::Model
+      self.table_name = 'users'
+      activist
+    end
+  when :mongoid
+    class ActivistUser
+      include Mongoid::Document
+      include PublicActivity::Model
+      activist
+
+      field :name, type: String
+    end
+  when :mongo_mapper
+    class ActivistUser
+      include MongoMapper::Document
+      include PublicActivity::Model
+      activist
+
+      key :name, String
+    end
+  end
+
   def test_activities_from_association
-    activist_user = case PublicActivity.config.orm
-                    when :active_record
-                      Class.new(ActiveRecord::Base) do
-                        include PublicActivity::Model
-                        self.table_name = 'users'
-                        activist
-                        def self.name; 'ActivistUser' end
-                      end
-                    when :mongoid
-                      Class.new do
-                        include Mongoid::Document
-                        include PublicActivity::Model
-                        activist
-
-                        field :name, type: String
-
-                        def self.name; 'ActivistUser' end
-                      end
-                    when :mongo_mapper
-                      Class.new do
-                        include MongoMapper::Document
-                        include PublicActivity::Model
-                        activist
-
-                        key :name, String
-
-                        def self.name; 'ActivistUser' end
-                      end
-                    end
-
-    owner = activist_user.create(:name => "Peter Pan")
+    owner = ActivistUser.create(:name => "Peter Pan")
     a = article(owner: owner).new
     a.save
 
