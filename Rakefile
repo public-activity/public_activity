@@ -12,7 +12,7 @@ YARD::Rake::YardocTask.new do |doc|
 end
 
 Rake::TestTask.new do |t|
-	t.libs << "test"
-	t.test_files = FileList['test/test*.rb']
+  t.libs << "test"
+  t.test_files = FileList['test/test*.rb']
 end
 
