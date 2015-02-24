@@ -44,7 +44,8 @@ Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-a
 
 #### Tutorial
 
-A great step-by-step guide on [implementing activity feeds using public_activity](http://www.sitepoint.com/activity-feeds-rails/) by Ilya Bodrov.
+A great step-by-step guide on [implementing activity feeds using public_activity](http://www.sitepoint.com/activity-feeds-rails/) by [Ilya Bodrov](https://github.com/bodrovis).
+
 ### Online demo
 
 You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
