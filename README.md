@@ -14,7 +14,7 @@ This documentation is for the unreleased 2.0 version. For the stable `1.4.X` rea
 ## Table of contents
 
 1. [About](#about)
-  * [Screencast](#screencast)
+  * [Tutorials](#tutorials)
   * [Demo](#online-demo)
 2. [Setup](#setup)
   1. [Gem installation](#gem-installation)
@@ -36,10 +36,15 @@ Here is a simple example showing what this gem is about:
 
 ![Example usage](http://i.imgur.com/q0TVx.png)
 
-### Screencast
+### Tutorials
+
+#### Screencast
 
 Ryan Bates made a [great screencast](http://railscasts.com/episodes/406-public-activity) describing how to integrate Public Activity.
 
+#### Tutorial
+
+A great step-by-step guide on [implementing activity feeds using public_activity](http://www.sitepoint.com/activity-feeds-rails/) by Ilya Bodrov.
 ### Online demo
 
 You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
