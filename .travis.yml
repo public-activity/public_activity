@@ -2,49 +2,49 @@ language: ruby
 matrix:
   include:
     - rvm: 2.0.0
-      env: PA_ORM=active_record
+      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.active_record
       gemfile: gemfiles/Gemfile.rails-3.X.active_record
     - rvm: 2.0.0
-      env: PA_ORM=mongoid
+      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongoid
       gemfile: gemfiles/Gemfile.rails-3.X.mongoid
     - rvm: 2.0.0
-      env: PA_ORM=mongo_mapper
+      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongo_mapper
       gemfile: gemfiles/Gemfile.rails-3.X.mongo_mapper
     - rvm: 2.1.5
-      env: PA_ORM=active_record
+      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.active_record
       gemfile: gemfiles/Gemfile.rails-3.X.active_record
     - rvm: 2.1.5
-      env: PA_ORM=mongoid
+      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongoid
       gemfile: gemfiles/Gemfile.rails-3.X.mongoid
     - rvm: 2.1.5
-      env: PA_ORM=mongo_mapper
+      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongo_mapper
       gemfile: gemfiles/Gemfile.rails-3.X.mongo_mapper
     - rvm: 2.0.0
-      env: PA_ORM=active_record
+      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.active_record
       gemfile: gemfiles/Gemfile.rails-4.0.active_record
     - rvm: 2.0.0
-      env: PA_ORM=mongoid
+      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongoid
       gemfile: gemfiles/Gemfile.rails-4.0.mongoid
     - rvm: 2.0.0
-      env: PA_ORM=mongo_mapper
+      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongo_mapper
       gemfile: gemfiles/Gemfile.rails-4.0.mongo_mapper
     - rvm: 2.1.5
-      env: PA_ORM=active_record
+      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.active_record
       gemfile: gemfiles/Gemfile.rails-4.0.active_record
     - rvm: 2.1.5
-      env: PA_ORM=mongoid
+      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongoid
       gemfile: gemfiles/Gemfile.rails-4.0.mongoid
     - rvm: 2.1.5
-      env: PA_ORM=mongo_mapper
+      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongo_mapper
       gemfile: gemfiles/Gemfile.rails-4.0.mongo_mapper
     - rvm: 2.2.0
-      env: PA_ORM=active_record
+      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.active_record
       gemfile: gemfiles/Gemfile.rails-4.0.active_record
     - rvm: 2.2.0
-      env: PA_ORM=mongoid
+      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongoid
       gemfile: gemfiles/Gemfile.rails-4.0.mongoid
     - rvm: 2.2.0
-      env: PA_ORM=mongo_mapper
+      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongo_mapper
       gemfile: gemfiles/Gemfile.rails-4.0.mongo_mapper
 services:
   - mongodb
