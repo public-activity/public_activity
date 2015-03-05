@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   when 'active_record'
     s.add_dependency 'activerecord', '>= 3.0'
   when 'mongoid'
-    s.add_dependency 'mongoid',      '~> 3.0'
+    s.add_dependency 'mongoid',      '~> 4.0'
   when 'mongo_mapper'
     s.add_dependency 'bson_ext'
     s.add_dependency 'mongo_mapper', '>= 0.12.0'
