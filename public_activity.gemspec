@@ -25,18 +25,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'actionpack', '>= 3.0.0'
   s.add_dependency 'railties', '>= 3.0.0'
   s.add_dependency 'i18n', '>= 0.5.0'
-
-  ENV['PA_ORM'] ||= 'active_record'
-  case ENV['PA_ORM']
-  when 'active_record'
-    s.add_dependency 'activerecord', '>= 3.0'
-  when 'mongoid'
-    s.add_dependency 'mongoid',      '~> 4.0'
-  when 'mongo_mapper'
-    s.add_dependency 'bson_ext'
-    s.add_dependency 'mongo_mapper', '>= 0.12.0'
-  end
-
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
   s.add_development_dependency 'mocha', '~> 0.13.0'
   s.add_development_dependency 'simplecov', '~> 0.7.0'
