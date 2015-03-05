@@ -1,4 +1,6 @@
-require "bundler/gem_tasks"
+require 'rubygems'
+require 'bundler/setup'
+require 'bundler/gem_tasks'
 require 'rake'
 require 'yard'
 require 'yard/rake/yardoc_task'
