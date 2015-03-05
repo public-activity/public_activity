@@ -9,91 +9,94 @@ module PublicActivity
       # tracked models and adds +activities+ relation for listing
       # associated activities.
       #
-      # == Parameters:
-      # [:owner]
-      #   Specify the owner of the {Activity} (person responsible for the action).
-      #   It can be a Proc, Symbol or an ActiveRecord object:
-      #   == Examples:
+      # Everything specified here has a lower priority than parameters
+      # specified directly in {#create_activity} method.
       #
-      #    tracked :owner => :author
-      #    tracked :owner => proc {|o| o.author}
+      # So treat it as a place where you provide 'default' values or where you
+      # specify what data should be gathered for every activity.
       #
-      #   Keep in mind that owner relation is polymorphic, so you can't just
-      #   provide id number of the owner object.
-      # [:recipient]
-      #   Specify the recipient of the {Activity}
-      #   It can be a Proc, Symbol, or an ActiveRecord object
-      #   == Examples:
+      # ## Parameters:
       #
-      #    tracked :recipient => :author
-      #    tracked :recipient => proc {|o| o.author}
+      # See {PublicActivity.resolve_value} types of values you can pass in here.
       #
-      #   Keep in mind that recipient relation is polymorphic, so you can't just
-      #   provide id number of the owner object.
-      # [:parameters]
-      #   Accepts a Hash with custom parameters you want to pass to i18n.translate
-      #   method. It is later used in {Renderable#text} method.
-      #   == Example:
-      #    class Article < ActiveRecord::Base
-      #      include PublicActivity::Model
-      #      tracked :parameters => {
-      #          :title => :title,
-      #          :author_name => "Michael",
-      #          :category_name => proc {|controller, model_instance| model_instance.category.name},
-      #          :summary => proc {|controller, model_instance| truncate(model_instance.text, :length => 30)}
-      #      }
-      #    end
+      # - `:owner`
       #
-      #   Values in the :parameters hash can either be an *exact* *value*, a *Proc/Lambda* executed before saving the activity or a *Symbol*
-      #   which is a an attribute or a method name executed on the tracked model's instance.
+      #     Specify the owner of the {Activity} (person responsible for the action).
+      #     It can be a Proc, Symbol or an ActiveRecord object:
       #
-      #   Everything specified here has a lower priority than parameters
-      #   specified directly in {#activity} method.
-      #   So treat it as a place where you provide 'default' values or where you
-      #   specify what data should be gathered for every activity.
-      #   For more dynamic settings refer to {Activity} model documentation.
-      # [:skip_defaults]
-      #   Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common#create_activity}
-      #   for a guide on how to manually record activities.
-      # [:only]
-      #   Accepts a symbol or an array of symbols, of which any combination of the three is accepted:
-      #   * _:create_
-      #   * _:update_
-      #   * _:destroy_
-      #   Selecting one or more of these will make PublicActivity create activities
-      #   automatically for the tracked model on selected actions.
+      # - `:recipient`
       #
-      #   Resulting activities will have have keys assigned to, respectively:
-      #   * _article.create_
-      #   * _article.update_
-      #   * _article.destroy_
-      #   Since only three options are valid,
-      #   see _:except_ option for a shorter version
-      # [:except]
-      #   Accepts a symbol or an array of symbols with values like in _:only_, above.
-      #   Values provided will be subtracted from all default actions:
-      #   (create, update, destroy).
+      #     Specify the recipient of the {Activity}
+      #     It can be a Proc, Symbol, or an ActiveRecord object
       #
-      #   So, passing _create_ would track and automatically create
-      #   activities on _update_ and _destroy_ actions,
-      #   but not on the _create_ action.
-      # [:on]
-      #   Accepts a Hash with key being the *action* on which to execute *value* (proc)
-      #   Currently supported only for CRUD actions which are enabled in _:only_
-      #   or _:except_ options on this method.
+      # - `:parameters`
       #
-      #   Key-value pairs in this option define callbacks that can decide
-      #   whether to create an activity or not. Procs have two attributes for
-      #   use: _model_ and _controller_. If the proc returns true, the activity
-      #   will be created, if not, then activity will not be saved.
+      #     Accepts a Hash with custom parameters you want to pass to i18n.translate
+      #     method. It is later used in {Renderable#text} method.
+      #     == Example:
       #
-      #   == Example:
-      #     # app/models/article.rb
-      #     tracked :on => {:update => proc {|model, controller| model.published? }}
+      #         class Article < ActiveRecord::Base
+      #           include PublicActivity::Model
+      #           tracked parameters: {
+      #               title: :title,
+      #               author_name: "Michael",
+      #               category_name: -> _, model { model.category.name },
+      #               summary: -> _, model { truncate(model.text, length: 30)
+      #           }
+      #         end
       #
-      #   In the example above, given a model Article with boolean column _published_.
-      #   The activities with key _article.update_ will only be created
-      #   if the published status is set to true on that article.
+      # - `:skip_defaults`
+      #
+      #     Disables recording of activities on create/update/destroy leaving that to programmer's choice. Check {PublicActivity::Common#create_activity}
+      #     for a guide on how to manually record activities.
+      #
+      # - `:only`
+      #
+      #     Symbol or an array of symbols, of which any combination of the three is recognized:
+      #     * `:create`
+      #     * `:update`
+      #     * `:destroy`
+      #
+      #     Selecting one or more of these will make PublicActivity create activities
+      #     automatically for the tracked model on selected actions.
+      #
+      #     Resulting activities will have have keys assigned to, respectively:
+      #     * `article.create`
+      #     * `article.update`
+      #     * `article.destroy`
+      #
+      #     Since only three options are valid,
+      #     see `:except` option for a shorter version
+      #
+      # - `:except`
+      #
+      #     Accepts a symbol or an array of symbols with values like in `:only`, above.
+      #     Values provided will be subtracted from all default actions:
+      #     (create, update, destroy).
+      #
+      #     So, passing _create_ would track and automatically create
+      #     activities on _update_ and _destroy_ actions,
+      #     but not on the _create_ action.
+      #
+      # - `:on`
+      #
+      #     Hash with keys being the *action* on which to execute *value* (proc)
+      #     Currently supported only for CRUD actions which are enabled in _:only_
+      #     or _:except_ options on this method.
+      #
+      #     Key-value pairs in this option define callbacks that will decide
+      #     whether to create an activity or not. Procs have two attributes for
+      #     use: _model_ and _controller_. If the proc returns true, the activity
+      #     will be created, if not, then activity will not be saved.
+      #
+      #     ### Example:
+      #
+      #         # app/models/article.rb
+      #         tracked on: {update: -> _, model { model.published? } }
+      #
+      #     In the example above, given a model Article with boolean column _published_.
+      #     The activities with key _article.update_ will only be created
+      #     if the published status is set to true on that article.
       # @param opts [Hash] options
       # @return [nil] options
       def tracked(opts = {})
@@ -104,10 +107,9 @@ module PublicActivity
         assign_globals       options
         assign_hooks         options
         assign_custom_fields options
-
-        nil
       end
 
+      # @api private
       def include_default_actions(options)
         defaults = {
           create:  Creation,
@@ -132,10 +134,12 @@ module PublicActivity
         end
       end
 
+      # @api private
       def available_options
         [:skip_defaults, :only, :except, :on, :owner, :recipient, :parameters].freeze
       end
 
+      # @api private
       def assign_globals(options)
         [:owner, :recipient, :parameters].each do |key|
           if options[key]
@@ -144,12 +148,14 @@ module PublicActivity
         end
       end
 
+      # @api private
       def assign_hooks(options)
         if options[:on].is_a?(Hash)
           self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
         end
       end
 
+      # @api private
       def assign_custom_fields(options)
         options.except(*available_options).each do |k, v|
           self.activity_custom_fields_global[k] = v
