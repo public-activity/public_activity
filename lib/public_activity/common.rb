@@ -12,6 +12,12 @@ module PublicActivity
       context.__send__(thing)
     when Proc
       thing.call(PublicActivity.get_controller, context)
+    when Hash
+      thing.tap do |hash|
+        hash.each do |key, value|
+          hash[key] = PublicActivity.resolve_value(context, value)
+        end
+      end
     else
       thing
     end

@@ -121,22 +121,43 @@ describe PublicActivity::Common do
   end
 
   # no key implicated or given
-  specify { ->{subject.prepare_settings}.must_raise PublicActivity::NoKeyProvided }
+  specify { -> { subject.prepare_settings }.must_raise PublicActivity::NoKeyProvided }
 
   describe 'resolving values' do
-    it 'allows procs with models and controllers' do
-      context = mock('context')
-      context.expects(:accessor).times(2).returns(5)
-      controller = mock('controller')
-      controller.expects(:current_user).returns(:cu)
-      PublicActivity.set_controller(controller)
-      p = proc {|controller, model|
+    let(:context) { mock('context') }
+    let(:controller) { mock('controller') }
+    let(:closure) do
+      proc do |controller, model|
         assert_equal :cu, controller.current_user
         assert_equal 5, model.accessor
-      }
-      PublicActivity.resolve_value(context, p)
+      end
+    end
+
+    before do
+      PublicActivity.set_controller(controller)
+    end
+
+    it 'allows procs with models and controllers' do
+      context.expects(:accessor).times(2).returns(5)
+      controller.expects(:current_user).returns(:cu)
+
+      PublicActivity.resolve_value(context, closure)
       PublicActivity.resolve_value(context, :accessor)
     end
-  end
 
+    describe 'passing hash values' do
+      it 'allows procs with controllers' do
+        context.expects(:accessor).returns(5)
+        controller.expects(:current_user).returns(:cu)
+
+        PublicActivity.resolve_value(context, { value: closure }).must_equal({ value: true })
+      end
+
+      it 'allows symbols' do
+        context.expects(:accessor).returns(5)
+
+        PublicActivity.resolve_value(context, { value: :accessor }).must_equal({ value: 5 })
+      end
+    end
+  end
 end
