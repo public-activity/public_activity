@@ -247,10 +247,11 @@ module PublicActivity
     # be serialized into the Activity#parameters column
     # @api private
     def prepare_parameters(parameters)
-      params = {}
-      params.merge!(self.class.activity_parameters_global)
-        .merge!(parameters || {})
-      params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
+      parameters ||= {}
+
+      [self.class.activity_parameters_global, parameters].reduce({}) do |params, value|
+        params.merge!(PublicActivity.resolve_value(self, value))
+      end
     end
 
     # Prepares relation to be saved

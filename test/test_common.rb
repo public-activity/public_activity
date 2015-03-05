@@ -71,6 +71,15 @@ describe PublicActivity::Common do
     subject.activities.last.nonstandard.must_equal "true"
   end
 
+  it 'allows resolving parameters' do
+    subject.save
+    subject.expects(:custom_parameters).returns({ type: 'News' })
+
+    subject.create_activity :update, parameters: :custom_parameters
+
+    subject.activities.last.parameters[:type].must_equal 'News'
+  end
+
   it 'accepts owner as a symbol' do
     klass = article(:owner => :user)
     @article = klass.new(:user => @owner)
