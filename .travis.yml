@@ -19,6 +19,24 @@ matrix:
     - rvm: 2.1.5
       env: PA_ORM=mongo_mapper
       gemfile: gemfiles/Gemfile.rails-3.X.mongo_mapper
+    - rvm: 2.0.0
+      env: PA_ORM=active_record
+      gemfile: gemfiles/Gemfile.rails-4.0.active_record
+    - rvm: 2.0.0
+      env: PA_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-4.0.mongoid
+    - rvm: 2.0.0
+      env: PA_ORM=mongo_mapper
+      gemfile: gemfiles/Gemfile.rails-4.0.mongo_mapper
+    - rvm: 2.1.5
+      env: PA_ORM=active_record
+      gemfile: gemfiles/Gemfile.rails-4.0.active_record
+    - rvm: 2.1.5
+      env: PA_ORM=mongoid
+      gemfile: gemfiles/Gemfile.rails-4.0.mongoid
+    - rvm: 2.1.5
+      env: PA_ORM=mongo_mapper
+      gemfile: gemfiles/Gemfile.rails-4.0.mongo_mapper
     - rvm: 2.2.0
       env: PA_ORM=active_record
       gemfile: gemfiles/Gemfile.rails-4.0.active_record
