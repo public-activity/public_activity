@@ -1,6 +1,6 @@
+ENV['PA_ORM'] ||= 'active_record'
 source "https://rubygems.org"
 gemspec path: '..'
 
-gem 'test-unit'
 gem 'bson_ext'
 gem 'mongo_mapper', '>= 0.12.0'

@@ -1,3 +1,4 @@
+ENV['PA_ORM'] ||= 'active_record'
 source "https://rubygems.org"
 gemspec path: '..'
 
