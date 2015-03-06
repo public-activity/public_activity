@@ -3,21 +3,17 @@ rvm:
   - 2.0.0
   - 2.1.2
   - 2.2.0
+gemfile:
+  - gemfiles/Gemfile.rails-3.X
+  - gemfiles/Gemfile.rails-4.0
 env:
-  - PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.active_record
-  - PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongoid
-  - PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongo_mapper
-  - PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.active_record
-  - PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongoid
-  - PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0.mongo_mapper
+  - PA_ORM=active_record
+  - PA_ORM=mongoid
+  - PA_ORM=mongo_mapper
 matrix:
   exclude:
     - rvm: 2.2.0
-      env: PA_ORM=mongoid BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongoid
-    - rvm: 2.2.0
-      env: PA_ORM=active_record BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.active_record
-    - rvm: 2.2.0
-      env: PA_ORM=mongo_mapper BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X.mongo_mapper
+      gemfile: gemfiles/Gemfile.rails-3.X
 services:
   - mongodb
 email:
