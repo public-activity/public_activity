@@ -13,7 +13,7 @@ module PublicActivity
     when Proc
       thing.call(PublicActivity.get_controller, context)
     when Hash
-      thing.each { |key, value| thing[key] = PublicActivity.resolve_value(context, value) }
+      thing.dup.each { |key, value| thing[key] = PublicActivity.resolve_value(context, value) }
     else
       thing
     end
