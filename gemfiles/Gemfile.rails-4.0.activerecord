@@ -1,6 +1,0 @@
-ENV['PA_ORM'] ||= 'active_record'
-source "https://rubygems.org"
-gemspec path: '..'
-
-gem 'activerecord', '~> 4.0'
-gem 'actionpack', '~> 4.0'

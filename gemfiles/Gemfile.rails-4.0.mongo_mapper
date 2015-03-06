@@ -1,7 +1,0 @@
-ENV['PA_ORM'] ||= 'active_record'
-source "https://rubygems.org"
-gemspec path: '..'
-
-gem 'bson_ext'
-gem 'mongo_mapper', '>= 0.12.0'
-gem 'actionpack', '~> 4.0'
