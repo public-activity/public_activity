@@ -2,7 +2,6 @@ require "rubygems"
 require "bundler"
 Bundler.setup(:default, :test, :development)
 
-
 if ENV['COV']
   require 'simplecov'
   SimpleCov.start do
@@ -130,9 +129,3 @@ when :mongo_mapper
     Article
   end
 end
-
-class ViewSpec < MiniTest::Spec
-  include ActiveSupport::Testing::SetupAndTeardown
-  include ActionView::TestCase::Behavior
-end
-MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)

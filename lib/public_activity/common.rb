@@ -28,41 +28,8 @@ module PublicActivity
       set_public_activity_class_defaults
     end
 
-    # @!group Global options
-
-    # @!attribute activity_owner_global
-    #   Global version of activity owner
-    #   @see #activity_owner
-    #   @return [Model]
-
-    # @!attribute activity_recipient_global
-    #   Global version of activity recipient
-    #   @see #activity_recipient
-    #   @return [Model]
-
-    # @!attribute activity_parameters_global
-    #   Global version of activity parameters
-    #   @see #activity_parameters
-    #   @return [Hash<Symbol, Object>]
-
-    # @!attribute activity_hooks
-    #   @return [Hash<Symbol, Proc>]
-    #   Hooks/functions that will be used to decide *if* the activity should get
-    #   created.
-    #
-    #   The supported keys are:
-    #   * :create
-    #   * :update
-    #   * :destroy
-
-    # @!visibility private
-    @@activity_hooks = {}
-
-    # @!endgroup
-
     # Provides some global methods for every model class.
     module ClassMethods
-      #
       # @since 1.0.0
       # @api private
       def set_public_activity_class_defaults
@@ -92,7 +59,7 @@ module PublicActivity
         end
       end
     end
-    #
+
     # Returns true if PublicActivity is enabled globally.
     # @note This method gets overwritten in {Deactivatable#public_activity_enabled?}
     # @return [Boolean]
@@ -100,7 +67,7 @@ module PublicActivity
     # @since 0.5.0
     # @see {Deactivatable#public_activity_enabled?}
     def public_activity_enabled?
-      PublicActivity.enabled?
+      PublicActivity.config.enabled
     end
 
     # Calls hook safely.
@@ -128,11 +95,10 @@ module PublicActivity
     # conflict with options defined in {Tracked}, they get precedence over options
     # defined in {Tracked::ClassMethods#tracked}.
     #
-    # Whether or not {Tracked} is used, you can provide objects, symbols and procs
-    # as values for all parameters of activity. See {PublicActivity.resolve_value} for available
+    # You can provide options to this methods, see {PublicActivity.resolve_value} for available
     # value types.
     #
-    # If {Tracked} is used and hooks are provided, they will be called upon to decide
+    # If {Tracked} is used and hooks are provided, they will be used to decide
     # if this method should really record an activity. To discard defined hooks and create
     # the activity unconditionally, use {PublicActivity::Activity} directly.
     #
@@ -158,6 +124,7 @@ module PublicActivity
     #     @article.create_activity action: :commented_on       #=> #<Activity key: 'article.commented_on' ...>
     #     # note the prefix when passing in `key`
     #     @article.create_activity key: 'article.commented_on' #=> #<Activity key: 'article.commented_on' ...>
+    #
     # # Options
     # Besides `:action` and `:key` covered above, you can pass options
     # such as `:owner`, `:parameters`, `:recipient`. In addition, if you've configured any
@@ -241,7 +208,7 @@ module PublicActivity
       end
     end
 
-    # Prepares i18n parameters that will
+    # Prepares the parameters that will
     # be serialized into the Activity#parameters column
     # @api private
     def prepare_parameters(parameters)

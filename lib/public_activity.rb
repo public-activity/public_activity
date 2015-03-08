@@ -8,7 +8,6 @@ require 'action_view'
 module PublicActivity
   extend ActiveSupport::Concern
   extend ActiveSupport::Autoload
-  class DeprecatedError < Exception; end
 
   autoload :Activity,     'public_activity/models/activity'
   autoload :Activist,     'public_activity/models/activist'
@@ -28,6 +27,8 @@ module PublicActivity
   # Switches PublicActivity on or off.
   # @param value [Boolean]
   # @since 0.5.0
+  # @deprecated Use either {Deactivatable} to turn off per class or
+  #             with_tracking / without_tracking helpers to turn off temporarily.
   def self.enabled=(value)
     PublicActivity.config.enabled = value
   end
@@ -38,6 +39,34 @@ module PublicActivity
   # @since 0.5.0
   def self.enabled?
     !!PublicActivity.config.enabled
+  end
+
+  # Execute the code block with PublicActiviy active
+  #
+  # Example usage:
+  #   PublicActivity.with_tracking do
+  #     # your test code here
+  #   end
+  def self.with_tracking
+    current = PublicActivity.config.enabled
+    PublicActivity.config.enabled = true
+    yield
+  ensure
+    PublicActivity.config.enabled = current
+  end
+
+  # Execute the code block with PublicActiviy deactivated
+  #
+  # Example usage:
+  #   PublicActivity.without_tracking do
+  #     # your test code here
+  #   end
+  def self.without_tracking
+    current = PublicActivity.config.enabled
+    PublicActivity.config.enabled = false
+    yield
+  ensure
+    PublicActivity.config.enabled = current
   end
 
   # Returns PublicActivity's configuration object.

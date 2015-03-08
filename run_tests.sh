@@ -1,10 +1,10 @@
 #!/bin/sh
 echo "Testing active_record 3.X:"
-rm -f Gemfile.lock;
+rm -f gemfiles/Gemfile.rails-3.X.lock;
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.X bundle > /dev/null;
 COV=1 bundle exec rake;
 echo "Testing active_record 4.0:"
-rm -f Gemfile.lock;
+rm -f gemfiles/Gemfile.rails-4.0.lock;
 BUNDLE_GEMFILE=gemfiles/Gemfile.rails-4.0 bundle > /dev/null;
 COV=1 bundle exec rake;
 echo "Testing mongoid:";

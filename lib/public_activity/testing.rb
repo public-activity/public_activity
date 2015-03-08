@@ -1,35 +1,6 @@
-# This file provides functionality for testing your code with public_activity
-# activated or deactivated.
-# This file should only be required in test/spec code!
-#
-# To enable PublicActivity testing capabilities do:
-#   require 'public_activity/testing'
-module PublicActivity
-  # Execute the code block with PublicActiviy active
-  #
-  # Example usage:
-  #   PublicActivity.with_tracking do
-  #     # your test code here
-  #   end
-  def self.with_tracking
-    current = PublicActivity.enabled?
-    PublicActivity.enabled = true
-    yield
-  ensure
-    PublicActivity.enabled = current
-  end
+# This file used to provide #with_tracking / #without_tracking functionality.
+# We realised it was as useful outside of tests as inside tests, so we've
+# made it threadsafe and a part of the default API.
 
-  # Execute the code block with PublicActiviy deactive
-  #
-  # Example usage:
-  #   PublicActivity.without_tracking do
-  #     # your test code here
-  #   end
-  def self.without_tracking
-    current = PublicActivity.enabled?
-    PublicActivity.enabled = false
-    yield
-  ensure
-    PublicActivity.enabled = current
-  end
-end
+# If you're reading this, remove any `require 'public_activity/testing'` you
+# might have, it's completely redundant.

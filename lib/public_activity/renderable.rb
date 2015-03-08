@@ -2,17 +2,6 @@ module PublicActivity
   # Provides logic for rendering activities. Handles both i18n strings
   # support and smart partials rendering (different templates per activity key).
   module Renderable
-    # Virtual attribute returning text description of the activity
-    # using the activity's key to translate using i18n.
-    def text(params = {})
-      # TODO: some helper for key transformation for two supported formats
-      k = key.split('.')
-      k.unshift('activity') if k.first != 'activity'
-      k = k.join('.')
-
-      I18n.t(k, parameters.merge(params) || {})
-    end
-
     # Renders activity from views.
     #
     # @param [ActionView::Base] context
@@ -46,7 +35,7 @@ module PublicActivity
     #     <% end %>
     #   </ul>
     #
-    # @example Fallback to the I18n text translation if the view is missing 
+    # @example Fallback to the I18n text translation if the view is missing
     #   <ul>
     #     <% for activity in PublicActivity::Activity.all %>
     #      <li><%= render_activity(activity, fallback: :text) %></li>
@@ -62,7 +51,7 @@ module PublicActivity
     #
     #
     # # Layouts
-    # 
+    #
     # You can supply a layout that will be used for activity partials
     # with :layout param.
     # Keep in mind that layouts for partials are also partials.
@@ -78,7 +67,7 @@ module PublicActivity
     #   <%= yield %>
     #
     # ## Custom Layout Location
-    # 
+    #
     # You can customize the layout directory by supplying :layout_root
     # or by using an absolute path.
     #
@@ -122,18 +111,15 @@ module PublicActivity
     #     <%= distance_of_time_in_words_to_now(a.created_at) %>
     #   </p>
     def render(context, params = {})
-      params[:i18n] and return context.render :text => self.text(params)
-
       partial = partial_path(*params.values_at(:partial, :partial_root))
       layout  = layout_path(*params.values_at(:layout, :layout_root))
       locals  = prepare_locals(params)
 
-      begin 
+      begin
         context.render params.merge(partial: partial, layout: layout, locals: locals)
+
       rescue ActionView::MissingTemplate => e
-        if params[:fallback] == :text
-          context.render :text => self.text(params)
-        elsif params[:fallback].present?
+        if params[:fallback].present?
           partial = partial_path(*params.values_at(:fallback, :partial_root))
           context.render params.merge(partial: partial, layout: layout, locals: locals)
         else

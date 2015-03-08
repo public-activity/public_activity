@@ -207,42 +207,50 @@ If you would like to fallback to a partial, you can utilize the `fallback` param
 
 When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.(erb|haml|slim|something_else)`.
 
-If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation in this situation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
+If a view file does not exist then ActionView::MisingTemplate will be raised.
+You can provide a fallback template to use, like this:
 
 ```erb
-<%= render_activity(@activity, fallback: :text) %>
+<%= render_activity(@activity, fallback: 'default') %>
 ```
+
+Which will look for `app/views/public_activity/your-model/your-activity-key`
+and then `app/views/public_activity/your-model/default`.
 
 #### i18n
 
-Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided. You can render pure i18n strings by passing `{display: :i18n}` to `#render_activity` or `#render`.
+In the 2.0 version, we've removed the i18n rendering feature.
 
-Translations should be put in your locale `.yml` files. To render pure strings from I18n Example structure:
+If you want to keep using it, implement it like this:
 
-```yaml
-activity:
-  article:
-    create: 'Article has been created'
-    update: 'Someone has edited the article'
-    destroy: 'Some user removed an article!'
+```rb
+# app/helpers/public_activity.rb
+module PublicActivityHelper
+  def render_text(activity)
+    I18n.t(activity.key, acitvity.parameters)
+  end
+end
 ```
-
-This structure is valid for activities with keys `"activity.article.create"` or `"article.create"`. As mentioned before, `"activity."` part of the key is optional.
 
 ## Testing
 
-For RSpec you can first disable `public_activity` and add the `test_helper` in
-the `spec_helper.rb` with
+For RSpec we advise this behavior by default:
 
 ```ruby
-#spec_helper.rb
-require 'public_activity/testing'
+# spec_helper.rb
 
-PublicActivity.enabled = false
+RSpec.configure do |config|
+  config.around(:suite) do |example|
+    PublicActivity.without_tracking { example.run }
+  end
+end
 ```
 
-In your specs you can then blockwise decide whether to turn `public_activity` on
-or off.
+This should make your specs faster.
+
+If you want to test recording activities, remember that you can nest those
+blocks!
+Even when you disable tracking in tests (like above), you can still do this:
 
 ```ruby
 # file_spec.rb
@@ -254,6 +262,10 @@ PublicActivity.without_tracking do
   # your test code goes here
 end
 ```
+
+This approach will make it threadsafe, failsafe and anything-safe. Should be
+compatible with parallelizing tests and prevent leaking settings between
+test cases.
 
 ## Documentation
 
@@ -284,36 +296,30 @@ You can set up a default value for `:owner` by doing this:
 
 *Note:* `current_user` applies to Devise, if you are using a different authentication gem or your own code, change the `current_user` to a method you use.
 
-### Disable tracking for a class or globally
+### Disable tracking for a class or temporarily
 
-If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.enabled=` attribute like below:
+If you need to disable tracking temporarily, for example in tests or `db/seeds.rb` then you can use `PublicActivity.without_tracking` like below:
 
 ```ruby
-# Disable p_a globally
-PublicActivity.enabled = false
-
-# Perform some operations that would normally be tracked by p_a:
-Article.create(title: 'New article')
-
-# Switch it back on
-PublicActivity.enabled = true
+PublicActivity.without_tracking do
+  Article.create(title: 'New article') # not recorded
+end
 ```
 
 You can also disable public_activity for a specific class:
 
 ```ruby
-# Disable p_a for Article class
-Article.public_activity_off
+class Article < ActiveRecord::Base
+  include PublicActivity::Model
+  # if you use Common instead, add this too
+  # include PublicActivity::Deactivatable
+  public_activity_off
+end
 
-# p_a will not do anything here:
-@article = Article.create(title: 'New article')
+@article = Article.create(title: 'New article') # not recorded
 
 # But will be enabled for other classes:
-# (creation of the comment will be recorded if you are tracking the Comment class)
-@article.comments.create(body: 'some comment!')
-
-# Enable it again for Article:
-Article.public_activity_on
+@article.comments.create(body: 'some comment!') # recorded
 ```
 
 ### Create custom activities
