@@ -248,7 +248,9 @@ module PublicActivity
     end
 
     # Prepares i18n parameters that will
-    # be serialized into the Activity#parameters column
+    # be serialized into the Activity#parameters column.
+    # If a Symbol or a Proc is passed, it will be resolved
+    # expecting to return a Hash.
     # @api private
     def prepare_parameters(parameters)
       parameters ||= {}
