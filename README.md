@@ -360,6 +360,21 @@ class Comment < ActiveRecord::Base
 end
 ```
 
+### Resolve parameters from a Symbol or Proc
+
+```ruby
+class Post < ActiveRecord::Base
+  include PublicActivity::Model
+  tracked only: [:update], parameters: :tracked_values
+  
+  def tracked_values
+   {}.tap do |hash|
+     hash[:tags] = tags if tags_changed?
+   end
+  end
+end
+```
+
 #### Setup
 
 **Skip this step if you are using ActiveRecord in Rails 4 or Mongoid**

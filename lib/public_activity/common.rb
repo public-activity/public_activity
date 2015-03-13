@@ -12,6 +12,12 @@ module PublicActivity
       context.__send__(thing)
     when Proc
       thing.call(PublicActivity.get_controller, context)
+    when Hash
+      thing.dup.tap do |hash|
+        hash.each do |key, value|
+          hash[key] = PublicActivity.resolve_value(context, value)
+        end
+      end
     else
       thing
     end
@@ -242,13 +248,16 @@ module PublicActivity
     end
 
     # Prepares i18n parameters that will
-    # be serialized into the Activity#parameters column
+    # be serialized into the Activity#parameters column.
+    # If a Symbol or a Proc is passed, it will be resolved
+    # expecting to return a Hash.
     # @api private
     def prepare_parameters(parameters)
-      params = {}
-      params.merge!(self.class.activity_parameters_global)
-        .merge!(parameters || {})
-      params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
+      parameters ||= {}
+
+      [self.class.activity_parameters_global, parameters].reduce({}) do |params, value|
+        params.merge!(PublicActivity.resolve_value(self, value))
+      end
     end
 
     # Prepares relation to be saved
