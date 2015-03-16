@@ -1,7 +1,7 @@
 require 'test_helper'
 
 I18n.config.backend.store_translations(:en,
-  {:activity => {:test => '%{one} %{two}'}}
+  {:activity => {:test => '%{one} %{two} %{three}'}}
 )
 
 describe 'PublicActivity::Activity Rendering' do
