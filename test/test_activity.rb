@@ -6,7 +6,7 @@ I18n.config.backend.store_translations(:en,
 
 describe 'PublicActivity::Activity Rendering' do
   describe '#text' do
-    subject { PublicActivity::Activity.new(:key => 'activity.test', :parameters => {:one => 1, "three" => 2}) }
+    subject { PublicActivity::Activity.new(:key => 'activity.test', :parameters => {:one => 1, "three" => 3}) }
 
     specify '#text uses translations' do
       subject.save
