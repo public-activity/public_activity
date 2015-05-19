@@ -4,6 +4,7 @@ require 'public_activity/version'
 
 Gem::Specification.new do |s|
   s.name = 'public_activity'
+  s.license = 'MIT'
   s.version = PublicActivity::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["Piotrek Okoński", "Kuba Okoński"]
