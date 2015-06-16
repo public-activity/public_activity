@@ -1,7 +1,7 @@
 # PublicActivity
 ## [![Build Status](https://travis-ci.org/chaps-io/public_activity.svg?branch=master)](https://travis-ci.org/chaps-io/public_activity) [![Coverage Status](http://img.shields.io/coveralls/pokonski/public_activity.svg)](https://coveralls.io/r/pokonski/public_activity) [![Code Climate](http://img.shields.io/codeclimate/github/pokonski/public_activity.svg)](https://codeclimate.com/github/pokonski/public_activity) [![Gem Version](http://img.shields.io/gem/v/public_activity.svg)](http://badge.fury.io/rb/public_activity) [![Inline docs](http://inch-ci.org/github/pokonski/public_activity.png)](http://inch-ci.org/github/pokonski/public_activity)
 
-by [Chaps](https://chaps.io)
+## [![](http://i.imgur.com/dPwyXS2.png)](https://chaps.io) proudly made by [Chaps](https://chaps.io)
 
 
 `public_activity` provides easy activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
