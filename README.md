@@ -180,7 +180,7 @@ like a timestamp, owner's avatar etc:
 <%= render_activities(@activities, layout: :activity) %>
 ```
 
-The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, in the above example.
+The activity will be wrapped with the `app/views/layouts/_activity.html.erb` layout, in the above example.
 
 **Important**: please note that layouts for activities are also partials. Hence the `_` prefix.
 
@@ -198,7 +198,7 @@ Sometimes, it's desirable to pass additional local variables to partials. It can
 
 `public_activity` looks for views in `app/views/public_activity`.
 
-For example, if you have an activity with `:key` set to `"activity.user.changed_avatar"`, the gem will look for a partial in `app/views/public_activity/user/_changed_avatar.(erb|haml|slim|something_else)`.
+For example, if you have an activity with `:key` set to `"activity.user.changed_avatar"`, the gem will look for a partial in `app/views/public_activity/user/_changed_avatar.html.(|erb|haml|slim|something_else)`.
 
 *Hint*: the `"activity."` prefix in `:key` is completely optional and kept for backwards compatibility, you can skip it in new projects.
 
@@ -208,7 +208,7 @@ If you would like to fallback to a partial, you can utilize the `fallback` param
 <%= render_activity(@activity, fallback: 'default') %>
 ```
 
-When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.(erb|haml|slim|something_else)`.
+When used in this manner, if a partial with the specified `:key` cannot be located it will use the partial defined in the `fallback` instead. In the example above this would resolve to `public_activity/_default.html.(|erb|haml|slim|something_else)`.
 
 If a view file does not exist then ActionView::MisingTemplate will be raised. If you wish to fallback to the old behaviour and use an i18n based translation in this situation you can specify a `:fallback` parameter of `text` to fallback to this mechanism like such:
 
