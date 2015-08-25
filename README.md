@@ -165,8 +165,6 @@ And in your views:
 <%= render_activities(@activities) %>
 ```
 
-*Note*: `render_activity` is a helper for use in view templates. `render_activity(activity)` can be written as `activity.render(self)` and it will have the same meaning.
-
 *Note*: `render_activities` is an alias for `render_activity` and does the same.
 
 #### Layouts
