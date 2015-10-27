@@ -9,9 +9,11 @@ in Rails 3 and 4.
 
 Simply put: it can record what happens in your application and gives you the ability to present those recorded activities to users - in a similar way to how GitHub does it.
 
-## Version notice
+## !! WARNING: README for unreleased version below. !!
 
-This documentation is for the unreleased 2.0 version. For the stable `1.4.X` readme see: https://github.com/pokonski/public_activity/blob/1-4-stable/README.md
+You probably don't want to read the docs for this unreleased version 2.0. 
+
+*For the stable `1.4.X` readme see: https://github.com/pokonski/public_activity/blob/1-4-stable/README.md*
 
 
 ## Table of contents
