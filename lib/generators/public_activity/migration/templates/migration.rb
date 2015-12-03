@@ -9,7 +9,7 @@ class CreateActivities < ActiveRecord::Migration
       t.text    :parameters
       t.belongs_to :recipient, :polymorphic => true
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :activities, [:trackable_id, :trackable_type]
