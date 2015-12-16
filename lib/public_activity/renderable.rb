@@ -130,7 +130,7 @@ module PublicActivity
 
       begin 
         context.render params.merge(partial: partial, layout: layout, locals: locals)
-      rescue ActionView::MissingTemplate => e
+      rescue ActionView::MissingTemplate, Cell::TemplateMissingError => e
         if params[:fallback] == :text
           context.render :text => self.text(params)
         elsif params[:fallback].present?
