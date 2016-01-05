@@ -26,7 +26,12 @@ module PublicActivity
     extend ActiveSupport::Concern
 
     included do
-      before_filter :store_controller_for_public_activity
+      # use :before_action instead of deprecated before_filter
+      if respond_to? :before_action
+        before_action :store_controller_for_public_activity
+      else
+        before_filter :store_controller_for_public_activity
+      end
     end
 
     # Before filter executed to remember current controller
