@@ -129,7 +129,7 @@ module PublicActivity
           :a              => self,
           :activity       => self,
           :controller     => controller,
-          :current_user   => controller.respond_to?(:current_user) ? controller.current_user : nil,
+          :current_user   => controller.respond_to?(:current_user) ? controller.send(:current_user) : nil,
           :p              => prepared_params,
           :params         => prepared_params
         }
