@@ -1,8 +1,11 @@
 language: ruby
+cache: bundler
+sudo: false
 rvm:
   - 2.1.8
   - 2.2.4
 matrix:
+  fast_finish: true
   include:
     - rvm: 2.1.8
       gemfile: gemfiles/Gemfile.rails-3.X
