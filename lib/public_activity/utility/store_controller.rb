@@ -1,23 +1,13 @@
 module PublicActivity
-  # @private
-  @@controllers = Hash.new
-  # Lambda called after the thread is destroyed.
-  Finalizer = lambda { |id|
-    @@controllers.delete id
-  }
-
   class << self
     # Setter for remembering controller instance
     def set_controller(controller)
-      unless @@controllers.has_key?(Thread.current.object_id)
-        ObjectSpace.define_finalizer Thread.current, Finalizer
-      end if RUBY_VERSION != "1.9.3"
-      @@controllers[Thread.current.object_id] = controller
+      Thread.current[:public_activity_controller] = controller
     end
 
     # Getter for accessing the controller instance
     def get_controller
-      @@controllers[Thread.current.object_id]
+      Thread.current[:public_activity_controller]
     end
   end
 
@@ -26,17 +16,15 @@ module PublicActivity
     extend ActiveSupport::Concern
 
     included do
-      # use :before_action instead of deprecated before_filter
-      if respond_to? :before_action
-        before_action :store_controller_for_public_activity
-      else
-        before_filter :store_controller_for_public_activity
-      end
+      around_action :store_controller_for_public_activity if     respond_to?(:around_action)
+      around_filter :store_controller_for_public_activity unless respond_to?(:around_action)
     end
 
-    # Before filter executed to remember current controller
     def store_controller_for_public_activity
       PublicActivity.set_controller(self)
+      yield
+    ensure
+      PublicActivity.set_controller(nil)
     end
   end
 end
