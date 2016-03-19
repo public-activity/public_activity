@@ -3,6 +3,7 @@
 ## 1.5.0
 
 * Refactor PublicActivity::StoreController to rely on Thread.current instead. (see #252, thanks to [Ryan McGeary](https://github.com/rmm5t))
+* Remove support for Ruby 1.9.3 and Ruby 2.0.0 (thanks to [Ryan McGeary](https://github.com/rmm5t))
 
 ## 1.4.2
 
