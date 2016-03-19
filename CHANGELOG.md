@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+
+* Refactor PublicActivity::StoreController to rely on Thread.current instead. (see #252, thanks to [Ryan McGeary](https://github.com/rmm5t))
+
 ## 1.4.2
 
 * Fix bug with migrations not having an extension in ActiveRecord >= 4.0.0
