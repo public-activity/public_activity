@@ -11,9 +11,9 @@ Simply put: it can record what happens in your application and gives you the abi
 
 ## !! WARNING: README for unreleased version below. !!
 
-You probably don't want to read the docs for this unreleased version 2.0. 
+You probably don't want to read the docs for this unreleased version 2.0.
 
-*For the stable `1.4.X` readme see: https://github.com/pokonski/public_activity/blob/1-4-stable/README.md*
+*For the stable `1.5.X` readme see: https://github.com/chaps-io/public_activity/blob/1-5-stable/README.md*
 
 
 ## Table of contents
