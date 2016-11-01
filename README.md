@@ -238,7 +238,7 @@ For RSpec you can first disable `public_activity` and add require helper methods
 the `rails_helper.rb` with:
 
 ```ruby
-#spec_helper.rb
+#rails_helper.rb
 require 'public_activity/testing'
 
 PublicActivity.enabled = false
