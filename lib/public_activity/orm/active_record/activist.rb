@@ -23,10 +23,10 @@ module PublicActivity
         #
         def activist
           has_many :activities_as_owner,
-            :class_name => "::PublicActivity::Activity",
+            :class_name => PublicActivity.config.model_name,
             :as => :owner
           has_many :activities_as_recipient,
-            :class_name => "::PublicActivity::Activity",
+            :class_name => PublicActivity.config.model_name,
             :as => :recipient
         end
       end
