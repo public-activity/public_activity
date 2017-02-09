@@ -23,5 +23,8 @@ module PublicActivity
     end
   end
 
-  ActionView::Base.class_eval { include ViewHelpers }
+end
+
+ActiveSupport.on_load(:action_view) do
+  include PublicActivity::ViewHelpers
 end
