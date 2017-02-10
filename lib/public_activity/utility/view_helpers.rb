@@ -21,6 +21,8 @@ module PublicActivity
       content_for(name, content, &block)
     end
   end
+end
 
-  ActionView::Base.class_eval { include ViewHelpers }
+ActiveSupport.on_load(:action_view) do
+  include PublicActivity::ViewHelpers
 end

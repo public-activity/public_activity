@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0
+
+* Make config settings thread safe (fixes #284)
+* Fix Rspec tests failing in Rails 5 due to ViewHelpers (see #271, thanks to [Janusz](https://github.com/januszm))
+* Support JSON, JSONB and HSTORE types for `parameters` column (see #285, thanks to [djvs](https://github.com/djvs))
+
 ## 1.5.0
 
 * Refactor PublicActivity::StoreController to rely on Thread.current instead. (see #252, thanks to [Ryan McGeary](https://github.com/rmm5t))
