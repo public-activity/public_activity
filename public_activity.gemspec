@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.2'
 
-  if File.exists?('UPGRADING')
+  if File.exist?('UPGRADING')
     s.post_install_message = File.read("UPGRADING")
   end
 
