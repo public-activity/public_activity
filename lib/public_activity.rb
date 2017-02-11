@@ -27,7 +27,7 @@ module PublicActivity
   # @param value [Boolean]
   # @since 0.5.0
   def self.enabled=(value)
-    PublicActivity.config.enabled = value
+    config.enabled(value)
   end
 
   # Returns `true` if PublicActivity is on, `false` otherwise.
@@ -35,7 +35,7 @@ module PublicActivity
   # @return [Boolean]
   # @since 0.5.0
   def self.enabled?
-    !!PublicActivity.config.enabled
+    config.enabled
   end
 
   # Returns PublicActivity's configuration object.

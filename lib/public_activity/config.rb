@@ -4,7 +4,6 @@ module PublicActivity
   # Class used to initialize configuration object.
   class Config
     include ::Singleton
-    attr_accessor :enabled, :table_name
 
     # Evaluates given block to provide DSL configuration.
     # @example Initializer for Rails
@@ -15,16 +14,11 @@ module PublicActivity
     #   end
     def self.set &block
       b = Block.new
-      b.instance_eval &block
-      orm(b.orm) unless b.orm.nil?
+      b.instance_eval(&block)
       instance
-      Thread.current[:public_activity_enabled] = b.enabled unless b.enabled.nil?
-      Thread.current[:public_activity_table_name] = b.table_name unless b.enabled.nil?
-    end
-
-    # Set the ORM for use by PublicActivity.
-    def self.orm(orm = nil)
-      Thread.current[:public_activity_orm] = (orm ? orm.to_sym : false) || Thread.current[:public_activity_orm]
+      orm(b.orm) unless b.orm.nil?
+      enabled(b.enabled) unless b.enabled.nil?
+      table_name(b.table_name) unless b.table_name.nil?
     end
 
     # alias for {#orm}
@@ -33,19 +27,60 @@ module PublicActivity
       orm(orm)
     end
 
+    # alias for {#enabled}
+    # @see #enabled
+    def self.enabled=(en = nil)
+      enabled(en)
+    end
+
     # instance version of {Config#orm}
     # @see Config#orm
     def orm(orm=nil)
       self.class.orm(orm)
     end
 
-    def table_name
-      Thread.current[:public_activity_orm] || "activities"
+    # instance version of {Config#table_name}
+    # @see Config#orm
+    def table_name(name = nil)
+      self.class.table_name(name)
+    end
+
+    # instance version of {Config#enabled}
+    # @see Config#orm
+    def enabled(en = nil)
+      self.class.enabled(en)
+    end
+
+    # Set the ORM for use by PublicActivity.
+    def self.orm(orm = nil)
+      if orm.nil?
+        Thread.current[:public_activity_orm] || :active_record
+      else
+        Thread.current[:public_activity_orm] = orm.to_sym
+      end
+    end
+
+    def self.table_name(name = nil)
+      if name.nil?
+        Thread.current[:public_activity_table_name] || "activities"
+      else
+        Thread.current[:public_activity_table_name] = name
+      end
+    end
+
+    def self.enabled(en = nil)
+      if en.nil?
+        value = Thread.current[:public_activity_enabled]
+        value.nil? ? true : value
+      else
+        Thread.current[:public_activity_enabled] = en
+      end
     end
 
     # Provides simple DSL for the config block.
     class Block
       attr_reader :orm, :enabled, :table_name
+
       # @see Config#orm
       def orm(orm = nil)
         @orm = (orm ? orm.to_sym : false) || @orm

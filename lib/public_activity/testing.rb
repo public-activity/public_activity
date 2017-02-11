@@ -12,11 +12,11 @@ module PublicActivity
   #     # your test code here
   #   end
   def self.with_tracking
-    current = PublicActivity.enabled?
-    PublicActivity.enabled = true
+    current = PublicActivity.config.enabled
+    PublicActivity.config.enabled(true)
     yield
   ensure
-    PublicActivity.enabled = current
+    PublicActivity.config.enabled(current)
   end
 
   # Execute the code block with PublicActiviy deactive
@@ -27,9 +27,9 @@ module PublicActivity
   #   end
   def self.without_tracking
     current = PublicActivity.enabled?
-    PublicActivity.enabled = false
+    PublicActivity.config.enabled(false)
     yield
   ensure
-    PublicActivity.enabled = current
+    PublicActivity.config.enabled(current)
   end
 end
