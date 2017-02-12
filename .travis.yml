@@ -17,7 +17,7 @@ matrix:
     - rvm: 2.4.0
       gemfile: gemfiles/Gemfile.rails-5.0
       env: PA_ORM=active_record
-    - rvm: 2.2.26
+    - rvm: 2.2.6
       env: PA_ORM=mongoid
 env:
   - PA_ORM=active_record
