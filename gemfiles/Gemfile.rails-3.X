@@ -10,6 +10,7 @@ group :development, :test do
   gem 'mocha', '~> 0.13.0', require: false
   gem 'simplecov', '~> 0.7.0'
   gem 'minitest', '~> 4.7.5'
+  gem 'test-unit', '~> 3.0'
   gem 'redcarpet'
   gem 'yard', '~> 0.8'
   gem 'activerecord', '~> 3.0'
