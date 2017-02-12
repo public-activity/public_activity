@@ -14,6 +14,7 @@ require 'public_activity'
 require 'public_activity/testing'
 require 'pry'
 require 'minitest/autorun'
+require 'mocha/mini_test'
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
