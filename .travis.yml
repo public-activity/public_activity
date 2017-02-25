@@ -5,13 +5,13 @@ rvm:
 matrix:
   include:
     - rvm: 2.2.6
-      gemfile: gemfiles/Gemfile.rails-3.X
-      env: PA_ORM=active_record
-    - rvm: 2.2.6
       gemfile: gemfiles/Gemfile.rails-4.0
       env: PA_ORM=active_record
     - rvm: 2.3.3
       gemfile: gemfiles/Gemfile.rails-4.0
+      env: PA_ORM=active_record
+    - rvm: 2.3.3
+      gemfile: gemfiles/Gemfile.rails-5.0
       env: PA_ORM=active_record
     - rvm: 2.2.6
       env: PA_ORM=mongoid
