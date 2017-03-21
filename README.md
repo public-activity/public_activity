@@ -139,6 +139,21 @@ This is all you need to start recording activities for basic CRUD actions.
 _Optional_: If you don't need `#tracked` but still want the comfort of `#create_activity`,
 you can include only the lightweight `Common` module instead of `Model`.
 
+#### Common Usage
+
+A common case is to track the owner and recipient when creating an activity. Here's an 
+example that sets that up for a simple comment class.
+
+```ruby
+class Comment < ActiveRecord::Base
+  include PublicActivity::Model
+  tracked owner: :commenter, recipient: :commentee
+
+  belongs_to :commenter, :class_name => "User"
+  belongs_to :commentee, :class_name => "User"
+end
+```
+
 #### Custom activities
 
 You can trigger custom activities by setting all your required parameters and triggering `create_activity`
