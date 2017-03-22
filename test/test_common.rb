@@ -48,6 +48,16 @@ describe PublicActivity::Common do
     subject.create_activity("some.key").wont_be_nil
   end
 
+  it 'update action should not create activity on save unless model changed' do
+    subject.save
+    before_count = subject.activities.count
+    subject.save
+    subject.save
+    after_count = subject.activities.count
+    before_count.must_equal after_count
+  end
+
+
   it 'allows passing owner through #create_activity' do
     article = article().new
     article.save

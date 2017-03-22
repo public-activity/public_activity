@@ -154,6 +154,7 @@ describe PublicActivity::Tracked do
       PublicActivity::Activity.count.must_equal activity_count_before
 
       klass.public_activity_on
+      @article.name = 'Changed Article'
       @article.save
       PublicActivity::Activity.count.must_be :>, activity_count_before
     end

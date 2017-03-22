@@ -11,7 +11,7 @@ module PublicActivity
 
     # Creates activity upon modification of the tracked model
     def activity_on_update
-      create_activity(:update)
+      create_activity(:update) if changed?
     end
   end
 end
