@@ -104,6 +104,11 @@ describe PublicActivity::Common do
     activity.owner.must_equal @owner
   end
 
+  it 'reports PublicActivity::Activity as the base class' do
+    subject.save
+    subject.activities.last.class.base_class.must_equal PublicActivity::Activity
+  end
+
   describe '#prepare_key' do
     describe 'for class#activity_key method' do
       before do
