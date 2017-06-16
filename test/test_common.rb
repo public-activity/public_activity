@@ -105,8 +105,10 @@ describe PublicActivity::Common do
   end
 
   it 'reports PublicActivity::Activity as the base class' do
-    subject.save
-    subject.activities.last.class.base_class.must_equal PublicActivity::Activity
+    if ENV["PA_ORM"] == "active_record" # Only relevant for ActiveRecord
+      subject.save
+      subject.activities.last.class.base_class.must_equal PublicActivity::Activity
+    end
   end
 
   describe '#prepare_key' do
