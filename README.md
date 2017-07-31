@@ -210,11 +210,10 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 
 ## Testing
 
-For RSpec you can first disable `public_activity` and add the `test_helper` in
-the `spec_helper.rb` with
+For RSpec you can first disable `public_activity` and add the `test_helper` in `rails_helper.rb` with:
 
 ```ruby
-#spec_helper.rb
+#rails_helper.rb
 require 'public_activity/testing'
 
 PublicActivity.enabled = false
