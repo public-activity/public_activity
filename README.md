@@ -177,7 +177,7 @@ The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, 
 Sometimes, it's desirable to pass additional local variables to partials. It can be done this way:
 
 ```erb
-<%= render_activity(@activity, locals: {friends: current_user.friends} %>
+<%= render_activity(@activity, locals: {friends: current_user.friends}) %>
 ```
 
 *Note*: Before 1.4.0, one could pass variables directly to the options hash for `#render_activity` and access it from activity parameters. This functionality is retained in 1.4.0 and later, but the `:locals` method is **preferred**, since it prevents bugs from shadowing variables from activity parameters in the database.
