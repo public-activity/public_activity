@@ -176,7 +176,7 @@ The activity will be wrapped with the `app/views/layouts/_activity.erb` layout, 
 Sometimes, it's desirable to pass additional local variables to partials. It can be done this way:
 
 ```erb
-<%= render_activity(@activity, locals: {friends: current_user.friends} %>
+<%= render_activity(@activity, locals: {friends: current_user.friends}) %>
 ```
 
 *Note*: Before 1.4.0, one could pass variables directly to the options hash for `#render_activity` and access it from activity parameters. This functionality is retained in 1.4.0 and later, but the `:locals` method is **preferred**, since it prevents bugs from shadowing variables from activity parameters in the database.
@@ -209,11 +209,10 @@ This structure is valid for activities with keys `"activity.article.create"` or 
 
 ## Testing
 
-For RSpec you can first disable `public_activity` and add the `test_helper` in
-the `spec_helper.rb` with
+For RSpec you can first disable `public_activity` and add the `test_helper` in `rails_helper.rb` with:
 
 ```ruby
-#spec_helper.rb
+#rails_helper.rb
 require 'public_activity/testing'
 
 PublicActivity.enabled = false
