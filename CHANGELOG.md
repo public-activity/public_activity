@@ -4,7 +4,7 @@
 
 * Make config settings thread safe (fixes #284)
 * Fix Rspec tests failing in Rails 5 due to ViewHelpers (see #271, thanks to [Janusz](https://github.com/januszm))
-* Support JSON, JSONB and HSTORE types for `parameters` column (see #285, thanks to [djvs](https://github.com/djvs))
+* Support JSON, JSONB and HSTORE types for `parameters` column (see #285, thanks to [djvs](https://github.com/djvs) and #315 (thanks to [mateusg](https://github.com/mateusg))
 
 ## 1.5.0
 
