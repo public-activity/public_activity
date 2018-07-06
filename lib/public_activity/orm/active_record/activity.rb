@@ -27,7 +27,7 @@ module PublicActivity
         end
 
         # Serialize parameters Hash
-        if table_exists? && !columns_hash['parameters'].type.in?([:json, :jsonb, :hstore])
+        if table_exists? && ![:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
           serialize :parameters, Hash
         end
 
