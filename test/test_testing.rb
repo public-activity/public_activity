@@ -2,6 +2,10 @@ require 'test_helper'
 describe PublicActivity do
 
   describe "self.with_tracking" do
+    after do
+      PublicActivity.enabled = true
+    end
+    
     it "enables tracking inside the block" do
       PublicActivity.enabled = false
 
