@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   end
 
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
-  s.add_development_dependency 'mocha', '~> 0.13.0'
+  s.add_development_dependency 'mocha', '~> 1.5.0'
   s.add_development_dependency 'simplecov', '~> 0.7.0'
   s.add_development_dependency 'test-unit', '~> 3.2.8'
   s.add_development_dependency 'minitest', '~> 4.7.5'
