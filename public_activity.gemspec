@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   when 'mongo_mapper'
     s.add_dependency 'bson_ext'
     s.add_dependency 'mongo_mapper', '>= 0.12.0'
+    s.add_dependency 'mongo', '<= 1.9.2'
   end
 
   s.add_development_dependency 'sqlite3', '~> 1.3.7'
