@@ -70,7 +70,11 @@ when :mongoid
     include Mongoid::Timestamps
     include PublicActivity::Model
 
-    belongs_to :user
+    if ::Mongoid::VERSION.split('.')[0].to_i >= 7
+      belongs_to :user, optional: true
+    else
+      belongs_to :user
+    end
 
     field :name, type: String
     field :published, type: Boolean
