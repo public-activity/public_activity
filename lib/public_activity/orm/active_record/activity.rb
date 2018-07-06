@@ -27,7 +27,9 @@ module PublicActivity
         end
 
         # Serialize parameters Hash
-        serialize :parameters, Hash unless [:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
+        if table_exists? && !columns_hash['parameters'].type.in?([:json, :jsonb, :hstore])
+          serialize :parameters, Hash
+        end
 
         if ::ActiveRecord::VERSION::MAJOR < 4 || defined?(ProtectedAttributes)
           attr_accessible :key, :owner, :parameters, :recipient, :trackable
