@@ -45,6 +45,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'test-unit', '~> 3.2.8'
   s.add_development_dependency 'minitest', '~> 4.7.5'
   s.add_development_dependency 'redcarpet'
-  s.add_development_dependency 'yard', '~> 0.8'
+  s.add_development_dependency 'yard', '~> 0.9.11'
   s.add_development_dependency 'pry'
 end
