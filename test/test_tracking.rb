@@ -74,7 +74,7 @@ describe PublicActivity::Tracked do
     art = ActivistAndTrackedArticle.new
     art.save
     art.activities.last.trackable_id.must_equal art.id
-    art.activities.last.owner_id.must_equal nil
+    assert_nil art.activities.last.owner_id
   end
 
   describe 'custom fields' do
