@@ -1,4 +1,6 @@
-class CreateArticles < ActiveRecord::Migration
+require 'migrations_base.rb'
+
+class CreateArticles < MigrationsBase
   def self.up
     puts "creating"
     create_table :articles do |t|

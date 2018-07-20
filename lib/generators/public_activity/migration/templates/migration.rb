@@ -1,5 +1,7 @@
+require 'migrations_base.rb'
+
 # Migration responsible for creating a table with activities
-class CreateActivities < ActiveRecord::Migration
+class CreateActivities < MigrationsBase
   # Create table
   def self.up
     create_table :activities do |t|

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class StoringController < ActionView::TestCase::TestController
   include PublicActivity::StoreController
-  include ActionController::Testing::ClassMethods
+  include ActionController::Testing
 end
 
 describe PublicActivity::StoreController do
@@ -27,9 +27,9 @@ describe PublicActivity::StoreController do
     PublicActivity.set_controller(1)
     PublicActivity.get_controller.must_equal 1
 
-    a = Thread.new {
+    Thread.new {
       PublicActivity.set_controller(2)
-      PublicActivity.get_controller.must_equal 2
+      assert_equal 2, PublicActivity.get_controller
       PublicActivity.set_controller(nil)
     }
 

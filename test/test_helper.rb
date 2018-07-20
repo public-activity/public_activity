@@ -14,7 +14,7 @@ require 'public_activity'
 require 'public_activity/testing'
 require 'pry'
 require 'minitest/autorun'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
@@ -25,7 +25,15 @@ when :active_record
   require 'stringio'        # silence the output
   $stdout = StringIO.new    # from migrator
   ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
-  ActiveRecord::Migrator.migrate(File.expand_path('../migrations', __FILE__))
+
+  migrations_path = File.expand_path('../migrations', __FILE__)
+
+  if ActiveRecord.version.release() < Gem::Version.new('5.2.0')
+    ActiveRecord::Migrator.migrate(migrations_path)
+  else
+    ActiveRecord::MigrationContext.new(migrations_path).migrate
+  end
+
   $stdout = STDOUT
 
   def article(options = {})

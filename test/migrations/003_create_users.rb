@@ -1,4 +1,6 @@
-class CreateUsers < ActiveRecord::Migration
+require 'migrations_base.rb'
+
+class CreateUsers < MigrationsBase
   def self.up
     create_table :users do |t|
       t.string :name

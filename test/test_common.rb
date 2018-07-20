@@ -173,9 +173,9 @@ describe PublicActivity::Common do
       controller = mock('controller')
       controller.expects(:current_user).returns(:cu)
       PublicActivity.set_controller(controller)
-      p = proc {|controller, model|
-        assert_equal :cu, controller.current_user
-        assert_equal 5, model.accessor
+      p = proc {|c, m|
+        assert_equal :cu, c.current_user
+        assert_equal 5, m.accessor
       }
       PublicActivity.resolve_value(context, p)
       PublicActivity.resolve_value(context, :accessor)

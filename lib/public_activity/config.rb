@@ -79,8 +79,6 @@ module PublicActivity
 
     # Provides simple DSL for the config block.
     class Block
-      attr_reader :orm, :enabled, :table_name
-
       # @see Config#orm
       def orm(orm = nil)
         @orm = (orm ? orm.to_sym : false) || @orm

@@ -100,7 +100,8 @@ module PublicActivity
 
       if params.has_key? :display
         if params[:display].to_sym == :"i18n"
-          return context.render :text => self.text(params)
+          text = self.text(params)
+          return context.render :text => text, :plain => text
         else
           partial_path = File.join(partial_root, params[:display].to_s)
         end
