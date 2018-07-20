@@ -33,7 +33,11 @@ describe PublicActivity::Tracked do
           include Mongoid::Timestamps
           include PublicActivity::Model
 
-          belongs_to :user
+          if ::Mongoid::VERSION.split('.')[0].to_i >= 7
+            belongs_to :user, optional: true
+          else
+            belongs_to :user
+          end
 
           field :name, type: String
           field :published, type: Boolean
@@ -154,6 +158,7 @@ describe PublicActivity::Tracked do
       PublicActivity::Activity.count.must_equal activity_count_before
 
       klass.public_activity_on
+      @article.name = 'Changed Article'
       @article.save
       PublicActivity::Activity.count.must_be :>, activity_count_before
     end

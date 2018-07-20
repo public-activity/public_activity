@@ -14,6 +14,7 @@ require 'public_activity'
 require 'public_activity/testing'
 require 'pry'
 require 'minitest/autorun'
+require 'mocha/mini_test'
 
 PublicActivity::Config.orm = (ENV['PA_ORM'] || :active_record)
 
@@ -70,7 +71,11 @@ when :mongoid
     include Mongoid::Timestamps
     include PublicActivity::Model
 
-    belongs_to :user
+    if ::Mongoid::VERSION.split('.')[0].to_i >= 7
+      belongs_to :user, optional: true
+    else
+      belongs_to :user
+    end
 
     field :name, type: String
     field :published, type: Boolean

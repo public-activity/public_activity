@@ -6,6 +6,7 @@ module PublicActivity
       class Activity < ::ActiveRecord::Base
         include Renderable
         self.table_name = PublicActivity.config.table_name
+        self.abstract_class = true
 
         # Define polymorphic association to the parent
         belongs_to :trackable, :polymorphic => true
@@ -26,7 +27,9 @@ module PublicActivity
         end
 
         # Serialize parameters Hash
-        serialize :parameters, Hash unless [:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
+        if table_exists? && ![:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
+          serialize :parameters, Hash
+        end
 
         if ::ActiveRecord::VERSION::MAJOR < 4 || defined?(ProtectedAttributes)
           attr_accessible :key, :owner, :parameters, :recipient, :trackable
