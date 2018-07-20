@@ -6,7 +6,7 @@ recorded activities to users - in a similar way to how GitHub does it.
 
 ## Rails 5
 
-**As of 1.6.0 version, public_activity also supports Rails up to 5.0.**
+**As of 1.6.0 version, public_activity also supports Rails up to 5.2.**
 
 ## Table of contents
 
