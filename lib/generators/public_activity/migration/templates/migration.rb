@@ -1,7 +1,5 @@
-require 'migrations_base.rb'
-
 # Migration responsible for creating a table with activities
-class CreateActivities < MigrationsBase
+class CreateActivities < (ActiveRecord.version.release() < Gem::Version.new('5.2.0') ? ActiveRecord::Migration : ActiveRecord::Migration[5.2])
   # Create table
   def self.up
     create_table :activities do |t|
