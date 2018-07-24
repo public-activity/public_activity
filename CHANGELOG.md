@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+
+- **Fixed** a bug with requiring not existent file in generated migrations
+
 ## 1.6.0
 
 * **Add support for Rails 5.2**
