@@ -4,6 +4,12 @@
 in Rails 3.0 - 5.0. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
+## Sponsors
+
+<p align="center">
+ <a style="max-width: 478x" href="https://getstream.io/try-the-api/?utm_source=public-activity&utm_medium=banner&utm_campaign=github"><img src="https://i.imgur.com/q4c8wVO.png"/>
+</p>
+ 
 ## Rails 5
 
 **As of 1.6.0 version, public_activity also supports Rails up to 5.2.**
