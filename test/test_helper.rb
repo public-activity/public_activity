@@ -132,7 +132,11 @@ when :mongo_mapper
 end
 
 class ViewSpec < MiniTest::Spec
-  include ActiveSupport::Testing::SetupAndTeardown
+  if ActiveSupport.version >= Gem::Version.new('5.2.0')
+    prepend ActiveSupport::Testing::SetupAndTeardown
+  else
+    include ActiveSupport::Testing::SetupAndTeardown
+  end
   include ActionView::TestCase::Behavior
 end
 MiniTest::Spec.register_spec_type(/Rendering$/, ViewSpec)
