@@ -27,8 +27,14 @@ module PublicActivity
         end
 
         # Serialize parameters Hash
-        if table_exists? && ![:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
-          serialize :parameters, Hash
+        begin
+          if table_exists?
+            serialize :parameters, Hash unless [:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
+          else
+            warn("[WARN] table #{name} doesn't exist. Skipping PublicActivity::Activity#parameters's serialization")
+          end
+        rescue ::ActiveRecord::NoDatabaseError => e
+          warn("[WARN] database doesn't exist. Skipping PublicActivity::Activity#parameters's serialization")
         end
 
         if ::ActiveRecord::VERSION::MAJOR < 4 || defined?(ProtectedAttributes)
