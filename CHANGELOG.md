@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2
+
+- **Fixed** a bug which resulted in crashes when database didn't exist (see #323, thanks to [Anmol Chopra](https://github.com/chopraanmol1))
+
 ## 1.6.1
 
 - **Fixed** a bug with requiring not existent file in generated migrations
