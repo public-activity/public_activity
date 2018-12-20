@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.3
+
+- **Fixed** a bug which resulted in crashes when PostgreSQL connection failed (see #328, thanks to [Ken Greeff](https://github.com/kengreeff))
+- **Fixed** a bug which resulted in crashes when MySQL connection failed (see #327, thanks to [Miquel Sabaté Solà](https://github.com/mssola))
+
 ## 1.6.2
 
 - **Fixed** a bug which resulted in crashes when database didn't exist (see #323, thanks to [Anmol Chopra](https://github.com/chopraanmol1))
