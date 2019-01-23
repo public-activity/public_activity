@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'migrations_base.rb'
 
 class AddNonstandardToActivities < MigrationsBase

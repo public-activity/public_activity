@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Migration responsible for creating a table with activities
 class CreateActivities < (ActiveRecord.version.release() < Gem::Version.new('5.2.0') ? ActiveRecord::Migration : ActiveRecord::Migration[5.2])
   # Create table

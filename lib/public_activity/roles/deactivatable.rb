@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Enables per-class disabling of PublicActivity functionality.
   module Deactivatable

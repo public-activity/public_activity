@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Happens when creating custom activities without either action or a key.
   class NoKeyProvided < Exception; end

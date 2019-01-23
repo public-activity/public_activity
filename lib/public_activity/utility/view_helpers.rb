@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Provides a shortcut from views to the rendering method.
 module PublicActivity
   # Module extending ActionView::Base and adding `render_activity` helper.

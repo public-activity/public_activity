@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Provides association for activities bound to this object by *trackable*.
   module Trackable

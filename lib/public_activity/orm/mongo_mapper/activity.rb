@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mongo_mapper'
 require 'active_support/core_ext'
 

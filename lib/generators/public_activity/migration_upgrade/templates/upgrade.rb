@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Migration responsible for creating a table with activities
 class UpgradeActivities < ActiveRecord::Migration
   # Create table

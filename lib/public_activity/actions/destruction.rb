@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Handles creation of Activities upon destruction of tracked model.
   module Destruction
