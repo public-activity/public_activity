@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file provides functionality for testing your code with public_activity
 # activated or deactivated.
 # This file should only be required in test/spec code!

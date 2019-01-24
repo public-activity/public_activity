@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Provides logic for rendering activities. Handles both i18n strings
   # support and smart partials rendering (different templates per activity key).

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicActivity
   # Main module extending classes we want to keep track of.
   module Tracked

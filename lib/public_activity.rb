@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support'
 require 'action_view'
 # +public_activity+ keeps track of changes made to models

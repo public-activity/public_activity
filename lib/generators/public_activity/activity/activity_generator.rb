@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'generators/public_activity'
 require 'rails/generators/active_record'
 

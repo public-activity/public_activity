@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV["PA_ORM"] == "active_record"
 
   require 'test_helper'
