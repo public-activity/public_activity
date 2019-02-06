@@ -19,7 +19,7 @@ module PublicActivity
           belongs_to :owner, :polymorphic => true
           # Define ownership to a resource targeted by this activity
           belongs_to :recipient, :polymorphic => true
-        when 5
+        when 5..6
           with_options(:required => false) do
             # Define ownership to a resource responsible for this activity
             belongs_to :owner, :polymorphic => true
