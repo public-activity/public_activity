@@ -259,6 +259,20 @@ module PublicActivity
       nil
     end
 
+    # Directly saves activity to database. Works the same as create_activity
+    # but throws validation error for each supported ORM.
+    #
+    # @see #create_activity
+    def create_activity!(*args)
+      return unless self.public_activity_enabled?
+      options = prepare_settings(*args)
+
+      if call_hook_safe(options[:key].split('.').last)
+        reset_activity_instance_options
+        return PublicActivity::Adapter.create_activity!(self, options)
+      end
+    end
+
     # Prepares settings used during creation of Activity record.
     # params passed directly to tracked model have priority over
     # settings specified in tracked() method

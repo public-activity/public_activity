@@ -50,6 +50,13 @@ describe PublicActivity::Common do
     subject.create_activity("some.key").wont_be_nil
   end
 
+  it '#create_activity! returns a new activity object' do
+    subject.save
+    activity = subject.create_activity!("some.key")
+    assert activity.persisted?
+    assert_equal 'article.some.key', activity.key
+  end
+
   it 'update action should not create activity on save unless model changed' do
     subject.save
     before_count = subject.activities.count
