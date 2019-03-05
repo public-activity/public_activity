@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module PublicActivity
-  
+module PublicActivit
 
   if not defined? ::PG::ConnectionBad
     module ::PG
