@@ -1,6 +1,20 @@
 # frozen_string_literal: true
 
 module PublicActivity
+
+  if not defined? ::PG::ConnectionBad
+    module ::PG
+      class ConnectionBad < Exception; end
+    end
+  end
+  if not defined? Mysql2::Error::ConnectionError
+    module Mysql2
+      module Error
+        class ConnectionError < Exception; end
+      end
+    end
+  end
+  
   module ORM
     module ActiveRecord
       # The ActiveRecord model containing
