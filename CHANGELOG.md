@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.4
+
+- **Fixed** exception when not using MySQL or Postgres (see #335, thanks to [Roland Netzsch](https://github.com/stuxcrystal))
+- **Added** `create_activity!` method which raises exception on failures, much like `save!` in ActiveRecord (see #334, thanks to [Jonathan](https://github.com/jtwhittington))
+- **Added** support for ActiveRecord 6 by whitelisting it (see #332, thanks to [Emre Demir](https://github.com/demir))
+- **Added** frozen_string_literal pragma to Ruby files for better performance (see #329, thanks to [Krzysztof Rybka](https://github.com/krzysiek1507))
+
 ## 1.6.3
 
 - **Fixed** a bug which resulted in crashes when PostgreSQL connection failed (see #328, thanks to [Ken Greeff](https://github.com/kengreeff))

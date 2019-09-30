@@ -4,34 +4,33 @@
 in Rails 3.0 - 5.0. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - in a similar way to how GitHub does it.
 
+## Rails 6
 
-
-
-
-
- 
-## Rails 5
-
-**As of 1.6.0 version, public_activity also supports Rails up to 5.2.**
+**As of 1.6.4 version, public_activity also supports Rails up to 6.0.**
 
 ## Table of contents
 
-1. [Example](#example)
-  * [Demo](#online-demo)
-  * [Screencast](#screencast)
-  * **[Common examples](#common-examples)**
-2. [Setup](#setup)
-  1. [Gem installation](#gem-installation)
-  2. [Database setup](#database-setup)
-  3. [Model configuration](#model-configuration)
-  4. [Custom activities](#custom-activities)
-  5. [Displaying activities](#displaying-activities)
-    1. [Activity views](#activity-views)
-    2. [i18n](#i18n)
-3. [Testing](#testing)
-4. [Documentation](#documentation)
-5. **[Help](#help)**
-6. [Upgrading](https://github.com/pokonski/public_activity/wiki/Upgrading-from-pre-0.4.0-versions)
+- [PublicActivity ![Build Status](http://travis-ci.org/chaps-io/public_activity) ![Code Climate](https://codeclimate.com/github/chaps-io/public_activity) ![Gem Version](http://badge.fury.io/rb/public_activity)](#publicactivity-build-statushttptravis-ciorgchaps-iopublicactivity-code-climatehttpscodeclimatecomgithubchaps-iopublicactivity-gem-versionhttpbadgefuryiorbpublicactivity)
+  - [Rails 6](#rails-6)
+  - [Table of contents](#table-of-contents)
+  - [Example](#example)
+    - [Online demo](#online-demo)
+  - [Screencast](#screencast)
+  - [Setup](#setup)
+    - [Gem installation](#gem-installation)
+    - [Database setup](#database-setup)
+    - [Model configuration](#model-configuration)
+      - [Custom activities](#custom-activities)
+    - [Displaying activities](#displaying-activities)
+      - [Layouts](#layouts)
+      - [Locals](#locals)
+      - [Activity views](#activity-views)
+      - [i18n](#i18n)
+  - [Testing](#testing)
+  - [Documentation](#documentation)
+  - [Common examples](#common-examples)
+  - [Help](#help)
+  - [License](#license)
 
 ## Example
 
