@@ -12,7 +12,7 @@ module PublicActivity
       k.unshift('activity') if k.first != 'activity'
       k = k.join('.')
 
-      I18n.t(k, parameters.merge(params) || {})
+      I18n.t(k, parameters.symbolize_keys.merge(params) || {})
     end
 
     # Renders activity from views.
