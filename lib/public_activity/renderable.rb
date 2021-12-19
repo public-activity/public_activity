@@ -143,7 +143,7 @@ module PublicActivity
     def prepare_layout(root, layout)
       if layout
         path = layout.to_s
-        unless path.starts_with?(root) || path.starts_with?("/")
+        unless path.start_with?(root) || path.start_with?("/")
           return File.join(root, path)
         end
       end
