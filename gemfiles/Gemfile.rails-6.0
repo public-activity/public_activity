@@ -1,0 +1,15 @@
+ENV['PA_ORM'] ||= 'active_record'
+source "https://rubygems.org"
+gemspec path: '..'
+
+gem 'actionpack', '~> 6.0.0'
+gem 'railties', '~> 6.0.0'
+
+group :development, :test do
+  gem 'sqlite3', '~> 1.4.1'
+  gem 'simplecov', '~> 0.7.0'
+  gem 'minitest', '~> 5.10.0'
+  gem 'redcarpet'
+  gem 'yard', '~> 0.8'
+  gem 'activerecord', '~> 6.0.0'
+end

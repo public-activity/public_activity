@@ -29,11 +29,15 @@ when :active_record
   ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
 
   migrations_path = File.expand_path('../migrations', __FILE__)
+  active_record_version = ActiveRecord.version.release()
 
-  if ActiveRecord.version.release() < Gem::Version.new('5.2.0')
-    ActiveRecord::Migrator.migrate(migrations_path)
-  else
+  if active_record_version >= Gem::Version.new('6.0.0')
+    schema_path = File.expand_path("../tmp/schema.rb", File.dirname(__FILE__))
+    ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration).migrate
+  elsif active_record_version >= Gem::Version.new('5.2.0')
     ActiveRecord::MigrationContext.new(migrations_path).migrate
+  else # active_record_version < Gem::Version.new('5.2.0')
+    ActiveRecord::Migrator.migrate(migrations_path)
   end
 
   $stdout = STDOUT

@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
     s.add_dependency 'mongo', '<= 1.9.2'
   end
 
-  s.add_development_dependency 'sqlite3', '~> 1.3.7'
+  s.add_development_dependency 'sqlite3', '~> 1.4.1'
   s.add_development_dependency 'mocha', '~> 1.5.0'
   s.add_development_dependency 'simplecov', '~> 0.7.0'
   s.add_development_dependency 'test-unit', '~> 3.2.8'
