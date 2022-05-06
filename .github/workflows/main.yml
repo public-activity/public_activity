@@ -62,5 +62,5 @@ jobs:
         run: |
           sudo apt-get -yqq install libpq-dev
           bundle
-          bundle exec appraisal install
+          bundle exec appraisal rails_${{ matrix.rails_version }} bundle
           bundle exec appraisal rails_${{ matrix.rails_version }} rake
