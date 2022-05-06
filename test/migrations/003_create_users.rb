@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'migrations_base.rb'
+require 'migrations_base'
 
 class CreateUsers < MigrationsBase
   def self.up
