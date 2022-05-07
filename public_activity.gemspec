@@ -23,14 +23,14 @@ Gem::Specification.new do |s|
     s.post_install_message = File.read("UPGRADING")
   end
 
-  s.add_dependency 'actionpack', '>= 3.0.0'
-  s.add_dependency 'railties', '>= 3.0.0'
+  s.add_dependency 'actionpack', '>= 5.0.0'
+  s.add_dependency 'railties', '>= 5.0.0'
   s.add_dependency 'i18n', '>= 0.5.0'
 
   ENV['PA_ORM'] ||= 'active_record'
   case ENV['PA_ORM']
   when 'active_record'
-    s.add_dependency 'activerecord', '>= 3.0'
+    s.add_dependency 'activerecord', '>= 5.0'
   when 'mongoid'
     s.add_dependency 'mongoid',      '>= 4.0'
   when 'mongo_mapper'
