@@ -1,36 +1,36 @@
 # PublicActivity [![Build Status](https://secure.travis-ci.org/chaps-io/public_activity.svg)](http://travis-ci.org/chaps-io/public_activity) [![Code Climate](https://codeclimate.com/github/chaps-io/public_activity.svg)](https://codeclimate.com/github/chaps-io/public_activity) [![Gem Version](https://badge.fury.io/rb/public_activity.svg)](http://badge.fury.io/rb/public_activity)
 
 `public_activity` provides easy activity tracking for your **ActiveRecord**, **Mongoid 3** and **MongoMapper** models
-in Rails 3.0 - 5.0. Simply put: it records what has been changed or created and gives you the ability to present those
-recorded activities to users - in a similar way to how GitHub does it.
+in Rails 5.0+. Simply put: it records what has been changed or created and gives you the ability to present those
+recorded activities to users - similarly to how GitHub does it.
 
-## Rails 6
+## Rails 7
 
-**As of 1.6.4 version, public_activity also supports Rails up to 6.0.**
+**As of 2.0.0 version, public_activity also supports Rails up to 7.0 but drops
+official support for Rails 3.* & 4.*.**
 
 ## Table of contents
 
-- [PublicActivity ![Build Status](http://travis-ci.org/chaps-io/public_activity) ![Code Climate](https://codeclimate.com/github/chaps-io/public_activity) ![Gem Version](http://badge.fury.io/rb/public_activity)](#publicactivity-build-statushttptravis-ciorgchaps-iopublicactivity-code-climatehttpscodeclimatecomgithubchaps-iopublicactivity-gem-versionhttpbadgefuryiorbpublicactivity)
-  - [Rails 6](#rails-6)
-  - [Table of contents](#table-of-contents)
-  - [Example](#example)
-    - [Online demo](#online-demo)
-  - [Screencast](#screencast)
-  - [Setup](#setup)
-    - [Gem installation](#gem-installation)
-    - [Database setup](#database-setup)
-    - [Model configuration](#model-configuration)
-      - [Custom activities](#custom-activities)
-    - [Displaying activities](#displaying-activities)
-      - [Layouts](#layouts)
-      - [Locals](#locals)
-      - [Activity views](#activity-views)
-      - [i18n](#i18n)
-  - [Testing](#testing)
-  - [Documentation](#documentation)
-  - [Common examples](#common-examples)
-  - [Help](#help)
-  - [License](#license)
+- [Rails 7](#rails-7)
+- [Table of contents](#table-of-contents)
+- [Example](#example)
+  - [Online demo](#online-demo)
+- [Screencast](#screencast)
+- [Setup](#setup)
+  - [Gem installation](#gem-installation)
+  - [Database setup](#database-setup)
+  - [Model configuration](#model-configuration)
+    - [Custom activities](#custom-activities)
+  - [Displaying activities](#displaying-activities)
+    - [Layouts](#layouts)
+    - [Locals](#locals)
+    - [Activity views](#activity-views)
+    - [I18n](#I18n)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Common examples](#common-examples)
+- [Help](#help)
+- [License](#license)
 
 ## Example
 
@@ -196,7 +196,7 @@ For example, if you have an activity with `:key` set to `"activity.user.changed_
 
 If a view file does not exist, then p_a falls back to the old behaviour and tries to translate the activity `:key` using `I18n#translate` method (see the section below).
 
-#### i18n
+#### I18n
 
 Translations are used by the `#text` method, to which you can pass additional options in form of a hash. `#render` method uses translations when view templates have not been provided. You can render pure i18n strings by passing `{display: :i18n}` to `#render_activity` or `#render`.
 
@@ -223,7 +223,7 @@ require 'public_activity/testing'
 PublicActivity.enabled = false
 ```
 
-In your specs you can then blockwise decide wether to turn `public_activity` on
+In your specs you can then blockwise decide whether to turn `public_activity` on
 or off.
 
 ```ruby
