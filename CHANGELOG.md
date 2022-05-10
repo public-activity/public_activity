@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0
+
+- **Fixed** Deprecation warnings in Ruby 2.7/3.0 due to double splat operator
+- **Fixed** Ruby warnings due to unused variables `e` in exception handling
+- **Added** Ruby 3.1 support
+- **Added** Rails 7.0 support
+- **Removed** Ruby <= 2.4 support
+- **Removed** Rails <= 4.2 support
+
 ## 1.6.4
 
 - **Fixed** exception when not using MySQL or Postgres (see #335, thanks to [Roland Netzsch](https://github.com/stuxcrystal))
