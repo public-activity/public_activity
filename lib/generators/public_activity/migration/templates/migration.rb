@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'migrations_base'
-
 # Migration responsible for creating a table with activities
-class CreateActivities < MigrationsBase
+class CreateActivities < (ActiveRecord.version.release() < Gem::Version.new('5.2.0') ? ActiveRecord::Migration : ActiveRecord::Migration[5.2])
   def self.up
     create_table :activities do |t|
       t.belongs_to :trackable, :polymorphic => true
