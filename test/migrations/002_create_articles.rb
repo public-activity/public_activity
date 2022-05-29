@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
-require 'migrations_base'
-
-class CreateArticles < MigrationsBase
+class CreateArticles < ActiveRecord::Migration[5.0]
   def self.up
-    puts "creating"
     create_table :articles do |t|
       t.string :name
       t.boolean :published

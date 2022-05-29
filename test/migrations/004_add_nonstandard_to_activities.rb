@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'migrations_base.rb'
-
-class AddNonstandardToActivities < MigrationsBase
+class AddNonstandardToActivities < ActiveRecord::Migration[5.0]
   def change
     change_table :activities do |t|
       t.string :nonstandard

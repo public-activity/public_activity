@@ -25,20 +25,22 @@ module PublicActivity
         self.abstract_class = true
 
         # Define polymorphic association to the parent
-        belongs_to :trackable, :polymorphic => true
+        belongs_to :trackable, polymorphic: true
 
         case ::ActiveRecord::VERSION::MAJOR
-        when 3..4
-          # Define ownership to a resource responsible for this activity
-          belongs_to :owner, :polymorphic => true
-          # Define ownership to a resource targeted by this activity
-          belongs_to :recipient, :polymorphic => true
-        when 5..7
-          with_options(:required => false) do
+        when 5
+          with_options(required: false) do
             # Define ownership to a resource responsible for this activity
-            belongs_to :owner, :polymorphic => true
+            belongs_to :owner, polymorphic: true
             # Define ownership to a resource targeted by this activity
-            belongs_to :recipient, :polymorphic => true
+            belongs_to :recipient, polymorphic: true
+          end
+        when 6..7
+          with_options(optional: true) do
+            # Define ownership to a resource responsible for this activity
+            belongs_to :owner, polymorphic: true
+            # Define ownership to a resource targeted by this activity
+            belongs_to :recipient, polymorphic: true
           end
         end
 

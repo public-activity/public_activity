@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- **Fixed** Fix regression in generated migration (s. #368, thanks [Colin Bonner](https://github.com/cfbonner))
+
 ## 2.0.0
 
 - **Fixed** Deprecation warnings in Ruby 2.7/3.0 due to double splat operator
