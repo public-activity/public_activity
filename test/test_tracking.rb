@@ -400,4 +400,8 @@ describe PublicActivity::Tracked do
       assert_equal @article.activities.first.key, 'article.update'
     end
   end
+
+  def teardown
+    PublicActivity.set_controller(nil)
+  end
 end

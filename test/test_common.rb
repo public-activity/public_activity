@@ -196,4 +196,8 @@ describe PublicActivity::Common do
       PublicActivity.resolve_value(context, :accessor)
     end
   end
+
+  def teardown
+    PublicActivity.set_controller(nil)
+  end
 end
