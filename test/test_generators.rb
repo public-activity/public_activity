@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV["PA_ORM"] == "active_record"
+if ENV['PA_ORM'] == 'active_record'
 
   require 'test_helper'
   require 'rails/generators/test_case'
@@ -9,23 +9,23 @@ if ENV["PA_ORM"] == "active_record"
 
   class TestMigrationGenerator < Rails::Generators::TestCase
     tests PublicActivity::Generators::MigrationGenerator
-    destination File.expand_path("../tmp", File.dirname(__FILE__))
+    destination File.expand_path('../tmp', File.dirname(__FILE__))
     setup :prepare_destination
 
     def test_generating_activity_model
       run_generator
-      assert_migration "db/migrate/create_activities.rb"
+      assert_migration 'db/migrate/create_activities.rb'
     end
   end
 
   class TestMigrationUpgradeGenerator < Rails::Generators::TestCase
     tests PublicActivity::Generators::MigrationUpgradeGenerator
-    destination File.expand_path("../tmp", File.dirname(__FILE__))
+    destination File.expand_path('../tmp', File.dirname(__FILE__))
     setup :prepare_destination
 
     def test_generating_activity_model
       run_generator
-      assert_migration "db/migrate/upgrade_activities.rb"
+      assert_migration 'db/migrate/upgrade_activities.rb'
     end
   end
 end

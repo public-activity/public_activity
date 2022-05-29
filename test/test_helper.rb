@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require "rubygems"
-require "bundler"
+require 'rubygems'
+require 'bundler'
 Bundler.setup(:default, :test)
 
 if ENV['COV']
   require 'simplecov'
   SimpleCov.start do
-    add_filter "/test/"
+    add_filter '/test/'
   end
 end
-$:.unshift File.expand_path('../../lib/', __FILE__)
+$:.unshift File.expand_path('../lib', __dir__)
 require 'active_support/testing/setup_and_teardown'
 require 'public_activity'
 require 'public_activity/testing'
@@ -26,13 +26,13 @@ when :active_record
   require 'active_record/connection_adapters/sqlite3_adapter'
   require 'stringio'        # silence the output
   $stdout = StringIO.new    # from migrator
-  ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':memory:')
+  ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
-  migrations_path = File.expand_path('../migrations', __FILE__)
-  active_record_version = ActiveRecord.version.release()
+  migrations_path = File.expand_path('migrations', __dir__)
+  active_record_version = ActiveRecord.version.release
 
   if active_record_version >= Gem::Version.new('6.0.0')
-    schema_path = File.expand_path("../tmp/schema.rb", File.dirname(__FILE__))
+    schema_path = File.expand_path('../tmp/schema.rb', File.dirname(__FILE__))
     ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration).migrate
   elsif active_record_version >= Gem::Version.new('5.2.0')
     ActiveRecord::MigrationContext.new(migrations_path).migrate
@@ -43,33 +43,23 @@ when :active_record
   $stdout = STDOUT
 
   def article(options = {})
-    klass = Class.new(ActiveRecord::Base) do
+    Class.new(ActiveRecord::Base) do
       self.table_name = 'articles'
       include PublicActivity::Model
       tracked options
       belongs_to :user
 
       def self.name
-        "Article"
-      end
-
-      if ::ActiveRecord::VERSION::MAJOR < 4
-        attr_accessible :name, :published, :user
+        'Article'
       end
     end
-    klass
   end
+
   class User < ActiveRecord::Base; end
-
-  if ::ActiveRecord::VERSION::MAJOR < 4
-    PublicActivity::Activity.class_eval do
-      attr_accessible :nonstandard
-    end
-  end
 when :mongoid
   require 'mongoid'
 
-  Mongoid.load!(File.expand_path("test/mongoid.yml"), :test)
+  Mongoid.load!(File.expand_path('test/mongoid.yml'), :test)
 
   class User
     include Mongoid::Document
@@ -106,7 +96,7 @@ when :mongoid
 when :mongo_mapper
   require 'mongo_mapper'
 
-  config = YAML.load(File.read("test/mongo_mapper.yml"))
+  config = YAML.load(File.read('test/mongo_mapper.yml'))
   MongoMapper.setup(config, :test)
 
   class User

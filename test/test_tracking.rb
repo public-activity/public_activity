@@ -6,76 +6,75 @@ describe PublicActivity::Tracked do
   describe 'defining instance options' do
     subject { article.new }
     let :options do
-      { :key => 'key',
-        :params => {:a => 1},
-        :owner => User.create,
-        :recipient => User.create }
+      {
+        key: 'key',
+        params: { a: 1 },
+        owner: User.create,
+        recipient: User.create
+      }
     end
     before(:each) { subject.activity(options) }
-    let(:activity){ subject.save; subject.activities.last }
+    let(:activity) { subject.save; subject.activities.last }
 
-    specify { subject.activity_key.must_be_same_as    options[:key] }
-    specify { activity.key.must_equal                 options[:key] }
+    specify { assert_same subject.activity_key, options[:key] }
+    specify { assert_equal activity.key, options[:key] }
 
-    specify { subject.activity_owner.must_be_same_as  options[:owner] }
-    specify { activity.owner.must_equal               options[:owner] }
+    specify { assert_same subject.activity_owner, options[:owner] }
+    specify { assert_equal activity.owner, options[:owner] }
 
-    specify { subject.activity_params.must_be_same_as options[:params] }
-    specify { activity.parameters.must_equal          options[:params] }
+    specify { assert_same subject.activity_params, options[:params] }
+    specify { assert_equal activity.parameters, options[:params] }
 
-    specify { subject.activity_recipient.must_be_same_as options[:recipient] }
-    specify { activity.recipient.must_equal              options[:recipient] }
+    specify { assert_same subject.activity_recipient, options[:recipient] }
+    specify { assert_equal activity.recipient, options[:recipient] }
   end
 
   it 'can be tracked and be an activist at the same time' do
     case PublicActivity.config.orm
-      when :mongoid
-        class ActivistAndTrackedArticle
-          include Mongoid::Document
-          include Mongoid::Timestamps
-          include PublicActivity::Model
+    when :mongoid
+      class ActivistAndTrackedArticle
+        include Mongoid::Document
+        include Mongoid::Timestamps
+        include PublicActivity::Model
 
-          if ::Mongoid::VERSION.split('.')[0].to_i >= 7
-            belongs_to :user, optional: true
-          else
-            belongs_to :user
-          end
-
-          field :name, type: String
-          field :published, type: Boolean
-          tracked
-          activist
-        end
-      when :mongo_mapper
-        class ActivistAndTrackedArticle
-          include MongoMapper::Document
-          include PublicActivity::Model
-
-          belongs_to :user
-
-          key :name, String
-          key :published, Boolean
-          tracked
-          activist
-          timestamps!
-        end
-      when :active_record
-        class ActivistAndTrackedArticle < ActiveRecord::Base
-          self.table_name = 'articles'
-          include PublicActivity::Model
-          tracked
-          activist
-
-          if ::ActiveRecord::VERSION::MAJOR < 4
-            attr_accessible :name, :published, :user
-          end
+        if ::Mongoid::VERSION.split('.')[0].to_i >= 7
+          belongs_to :user, optional: true
+        else
           belongs_to :user
         end
+
+        field :name, type: String
+        field :published, type: Boolean
+        tracked
+        activist
+      end
+    when :mongo_mapper
+      class ActivistAndTrackedArticle
+        include MongoMapper::Document
+        include PublicActivity::Model
+
+        belongs_to :user
+
+        key :name, String
+        key :published, Boolean
+        tracked
+        activist
+        timestamps!
+      end
+    when :active_record
+      class ActivistAndTrackedArticle < ActiveRecord::Base
+        self.table_name = 'articles'
+        include PublicActivity::Model
+        tracked
+        activist
+
+        belongs_to :user
+      end
     end
 
     art = ActivistAndTrackedArticle.new
     art.save
-    art.activities.last.trackable_id.must_equal art.id
+    assert_equal art.activities.last.trackable_id, art.id
     assert_nil art.activities.last.owner_id
   end
 
@@ -84,13 +83,13 @@ describe PublicActivity::Tracked do
       it 'should resolve symbols' do
         a = article(nonstandard: :name).new(name: 'Symbol resolved')
         a.save
-        a.activities.last.nonstandard.must_equal 'Symbol resolved'
+        assert_equal a.activities.last.nonstandard, 'Symbol resolved'
       end
 
       it 'should resolve procs' do
-        a = article(nonstandard: proc {|_, model| model.name}).new(name: 'Proc resolved')
+        a = article(nonstandard: proc { |_, model| model.name }).new(name: 'Proc resolved')
         a.save
-        a.activities.last.nonstandard.must_equal 'Proc resolved'
+        assert_equal a.activities.last.nonstandard, 'Proc resolved'
       end
     end
 
@@ -99,43 +98,43 @@ describe PublicActivity::Tracked do
         a = article.new(name: 'Symbol resolved')
         a.activity nonstandard: :name
         a.save
-        a.activities.last.nonstandard.must_equal 'Symbol resolved'
+        assert_equal a.activities.last.nonstandard, 'Symbol resolved'
       end
 
       it 'should resolve procs' do
         a = article.new(name: 'Proc resolved')
-        a.activity nonstandard: proc {|_, model| model.name}
+        a.activity nonstandard: proc { |_, model| model.name }
         a.save
-        a.activities.last.nonstandard.must_equal 'Proc resolved'
+        assert_equal a.activities.last.nonstandard, 'Proc resolved'
       end
     end
   end
 
   it 'should reset instance options on successful create_activity' do
     a = article.new
-    a.activity key: 'test', params: {test: 1}
+    a.activity key: 'test', params: { test: 1 }
     a.save
-    a.activities.count.must_equal 1
-    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
-    a.activity_params.must_be_empty
+    assert_equal a.activities.count, 1
+    assert_raises(PublicActivity::NoKeyProvided) { a.create_activity }
+    assert_empty a.activity_params
     a.activity key: 'asd'
     a.create_activity
-    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
+    assert_raises(PublicActivity::NoKeyProvided) { a.create_activity }
   end
 
   it 'should not accept global key option' do
     # this example tests the lack of presence of sth that should not be here
     a = article(key: 'asd').new
     a.save
-    ->{a.create_activity}.must_raise PublicActivity::NoKeyProvided
-    a.activities.count.must_equal 1
+    assert_raises(PublicActivity::NoKeyProvided) { a.create_activity }
+    assert_equal a.activities.count, 1
   end
 
   it 'should not change global custom fields' do
     a = article(nonstandard: 'global').new
     a.activity nonstandard: 'instance'
     a.save
-    a.class.activity_custom_fields_global.must_equal nonstandard: 'global'
+    assert_equal a.class.activity_custom_fields_global, nonstandard: 'global'
   end
 
   describe 'disabling functionality' do
@@ -143,9 +142,9 @@ describe PublicActivity::Tracked do
       PublicActivity.enabled = false
       activity_count_before = PublicActivity::Activity.count
 
-      @article = article().new
+      @article = article.new
       @article.save
-      PublicActivity::Activity.count.must_equal activity_count_before
+      assert_equal PublicActivity::Activity.count, activity_count_before
 
       PublicActivity.enabled = true
     end
@@ -157,12 +156,12 @@ describe PublicActivity::Tracked do
       klass.public_activity_off
       @article = klass.new
       @article.save
-      PublicActivity::Activity.count.must_equal activity_count_before
+      assert_equal PublicActivity::Activity.count, activity_count_before
 
       klass.public_activity_on
       @article.name = 'Changed Article'
       @article.save
-      PublicActivity::Activity.count.must_be :>, activity_count_before
+      assert(PublicActivity::Activity.count > activity_count_before)
     end
   end
 
@@ -171,9 +170,10 @@ describe PublicActivity::Tracked do
     let(:options) { {} }
 
     it 'allows skipping the tracking on CRUD actions' do
-      case PublicActivity.config.orm
+      art =
+        case PublicActivity.config.orm
         when :mongoid
-          art = Class.new do
+          Class.new do
             include Mongoid::Document
             include Mongoid::Timestamps
             include PublicActivity::Model
@@ -182,10 +182,10 @@ describe PublicActivity::Tracked do
 
             field :name, type: String
             field :published, type: Boolean
-            tracked :skip_defaults => true
+            tracked skip_defaults: true
           end
         when :mongo_mapper
-          art = Class.new do
+          Class.new do
             include MongoMapper::Document
             include PublicActivity::Model
 
@@ -193,44 +193,57 @@ describe PublicActivity::Tracked do
 
             key :name, String
             key :published, Boolean
-            tracked :skip_defaults => true
+            tracked skip_defaults: true
 
             timestamps!
           end
         when :active_record
-          art = article(:skip_defaults => true)
-      end
+          article(skip_defaults: true)
+        end
 
-      art.must_include PublicActivity::Common
-      art.wont_include PublicActivity::Creation
-      art.wont_include PublicActivity::Update
-      art.wont_include PublicActivity::Destruction
+      assert_includes art, PublicActivity::Common
+      refute_includes art, PublicActivity::Creation
+      refute_includes art, PublicActivity::Update
+      refute_includes art, PublicActivity::Destruction
     end
 
     describe 'default options' do
       subject { article }
 
-      specify { subject.must_include PublicActivity::Creation }
-      specify { subject.must_include PublicActivity::Destruction }
-      specify { subject.must_include PublicActivity::Update }
+      specify { assert_includes subject, PublicActivity::Creation }
+      specify { assert_includes subject, PublicActivity::Destruction }
+      specify { assert_includes subject, PublicActivity::Update }
 
-      specify { subject._create_callbacks.select do |c|
-        c.kind.eql?(:after) && c.filter == :activity_on_create
-      end.wont_be_empty }
+      specify do
+        callbacks = subject._create_callbacks.select do |c|
+          c.kind.eql?(:after) && c.filter == :activity_on_create
+        end
 
-      specify { subject._update_callbacks.select do |c|
-        c.kind.eql?(:after) && c.filter == :activity_on_update
-      end.wont_be_empty }
+        refute_empty callbacks
+      end
 
-      specify { subject._destroy_callbacks.select do |c|
-        c.kind.eql?(:before) && c.filter == :activity_on_destroy
-      end.wont_be_empty }
+      specify do
+        callbacks = subject._update_callbacks.select do |c|
+          c.kind.eql?(:after) && c.filter == :activity_on_update
+        end
+
+        refute_empty callbacks
+      end
+
+      specify do
+        callbacks = subject._destroy_callbacks.select do |c|
+          c.kind.eql?(:before) && c.filter == :activity_on_destroy
+        end
+
+        refute_empty callbacks
+      end
     end
 
     it 'accepts :except option' do
-      case PublicActivity.config.orm
+      art =
+        case PublicActivity.config.orm
         when :mongoid
-          art = Class.new do
+          Class.new do
             include Mongoid::Document
             include Mongoid::Timestamps
             include PublicActivity::Model
@@ -239,10 +252,10 @@ describe PublicActivity::Tracked do
 
             field :name, type: String
             field :published, type: Boolean
-            tracked :except => [:create]
+            tracked except: [:create]
           end
         when :mongo_mapper
-          art = Class.new do
+          Class.new do
             include MongoMapper::Document
             include PublicActivity::Model
 
@@ -250,23 +263,24 @@ describe PublicActivity::Tracked do
 
             key :name, String
             key :published, Boolean
-            tracked :except => [:create]
+            tracked except: [:create]
 
             timestamps!
           end
         when :active_record
-          art = article(:except => [:create])
-      end
+          article(except: [:create])
+        end
 
-      art.wont_include PublicActivity::Creation
-      art.must_include PublicActivity::Update
-      art.must_include PublicActivity::Destruction
+      refute_includes art, PublicActivity::Creation
+      assert_includes art, PublicActivity::Update
+      assert_includes art, PublicActivity::Destruction
     end
 
     it 'accepts :only option' do
-      case PublicActivity.config.orm
+      art =
+        case PublicActivity.config.orm
         when :mongoid
-          art = Class.new do
+          Class.new do
             include Mongoid::Document
             include Mongoid::Timestamps
             include PublicActivity::Model
@@ -276,10 +290,10 @@ describe PublicActivity::Tracked do
             field :name, type: String
             field :published, type: Boolean
 
-            tracked :only => [:create, :update]
+            tracked only: %i[create update]
           end
         when :mongo_mapper
-          art = Class.new do
+          Class.new do
             include MongoMapper::Document
             include PublicActivity::Model
 
@@ -288,61 +302,65 @@ describe PublicActivity::Tracked do
             key :name, String
             key :published, Boolean
 
-            tracked :only => [:create, :update]
+            tracked only: %i[create update]
           end
         when :active_record
-          art = article({:only => [:create, :update]})
-      end
+          article(only: %I[create update])
+        end
 
-      art.must_include PublicActivity::Creation
-      art.wont_include PublicActivity::Destruction
-      art.must_include PublicActivity::Update
+      assert_includes art, PublicActivity::Creation
+      refute_includes art, PublicActivity::Destruction
+      assert_includes art, PublicActivity::Update
     end
 
     it 'accepts :owner option' do
       owner = mock('owner')
-      subject.tracked(:owner => owner)
-      subject.activity_owner_global.must_equal owner
+      subject.tracked(owner: owner)
+      assert_equal subject.activity_owner_global, owner
     end
 
     it 'accepts :params option' do
-      params = {:a => 1}
-      subject.tracked(:params => params)
-      subject.activity_params_global.must_equal params
+      params = { a: 1 }
+      subject.tracked(params: params)
+      assert_equal subject.activity_params_global, params
     end
 
     it 'accepts :on option' do
-      on = {:a => lambda{}, :b => proc {}}
-      subject.tracked(:on => on)
-      subject.activity_hooks.must_equal on
+      on = { a: -> {}, b: proc {} }
+      subject.tracked(on: on)
+      assert_equal subject.activity_hooks, on
     end
 
     it 'accepts :on option with string keys' do
-      on = {'a' => lambda {}}
-      subject.tracked(:on => on)
-      subject.activity_hooks.must_equal on.symbolize_keys
+      on = { 'a' => -> {} }
+      subject.tracked(on: on)
+      assert_equal subject.activity_hooks, on.symbolize_keys
     end
 
     it 'accepts :on values that are procs' do
-      on = {:unpassable => 1, :proper => lambda {}, :proper_proc => proc {}}
-      subject.tracked(:on => on)
-      subject.activity_hooks.must_include :proper
-      subject.activity_hooks.must_include :proper_proc
-      subject.activity_hooks.wont_include :unpassable
+      on = { unpassable: 1, proper: -> {}, proper_proc: proc {} }
+      subject.tracked(on: on)
+      assert_includes subject.activity_hooks, :proper
+      assert_includes subject.activity_hooks, :proper_proc
+      refute_includes subject.activity_hooks, :unpassable
     end
 
     describe 'global options' do
-      subject { article(recipient: :test, owner: :test2, params: {a: 'b'}) }
+      subject { article(recipient: :test, owner: :test2, params: { a: 'b' }) }
 
-      specify { subject.activity_recipient_global.must_equal :test }
-      specify { subject.activity_owner_global.must_equal :test2    }
-      specify { subject.activity_params_global.must_equal(a: 'b')  }
+      specify { assert_equal subject.activity_recipient_global, :test }
+      specify { assert_equal subject.activity_owner_global, :test2 }
+      specify { assert_equal subject.activity_params_global, a: 'b' }
     end
   end
 
   describe 'activity hooks' do
-    subject { s = article; s.activity_hooks = {:test => hook}; s }
-    let(:hook) { lambda {} }
+    subject do
+      s = article
+      s.activity_hooks = { test: hook }
+      s
+    end
+    let(:hook) { -> {} }
 
     it 'retrieves hooks' do
       assert_same hook, subject.get_hook(:test)
@@ -353,33 +371,33 @@ describe PublicActivity::Tracked do
     end
 
     it 'returns nil when no matching hook is present' do
-      nil.must_be_same_as subject.get_hook(:nonexistent)
+      assert_same nil, subject.get_hook(:nonexistent)
     end
 
     it 'allows hooks to decide if activity should be created' do
       subject.tracked
-      @article = subject.new(:name => 'Some Name')
+      @article = subject.new(name: 'Some Name')
       PublicActivity.set_controller(mock('controller'))
       pf = proc { |model, controller|
-        controller.must_be_same_as PublicActivity.get_controller
-        model.name.must_equal 'Some Name'
+        assert_same controller, PublicActivity.get_controller
+        assert_equal model.name, 'Some Name'
         false
       }
       pt = proc { |model, controller|
-        controller.must_be_same_as PublicActivity.get_controller
-        model.name.must_equal 'Other Name'
+        assert_same controller, PublicActivity.get_controller
+        assert_equal model.name, 'Other Name'
         true # this will save the activity with *.update key
       }
-      @article.class.activity_hooks = {:create => pf, :update => pt, :destroy => pt}
+      @article.class.activity_hooks = { create: pf, update: pt, destroy: pt }
 
-      @article.activities.to_a.must_be_empty
+      assert_empty @article.activities.to_a
       @article.save # create
       @article.name = 'Other Name'
       @article.save # update
       @article.destroy # destroy
 
-      @article.activities.count.must_equal 2
-      @article.activities.first.key.must_equal 'article.update'
+      assert_equal @article.activities.count, 2
+      assert_equal @article.activities.first.key, 'article.update'
     end
   end
 end

@@ -24,14 +24,14 @@ describe 'ViewHelpers Rendering' do
     @view_flow.expects(:set).twice.with('name', ActiveSupport::SafeBuffer.new)
 
     single_content_for('name', 'content')
-    @name.must_equal 'name'
-    @content.must_equal 'content'
+    assert_equal @name, 'name'
+    assert_equal @content, 'content'
     single_content_for('name', 'content2')
-    @name.must_equal 'name'
-    @content.must_equal 'content2'
+    assert_equal @name, 'name'
+    assert_equal @content, 'content2'
   end
 
-  def content_for(name, content, &block)
+  def content_for(name, content)
     @name = name
     @content = content
   end
