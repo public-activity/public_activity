@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- **Fixed** Rescue from `ActiveRecord::ConnectionNotEstablished` (s. #372, thanks [Gabe Blair](https://github.com/gblair) & [Vitalie Lazu](https://github.com/vitaliel))
+
 ## 2.0.1
 
 - **Fixed** Fix regression in generated migration (s. #368, thanks [Colin Bonner](https://github.com/cfbonner))
