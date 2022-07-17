@@ -6,12 +6,15 @@ Gem::Specification.new do |s|
   s.name = 'public_activity'
   s.version = PublicActivity::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Piotrek Okoński", "Kuba Okoński"]
-  s.email = "piotrek@okonski.org"
+  s.authors = ['Piotrek Okoński', 'Kuba Okoński']
+  s.email = 'piotrek@okonski.org'
   s.homepage = 'https://github.com/pokonski/public_activity'
-  s.summary = "Easy activity tracking for ActiveRecord models"
-  s.description = "Easy activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc."
-  s.license = "MIT"
+  s.summary = 'Easy activity tracking for ActiveRecord models'
+  s.description = 'Easy activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc.'
+  s.license = 'MIT'
+  s.metadata = {
+    'changelog_uri' => 'https://github.com/public-activity/public_activity/blob/main/CHANGELOG.md'
+  }
 
   s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE']
   s.test_files = `git ls-files test`.split("\n")
@@ -19,9 +22,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.5.0'
 
-  if File.exist?('UPGRADING')
-    s.post_install_message = File.read("UPGRADING")
-  end
+  s.post_install_message = File.read('UPGRADING') if File.exist?('UPGRADING')
 
   s.add_dependency 'actionpack', '>= 5.0.0'
   s.add_dependency 'railties', '>= 5.0.0'
