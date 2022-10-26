@@ -37,9 +37,7 @@ Here is a simple example showing what this gem is about:
 
 ![Example usage](http://i.imgur.com/q0TVx.png)
 
-### Online demo
-
-You can see an actual application using this gem here: http://public-activity-example.herokuapp.com/feed
+### Demo app
 
 The source code of the demo is hosted here: https://github.com/pokonski/activity_blog
 
