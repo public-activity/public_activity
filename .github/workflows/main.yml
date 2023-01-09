@@ -19,7 +19,7 @@ jobs:
           - ruby_version: 3.1
             rails_version: 5.0
           - ruby_version: 3.2
-            rails_version: 5.1
+            rails_version: 5.0
           - ruby_version: 3.0
             rails_version: 5.1
           - ruby_version: 3.1
