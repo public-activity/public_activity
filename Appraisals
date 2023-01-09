@@ -13,6 +13,7 @@ if RUBY_VERSION.to_f < 3.0
 
   appraise 'rails_5.2' do
     gem 'rails', '~> 5.2.0'
+    gem 'psych', '< 4'
   end
 end
 
