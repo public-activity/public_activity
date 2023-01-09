@@ -96,7 +96,13 @@ when :mongoid
 when :mongo_mapper
   require 'mongo_mapper'
 
-  config = YAML.load(File.read('test/mongo_mapper.yml'))
+  # TODO: remove when no longer support 2.5.8
+  config =
+    if RUBY_VERSION >= '2.6.0'
+      YAML.safe_load(File.read('test/mongo_mapper.yml'), aliases: true)
+    else
+      YAML.safe_load(File.read('test/mongo_mapper.yml'), [], [], true)
+    end
   MongoMapper.setup(config, :test)
 
   class User
