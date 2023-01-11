@@ -14,7 +14,7 @@ module PublicActivity
         include Renderable
 
         if ::Mongoid::VERSION.split('.')[0].to_i >= 7
-          opts = { polymorphic: true, optional: false }
+          opts = { polymorphic: true, optional: true }
         else
           opts = { polymorphic: true }
         end
