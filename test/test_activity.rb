@@ -16,8 +16,7 @@ describe 'PublicActivity::Activity Rendering' do
 
   describe '#render' do
     subject do
-      s = PublicActivity::Activity.new(key: 'activity.test', parameters: { one: 1 })
-      s.save && s
+      PublicActivity::Activity.new(key: 'activity.test', parameters: { one: 1 }).tap(&:save)
     end
 
     let(:template_output) { "<strong>1, 2</strong>\n<em>activity.test, #{subject.id}</em>\n" }
