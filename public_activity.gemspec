@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
     'changelog_uri' => 'https://github.com/public-activity/public_activity/blob/main/CHANGELOG.md'
   }
 
-  s.files = `git ls-files lib`.split("\n") + ['Gemfile','Rakefile','README.md', 'MIT-LICENSE']
+  s.files = `git ls-files lib`.split("\n") + ['Gemfile', 'Rakefile', 'README.md', 'MIT-LICENSE']
   s.test_files = `git ls-files test`.split("\n")
   s.require_paths = ['lib']
 
