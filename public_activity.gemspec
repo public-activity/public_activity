@@ -20,33 +20,33 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files test`.split("\n")
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 2.5.0'
+  s.required_ruby_version = '>= 3.0.0'
 
   s.post_install_message = File.read('UPGRADING') if File.exist?('UPGRADING')
 
-  s.add_dependency 'actionpack', '>= 5.0.0'
-  s.add_dependency 'railties', '>= 5.0.0'
+  s.add_dependency 'actionpack', '>= 6.1.0'
   s.add_dependency 'i18n', '>= 0.5.0'
+  s.add_dependency 'railties', '>= 6.1.0'
 
   ENV['PA_ORM'] ||= 'active_record'
   case ENV['PA_ORM']
   when 'active_record'
-    s.add_dependency 'activerecord', '>= 5.0'
+    s.add_dependency 'activerecord', '>= 6.1'
   when 'mongoid'
     s.add_dependency 'mongoid',      '>= 4.0'
   when 'mongo_mapper'
     s.add_dependency 'bson_ext'
-    s.add_dependency 'mongo_mapper', '>= 0.12.0'
     s.add_dependency 'mongo', '<= 1.9.2'
+    s.add_dependency 'mongo_mapper', '>= 0.12.0'
   end
 
   s.add_development_dependency 'appraisal'
-  s.add_development_dependency 'sqlite3', '~> 1.4.1'
-  s.add_development_dependency 'mocha'
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'test-unit'
   s.add_development_dependency 'minitest'
-  s.add_development_dependency 'redcarpet'
-  s.add_development_dependency 'yard'
+  s.add_development_dependency 'mocha'
   s.add_development_dependency 'pry'
+  s.add_development_dependency 'redcarpet'
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'sqlite3', '>= 1.4.1'
+  s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'yard'
 end

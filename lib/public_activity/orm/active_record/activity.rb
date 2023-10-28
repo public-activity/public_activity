@@ -28,13 +28,6 @@ module PublicActivity
         belongs_to :trackable, polymorphic: true
 
         case ::ActiveRecord::VERSION::MAJOR
-        when 5
-          with_options(required: false) do
-            # Define ownership to a resource responsible for this activity
-            belongs_to :owner, polymorphic: true
-            # Define ownership to a resource targeted by this activity
-            belongs_to :recipient, polymorphic: true
-          end
         when 6..7
           with_options(optional: true) do
             # Define ownership to a resource responsible for this activity
@@ -47,7 +40,7 @@ module PublicActivity
         # Serialize parameters Hash
         begin
           if table_exists?
-            serialize :parameters, Hash unless [:json, :jsonb, :hstore].include?(columns_hash['parameters'].type)
+            serialize :parameters, Hash unless %i[json jsonb hstore].include?(columns_hash['parameters'].type)
           else
             warn("[WARN] table #{name} doesn't exist. Skipping PublicActivity::Activity#parameters's serialization")
           end
