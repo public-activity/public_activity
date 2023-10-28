@@ -21,7 +21,7 @@ jobs:
             rails_version: 6.1
     services:
       db:
-        image: postgres:14
+        image: postgres:16
         ports: ["5432:5432"]
         env:
           POSTGRES_USER: postgres
