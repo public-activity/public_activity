@@ -1,5 +1,6 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+$LOAD_PATH.push File.expand_path('../lib', __FILE__)
 require 'public_activity/version'
 
 Gem::Specification.new do |s|
