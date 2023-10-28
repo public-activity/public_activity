@@ -21,7 +21,7 @@ describe 'PublicActivity::Activity Rendering' do
     end
 
     let(:template_output) { "<strong>1, 2</strong>\n<em>activity.test, #{subject.id}</em>\n" }
-    before { @controller.view_paths << File.expand_path('views', __dir__) }
+    before { @controller.class.prepend_view_path File.expand_path('views', __dir__) }
 
     it 'uses view partials when available' do
       PublicActivity.set_controller(Struct.new(:current_user).new('fake'))
@@ -45,7 +45,6 @@ describe 'PublicActivity::Activity Rendering' do
 
     it 'uses translations only when requested' do
       I18n.config.backend.store_translations(:en, activity: { test: '%{one} %{two}' })
-      @controller.view_paths.paths.clear
       subject.render(self, two: 2, display: :i18n)
       assert_equal rendered, '1 2'
     end
