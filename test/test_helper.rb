@@ -32,7 +32,6 @@ when :active_record
   active_record_version = ActiveRecord.version.release
 
   if active_record_version >= Gem::Version.new('6.0.0')
-    schema_path = File.expand_path('../tmp/schema.rb', File.dirname(__FILE__))
     ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration).migrate
   elsif active_record_version >= Gem::Version.new('5.2.0')
     ActiveRecord::MigrationContext.new(migrations_path).migrate
