@@ -39,7 +39,7 @@ module PublicActivity
         # Serialize parameters Hash
         begin
           if table_exists?
-            serialize :parameters, Hash unless %i[json jsonb hstore].include?(columns_hash['parameters'].type)
+            serialize :parameters, coder: YAML, type: Hash unless %i[json jsonb hstore].include?(columns_hash['parameters'].type)
           else
             warn("[WARN] table #{name} doesn't exist. Skipping PublicActivity::Activity#parameters's serialization")
           end
