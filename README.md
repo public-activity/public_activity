@@ -6,8 +6,6 @@ recorded activities to users - similarly to how GitHub does it.
 
 ## Rails 7
 
-FORK UPDATED 7.1.2
-
 **As of version 2.0.0, public_activity also supports Rails up to 7.1.2**
 
 ## Table of contents
