@@ -5,7 +5,7 @@ module PublicActivity
   module Trackable
     # Delegates to ORM.
     def self.included(base)
-      base.extend PublicActivity::inherit_orm("Trackable")
+      base.extend PublicActivity.inherit_orm('Trackable')
     end
   end
 end

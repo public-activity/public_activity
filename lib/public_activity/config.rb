@@ -14,7 +14,7 @@ module PublicActivity
     #     enabled false
     #     table_name "activities"
     #   end
-    def self.set &block
+    def self.set(&block)
       b = Block.new
       b.instance_eval(&block)
       instance
@@ -31,13 +31,13 @@ module PublicActivity
 
     # alias for {#enabled}
     # @see #enabled
-    def self.enabled=(en = nil)
-      enabled(en)
+    def self.enabled=(value = nil)
+      enabled(value)
     end
 
     # instance version of {Config#orm}
     # @see Config#orm
-    def orm(orm=nil)
+    def orm(orm = nil)
       self.class.orm(orm)
     end
 
@@ -49,8 +49,8 @@ module PublicActivity
 
     # instance version of {Config#enabled}
     # @see Config#orm
-    def enabled(en = nil)
-      self.class.enabled(en)
+    def enabled(value = nil)
+      self.class.enabled(value)
     end
 
     # Set the ORM for use by PublicActivity.
@@ -70,12 +70,12 @@ module PublicActivity
       end
     end
 
-    def self.enabled(en = nil)
-      if en.nil?
-        value = Thread.current[:public_activity_enabled]
-        value.nil? ? true : value
+    def self.enabled(value = nil)
+      if value.nil?
+        val = Thread.current[:public_activity_enabled]
+        val.nil? ? true : val
       else
-        Thread.current[:public_activity_enabled] = en
+        Thread.current[:public_activity_enabled] = value
       end
     end
 
@@ -88,12 +88,11 @@ module PublicActivity
 
       # Decides whether to enable PublicActivity.
       # @param en [Boolean] Enabled?
-      def enabled(en = nil)
-        @enabled = (en.nil? ? @enabled : en)
+      def enabled(value = nil)
+        @enabled = (value.nil? ? @enabled : value)
       end
 
-      # Sets the table_name
-      # for the model
+      # Sets the table_name for the model
       def table_name(name = nil)
         @table_name = (name.nil? ? @table_name : name)
       end

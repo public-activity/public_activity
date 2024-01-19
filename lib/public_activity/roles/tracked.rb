@@ -151,9 +151,7 @@ module PublicActivity
           update:  Update
         }
 
-        if options[:skip_defaults] == true
-          return
-        end
+        return if options[:skip_defaults] == true
 
         modules = if options[:except]
           defaults.except(*options[:except])
@@ -163,32 +161,32 @@ module PublicActivity
           defaults
         end
 
-        modules.each do |key, value|
+        modules.each do |_, value|
           include value
         end
       end
 
       def available_options
-        [:skip_defaults, :only, :except, :on, :owner, :recipient, :params].freeze
+        %i[skip_defaults only except on owner recipient params].freeze
       end
 
       def assign_globals(options)
-        [:owner, :recipient, :params].each do |key|
-          if options[key]
-            self.send("activity_#{key}_global=".to_sym, options.delete(key))
-          end
+        %i[owner recipient params].each do |key|
+          next unless options[key]
+
+          send("activity_#{key}_global=".to_sym, options.delete(key))
         end
       end
 
       def assign_hooks(options)
-        if options[:on].is_a?(Hash)
-          self.activity_hooks = options[:on].select {|_, v| v.is_a? Proc}.symbolize_keys
-        end
+        return unless options[:on].is_a?(Hash)
+
+        self.activity_hooks = options[:on].select { |_, v| v.is_a? Proc }.symbolize_keys
       end
 
       def assign_custom_fields(options)
         options.except(*available_options).each do |k, v|
-          self.activity_custom_fields_global[k] = v
+          activity_custom_fields_global[k] = v
         end
       end
     end

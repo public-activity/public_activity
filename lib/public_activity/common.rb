@@ -147,10 +147,8 @@ module PublicActivity
       # @api private
       def get_hook(key)
         key = key.to_sym
-        if self.activity_hooks.has_key?(key) and self.activity_hooks[key].is_a? Proc
-          self.activity_hooks[key]
-        else
-          nil
+        if activity_hooks.key?(key) && activity_hooks[key].is_a?(Proc)
+          activity_hooks[key]
         end
       end
     end
@@ -181,7 +179,7 @@ module PublicActivity
     # @since 0.4.0
     # @api private
     def call_hook_safe(key)
-      hook = self.get_hook(key)
+      hook = get_hook(key)
       if hook
         # provides hook with model and controller
         hook.call(self, PublicActivity.get_controller)
@@ -248,7 +246,8 @@ module PublicActivity
     #   @option options [Hash] :params Parameters, see
     #     {PublicActivity.resolve_value}
     def create_activity(*args)
-      return unless self.public_activity_enabled?
+      return unless public_activity_enabled?
+
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)
@@ -264,12 +263,13 @@ module PublicActivity
     #
     # @see #create_activity
     def create_activity!(*args)
-      return unless self.public_activity_enabled?
+      return unless public_activity_enabled?
+
       options = prepare_settings(*args)
 
       if call_hook_safe(options[:key].split('.').last)
         reset_activity_instance_options
-        return PublicActivity::Adapter.create_activity!(self, options)
+        PublicActivity::Adapter.create_activity!(self, options)
       end
     end
 
@@ -306,7 +306,7 @@ module PublicActivity
     # @private
     def prepare_custom_fields(options)
       customs = self.class.activity_custom_fields_global.clone
-      customs.merge!(self.activity_custom_fields) if self.activity_custom_fields
+      customs.merge!(activity_custom_fields) if activity_custom_fields
       customs.merge!(options)
       customs.each do  |k, v|
         customs[k] = PublicActivity.resolve_value(self, v)
@@ -319,7 +319,7 @@ module PublicActivity
     def prepare_parameters(options)
       params = {}
       params.merge!(self.class.activity_params_global)
-      params.merge!(self.activity_params) if self.activity_params
+      params.merge!(activity_params) if activity_params
       params.merge!([options.delete(:parameters), options.delete(:params), {}].compact.first)
       params.each { |k, v| params[k] = PublicActivity.resolve_value(self, v) }
     end
@@ -329,7 +329,7 @@ module PublicActivity
     # @private
     def prepare_relation(name, options)
       PublicActivity.resolve_value(self,
-        (options.has_key?(name) ? options[name] : (
+        (options.key?(name) ? options[name] : (
           self.send("activity_#{name}") || self.class.send("activity_#{name}_global")
           )
         )
@@ -343,7 +343,7 @@ module PublicActivity
     def prepare_key(action, options = {})
       (
         options[:key] ||
-        self.activity_key ||
+        activity_key ||
         ((self.class.name.underscore.gsub('/', '_') + "." + action.to_s) if action)
       ).try(:to_s)
     end

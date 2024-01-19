@@ -48,20 +48,21 @@ module PublicActivity
 
   # Method used to choose which ORM to load
   # when PublicActivity::Activity class is being autoloaded
-  def self.inherit_orm(model="Activity")
+  def self.inherit_orm(model = 'Activity')
     orm = PublicActivity.config.orm
-    require "public_activity/orm/#{orm.to_s}"
+    require "public_activity/orm/#{orm}"
     "PublicActivity::ORM::#{orm.to_s.classify}::#{model}".constantize
   end
 
   # Module to be included in ActiveRecord models. Adds required functionality.
   module Model
     extend ActiveSupport::Concern
+
     included do
       include Common
       include Deactivatable
       include Tracked
-      include Activist  # optional associations by recipient|owner
+      include Activist # optional associations by recipient|owner
     end
   end
 end
