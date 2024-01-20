@@ -45,10 +45,6 @@ module PublicActivity
         rescue ::ActiveRecord::ConnectionNotEstablished, ::PG::ConnectionBad, Mysql2::Error::ConnectionError
           warn("[WARN] couldn't connect to database. Skipping PublicActivity::Activity#parameters's serialization")
         end
-
-        if ::ActiveRecord::VERSION::MAJOR < 4 || defined?(ProtectedAttributes)
-          attr_accessible :key, :owner, :parameters, :recipient, :trackable
-        end
       end
     end
   end
