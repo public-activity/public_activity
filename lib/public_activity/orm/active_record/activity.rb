@@ -26,14 +26,11 @@ module PublicActivity
         # Define polymorphic association to the parent
         belongs_to :trackable, polymorphic: true
 
-        case ::ActiveRecord::VERSION::MAJOR
-        when 6..7
-          with_options(optional: true) do
-            # Define ownership to a resource responsible for this activity
-            belongs_to :owner, polymorphic: true
-            # Define ownership to a resource targeted by this activity
-            belongs_to :recipient, polymorphic: true
-          end
+        with_options(optional: true) do
+          # Define ownership to a resource responsible for this activity
+          belongs_to :owner, polymorphic: true
+          # Define ownership to a resource targeted by this activity
+          belongs_to :recipient, polymorphic: true
         end
 
         # Serialize parameters Hash
