@@ -4,13 +4,9 @@
 in Rails 6.1+. Simply put: it records what has been changed or created and gives you the ability to present those
 recorded activities to users - similarly to how GitHub does it.
 
-## Rails 7
-
-**As of version 2.0.0, public_activity also supports Rails up to 7.0.**
-
 ## Table of contents
 
-- [Rails 7](#rails-7)
+- [Ruby/Rails version support](#ruby-rails-version-support)
 - [Table of contents](#table-of-contents)
 - [Example](#example)
   - [Online demo](#online-demo)
@@ -30,6 +26,15 @@ recorded activities to users - similarly to how GitHub does it.
 - [Common examples](#common-examples)
 - [Help](#help)
 - [License](#license)
+
+## Ruby/Rails version support
+
+Version `~> 3.0`` supports Ruby 3.0+ and Rails 6.1+. For older Ruby versions
+(≤2.7) and Rails 5.0+ you can use version `~> 2.0` until you can upgrade to
+newer versions of Ruby + Rails.
+
+Issues related to those unsupported versions of Ruby/Rails will be closed
+without resolution and PRs will not be accepted.
 
 ## Example
 
