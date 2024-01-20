@@ -123,7 +123,7 @@ module PublicActivity
     # @!endgroup
 
     # Provides some global methods for every model class.
-    module ClassMethods
+    class_methods do
       #
       # @since 1.0.0
       # @api private
