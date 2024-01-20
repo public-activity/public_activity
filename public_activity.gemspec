@@ -7,14 +7,19 @@ Gem::Specification.new do |s|
   s.name = 'public_activity'
   s.version = PublicActivity::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ['Piotrek Okoński', 'Kuba Okoński']
-  s.email = 'piotrek@okonski.org'
-  s.homepage = 'https://github.com/pokonski/public_activity'
+  s.authors = ['Juri Hahn', 'Piotrek Okoński', 'Kuba Okoński']
+  s.email = 'juri.hahn+public-activity@gmail.com'
+  s.homepage = 'https://github.com/public-activity/public_activity'
   s.summary = 'Easy activity tracking for ActiveRecord models'
   s.description = 'Easy activity tracking for your ActiveRecord models. Provides Activity model with details about actions performed by your users, like adding comments, responding etc.'
   s.license = 'MIT'
   s.metadata = {
-    'changelog_uri' => 'https://github.com/public-activity/public_activity/blob/main/CHANGELOG.md'
+    "bug_tracker_uri"   => "https://github.com/public-activity/public_activity/issues",
+    'changelog_uri'     => 'https://github.com/public-activity/public_activity/blob/main/CHANGELOG.md',
+    "documentation_uri" => "https://rubydoc.info/gems/public_activity",
+    "homepage_uri"      => s.homepage,
+    "source_code_uri"   => "https://github.com/public-activity/public_activity",
+    "rubygems_mfa_required" => "true",
   }
 
   s.files = `git ls-files lib`.split("\n") + ['Gemfile', 'Rakefile', 'README.md', 'MIT-LICENSE']
