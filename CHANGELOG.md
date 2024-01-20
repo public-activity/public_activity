@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0
+
+- **Added** Rails 7.1 support (s. #384, thanks [max.jos](https://github.com/yhru))
+- **Removed** Ruby <= 2.7 support
+- **Removed** Rails <= 6.0 support
+
 ## 2.0.2
 
 - **Fixed** Rescue from `ActiveRecord::ConnectionNotEstablished` (s. #372, thanks [Gabe Blair](https://github.com/gblair) & [Vitalie Lazu](https://github.com/vitaliel))
