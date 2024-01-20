@@ -161,9 +161,7 @@ module PublicActivity
           defaults
         end
 
-        modules.each do |_, value|
-          include value
-        end
+        modules.each_value { |mod| include mod }
       end
 
       def available_options
