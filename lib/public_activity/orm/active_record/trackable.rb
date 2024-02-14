@@ -9,7 +9,9 @@ module PublicActivity
         # Creates an association for activities where self is the *trackable*
         # object.
         def self.extended(base)
-          base.has_many :activities, :class_name => "::PublicActivity::Activity", :as => :trackable
+          base.has_many :activities,
+                        class_name: '::PublicActivity::Activity',
+                        as: :trackable
         end
       end
     end

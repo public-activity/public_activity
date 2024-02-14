@@ -24,11 +24,11 @@ module PublicActivity
         #
         def activist
           has_many :activities_as_owner,
-            :class_name => "::PublicActivity::Activity",
-            :as => :owner
+                   class_name: '::PublicActivity::Activity',
+                   as: :owner
           has_many :activities_as_recipient,
-            :class_name => "::PublicActivity::Activity",
-            :as => :recipient
+                   class_name: '::PublicActivity::Activity',
+                   as: :recipient
         end
       end
     end
