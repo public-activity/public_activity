@@ -36,7 +36,13 @@ module PublicActivity
         # Serialize parameters Hash
         begin
           if table_exists?
-            serialize :parameters, coder: YAML, type: Hash unless %i[json jsonb hstore].include?(columns_hash['parameters'].type)
+            unless %i[json jsonb hstore].include?(columns_hash['parameters'].type)
+              if ::ActiveRecord.version.release < Gem::Version.new('7.1')
+                serialize :parameters, Hash
+              else
+                serialize :parameters, coder: YAML, type: Hash
+              end
+            end
           else
             warn("[WARN] table #{name} doesn't exist. Skipping PublicActivity::Activity#parameters's serialization")
           end
