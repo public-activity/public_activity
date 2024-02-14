@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.1
+
+- **Fixed** Rails 6.1/7.0 regression in serialization of `nil`/`NULL` values
+- **Fixed** Docs for `ORM::ActiveRecord::Activist`
+
 ## 3.0.0
 
 - **Added** Rails 7.1 support (s. #384, thanks [max.jos](https://github.com/yhru))
