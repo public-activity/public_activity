@@ -151,7 +151,11 @@ module PublicActivity
     end
 
     def prepare_parameters(params)
-      @prepared_params ||= self.parameters.with_indifferent_access.merge(params)
+      if self.parameters
+        @prepared_params ||= self.parameters.with_indifferent_access.merge(params)
+      else
+        @prepared_params ||= params
+      end
     end
 
     protected
