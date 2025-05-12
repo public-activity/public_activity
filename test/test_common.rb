@@ -136,10 +136,19 @@ describe PublicActivity::Common do
         assert_equal @article.prepare_key(:create, {}), 'my_custom_key'
       end
 
-      it 'assigns key based on class name as fallback' do
+      it 'assigns key based on class name as default fallback' do
         def @article.activity_key; nil end
 
         assert_equal @article.prepare_key(:create), 'article.create'
+      end
+
+      it 'assigns key based on activity_key_prefix as fallback' do
+        class PrefixKey < article(owner: :user)
+          def activity_key_prefix; 'MyPrefix' end
+        end
+        @article = PrefixKey.new
+
+        assert_equal @article.prepare_key(:create), 'my_prefix.create'
       end
 
       it 'assigns key value from options hash' do

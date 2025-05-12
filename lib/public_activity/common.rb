@@ -336,6 +336,14 @@ module PublicActivity
       )
     end
 
+    # Determines the prefix of activity keys
+    # when only an :action is provided.
+    # @see #prepare_key
+    # @return [String] the prefix for new activity keys.
+    def activity_key_prefix
+      self.class.name
+    end
+
     # Helper method to serialize class name into relevant key
     # @return [String] the resulted key
     # @param [Symbol] or [String] the name of the operation to be done on class
@@ -344,7 +352,7 @@ module PublicActivity
       (
         options[:key] ||
         activity_key ||
-        ((self.class.name.underscore.gsub('/', '_') + "." + action.to_s) if action)
+        ((activity_key_prefix.underscore.gsub('/', '_') + '.' + action.to_s) if action)
       ).try(:to_s)
     end
 
