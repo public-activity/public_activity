@@ -22,18 +22,6 @@ jobs:
             rails_version: 6.1
           - ruby_version: 3.3
             rails_version: 6.1
-    services:
-      db:
-        image: postgres:16
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
       - name: Setup Ruby
@@ -41,12 +29,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby_version }}
       - name: Build and run test
-        env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/test
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
         run: |
-          sudo apt-get -yqq install libpq-dev
           bundle
           bundle exec appraisal rails_${{ matrix.rails_version }} bundle
           bundle exec appraisal rails_${{ matrix.rails_version }} rake
