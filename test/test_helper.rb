@@ -31,12 +31,21 @@ when :active_record
   migrations_path = File.expand_path('migrations', __dir__)
   active_record_version = ActiveRecord.version.release
 
-  if active_record_version >= Gem::Version.new('6.0.0')
+  if active_record_version >= Gem::Version.new('7.2.0')
+    migration_context = ActiveRecord::MigrationContext.new(migrations_path)
+    migrations = migration_context.migrations   # => Array<ActiveRecord::MigrationProxy>
+    connection_pool = ActiveRecord::Tasks::DatabaseTasks.migration_connection_pool
+    schema_migration = ActiveRecord::SchemaMigration.new(connection_pool)
+    internal_metadata = ActiveRecord::InternalMetadata.new(connection_pool)
+
+    ActiveRecord::Migrator.new(
+      :up,
+      migrations,
+      schema_migration,
+      internal_metadata
+    ).migrate
+  else
     ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration).migrate
-  elsif active_record_version >= Gem::Version.new('5.2.0')
-    ActiveRecord::MigrationContext.new(migrations_path).migrate
-  else # active_record_version < Gem::Version.new('5.2.0')
-    ActiveRecord::Migrator.migrate(migrations_path)
   end
 
   $stdout = STDOUT
@@ -91,17 +100,10 @@ when :mongoid
     end
     Article
   end
-
 when :mongo_mapper
   require 'mongo_mapper'
 
-  # TODO: remove when no longer support 2.5.8
-  config =
-    if RUBY_VERSION >= '2.6.0'
-      YAML.safe_load(File.read('test/mongo_mapper.yml'), aliases: true)
-    else
-      YAML.safe_load(File.read('test/mongo_mapper.yml'), [], [], true)
-    end
+  config = YAML.safe_load(File.read('test/mongo_mapper.yml'), aliases: true)
   MongoMapper.setup(config, :test)
 
   class User

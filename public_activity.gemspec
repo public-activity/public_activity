@@ -30,9 +30,9 @@ Gem::Specification.new do |s|
 
   s.post_install_message = File.read('UPGRADING') if File.exist?('UPGRADING')
 
-  s.add_dependency 'actionpack', '>= 6.1.0'
+  s.add_dependency 'actionpack', '>= 6.1'
   s.add_dependency 'i18n', '>= 0.5.0'
-  s.add_dependency 'railties', '>= 6.1.0'
+  s.add_dependency 'railties', '>= 6.1'
 
   ENV['PA_ORM'] ||= 'active_record'
   case ENV['PA_ORM']
@@ -57,4 +57,3 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rake'
 end
-
