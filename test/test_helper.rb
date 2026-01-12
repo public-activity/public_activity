@@ -30,24 +30,13 @@ when :active_record
   ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
   migrations_path = File.expand_path('migrations', __dir__)
-  active_record_version = ActiveRecord.version.release
+  migration_context = ActiveRecord::MigrationContext.new(migrations_path)
+  migrations = migration_context.migrations   # => Array<ActiveRecord::MigrationProxy>
+  connection_pool = ActiveRecord::Tasks::DatabaseTasks.migration_connection_pool
+  schema_migration = ActiveRecord::SchemaMigration.new(connection_pool)
+  internal_metadata = ActiveRecord::InternalMetadata.new(connection_pool)
 
-  if active_record_version >= Gem::Version.new('7.2.0')
-    migration_context = ActiveRecord::MigrationContext.new(migrations_path)
-    migrations = migration_context.migrations   # => Array<ActiveRecord::MigrationProxy>
-    connection_pool = ActiveRecord::Tasks::DatabaseTasks.migration_connection_pool
-    schema_migration = ActiveRecord::SchemaMigration.new(connection_pool)
-    internal_metadata = ActiveRecord::InternalMetadata.new(connection_pool)
-
-    ActiveRecord::Migrator.new(
-      :up,
-      migrations,
-      schema_migration,
-      internal_metadata
-    ).migrate
-  else
-    ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration).migrate
-  end
+  ActiveRecord::Migrator.new(:up, migrations, schema_migration, internal_metadata).migrate
 
   $stdout = STDOUT
 

@@ -22,22 +22,22 @@ Gem::Specification.new do |s|
     "rubygems_mfa_required" => "true",
   }
 
-  s.files = `git ls-files lib`.split("\n") + ['Gemfile', 'Rakefile', 'README.md', 'MIT-LICENSE']
+  s.files = `git ls-files lib`.split("\n") + %w[Gemfile Rakefile README.md MIT-LICENSE CHANGELOG.md]
   s.test_files = `git ls-files test`.split("\n")
   s.require_paths = ['lib']
 
-  s.required_ruby_version = '>= 3.0.0'
+  s.required_ruby_version = '>= 3.2.0'
 
   s.post_install_message = File.read('UPGRADING') if File.exist?('UPGRADING')
 
-  s.add_dependency 'actionpack', '>= 6.1'
+  s.add_dependency 'actionpack', '>= 7.2'
   s.add_dependency 'i18n', '>= 0.5.0'
-  s.add_dependency 'railties', '>= 6.1'
+  s.add_dependency 'railties', '>= 7.2'
 
   ENV['PA_ORM'] ||= 'active_record'
   case ENV['PA_ORM']
   when 'active_record'
-    s.add_dependency 'activerecord', '>= 6.1'
+    s.add_dependency 'activerecord', '>= 7.2'
   when 'mongoid'
     s.add_dependency 'mongoid',      '>= 4.0'
   when 'mongo_mapper'
@@ -52,7 +52,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'redcarpet'
   s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'sqlite3', '~> 1.4'
+  s.add_development_dependency 'sqlite3', '~> 2.1'
   s.add_development_dependency 'test-unit'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rake'

@@ -29,9 +29,9 @@ recorded activities to users - similarly to how GitHub does it.
 
 ## Ruby/Rails version support
 
-Version `~> 3.0`` supports Ruby 3.0+ and Rails 6.1+. For older Ruby versions
-(≤2.7) and Rails 5.0+ you can use version `~> 2.0` until you can upgrade to
-newer versions of Ruby + Rails.
+- Version `~> 4.0` supports Ruby 3.2+ and Rails 7.2+
+- Version `~> 3.0` supports Ruby 3.0+ and Rails 6.1+ (unsupported)
+- Version `~> 2.0` supports Ruby ≤2.7 and Rails 5.0+ (unsupported)
 
 Issues related to those unsupported versions of Ruby/Rails will be closed
 without resolution and PRs will not be accepted.

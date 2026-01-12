@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-if RUBY_VERSION.to_f < 3.1
-  appraise 'rails_6.1' do
-    gem 'rails', '~> 6.1.0'
-    gem 'openssl'
+if RUBY_VERSION.to_f < 4.0
+  appraise 'rails_7.2' do
+    gem 'rails', '~> 7.2.0'
+  end
+
+  appraise 'rails_8.0' do
+    gem 'rails', '~> 8.0.0'
   end
 end
 
-appraise 'rails_7.0' do
-  gem 'rails', '~> 7.0.1'
-end
-
-appraise 'rails_7.1' do
-  gem 'rails', '~> 7.1.0'
+appraise 'rails_8.1' do
+  gem 'rails', '~> 8.1.0'
+  gem "sqlite3", "~> 2.1"
 end

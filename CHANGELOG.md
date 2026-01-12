@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.0
+
+- **Removed** Ruby <= 3.1 support
+- **Removed** Rails <= 7.1 support
+
 ## 3.0.2
 
 - **Fixed** Refactor prepare_parameters method to handle nil parameters (s. #387, thanks [Himalaya Pal](https://github.com/palhimalaya))
