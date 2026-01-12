@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'bundler'
+require 'logger'
 Bundler.setup(:default, :test)
 
 if ENV['COV']
