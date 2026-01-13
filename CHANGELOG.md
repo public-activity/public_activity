@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.2
+
+- **Fixed** Refactor prepare_parameters method to handle nil parameters (s. #387, thanks [Himalaya Pal](https://github.com/palhimalaya))
+- **Fixed** CI failure due to lax sqlite3 version constraint (s. #389, thanks [Junichi Sato](https://github.com/sato11))
+
 ## 3.0.1
 
 - **Fixed** Rails 6.1/7.0 regression in serialization of `nil`/`NULL` values
