@@ -137,6 +137,28 @@ describe PublicActivity::Tracked do
     assert_equal a.class.activity_custom_fields_global, nonstandard: 'global'
   end
 
+  if PublicActivity.config.orm == :active_record
+    it 'does not leak subclass custom fields into parent class' do
+      parent = article(nonstandard: 'parent_value')
+      child = Class.new(parent) do
+        tracked nonstandard: 'child_value', extra: 'child_only'
+      end
+
+      assert_equal({ nonstandard: 'parent_value' }, parent.activity_custom_fields_global)
+      assert_equal({ nonstandard: 'child_value', extra: 'child_only' }, child.activity_custom_fields_global)
+    end
+
+    it 'does not leak custom fields between sibling subclasses' do
+      parent = article(nonstandard: 'parent_value')
+      sibling_a = Class.new(parent) { tracked a_field: 'a' }
+      sibling_b = Class.new(parent) { tracked b_field: 'b' }
+
+      refute sibling_a.activity_custom_fields_global.key?(:b_field)
+      refute sibling_b.activity_custom_fields_global.key?(:a_field)
+      assert_equal 'parent_value', parent.activity_custom_fields_global[:nonstandard]
+    end
+  end
+
   describe 'disabling functionality' do
     it 'allows for global disable' do
       PublicActivity.enabled = false

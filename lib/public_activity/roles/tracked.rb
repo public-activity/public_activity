@@ -183,9 +183,10 @@ module PublicActivity
       end
 
       def assign_custom_fields(options)
-        options.except(*available_options).each do |k, v|
-          activity_custom_fields_global[k] = v
-        end
+        custom_fields = options.except(*available_options)
+        return if custom_fields.empty?
+
+        self.activity_custom_fields_global = activity_custom_fields_global.merge(custom_fields)
       end
     end
   end
