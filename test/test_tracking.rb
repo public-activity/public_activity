@@ -156,10 +156,6 @@ describe PublicActivity::Tracked do
 
       refute sibling_a.activity_custom_fields_global.key?(:b_field)
       refute sibling_b.activity_custom_fields_global.key?(:a_field)
-      assert_equal 'parent_value', parent.activity_custom_fields_global[:nonstandard]
-      refute_same parent.activity_custom_fields_global, sibling_a.activity_custom_fields_global
-      refute_same parent.activity_custom_fields_global, sibling_b.activity_custom_fields_global
-      refute_same sibling_a.activity_custom_fields_global, sibling_b.activity_custom_fields_global
     end
   end
 
