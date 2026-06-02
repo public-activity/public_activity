@@ -23,7 +23,10 @@ module PublicActivity
     end
 
     def store_controller_for_public_activity
-      PublicActivity.set_controller(self)
+      if request.present?
+        PublicActivity.set_controller(self)
+      end
+      
       yield
     ensure
       PublicActivity.set_controller(nil)
